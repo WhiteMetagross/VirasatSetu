@@ -22,7 +22,7 @@ def trigger_matching(
     if current_user.role != "admin" and dec.user_id != current_user.id:
         raise HTTPException(status_code=403, detail="Not authorized")
 
-    if dec.status != "Verified":
+    if dec.status.capitalize() != "Verified":
         raise HTTPException(
             status_code=400,
             detail="Matching can only be performed on records that have been verified by an administrator"

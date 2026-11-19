@@ -163,7 +163,7 @@ def verify_deceased_record(
     if not dec:
         raise HTTPException(status_code=404, detail="Deceased record not found")
 
-    dec.status = payload.status
+    dec.status = payload.status.capitalize()
     dec.admin_notes = payload.admin_notes
     db.commit()
     db.refresh(dec)
