@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Virasat Setu (Unclaimed Financial Asset Discovery Platform)</title>
+  <!-- Tailwind CSS CDN with Fallback Styling -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            gov: {
+              navy: '#0f2942',
+              saffron: '#e06612',
+              green: '#138808',
+              blue: '#0d6efd',
+              light: '#f4f7fa',
+              dark: '#1e293b'
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <style>
+    *, *:before, *:after { box-sizing: border-box; }
+    html, body { overflow-x: hidden; max-width: 100vw; width: 100%; margin: 0; padding: 0; }
+    body { font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif; }
+    .tricolor-bar { height: 4px; background: linear-gradient(90deg, #ff9933 33.3%, #ffffff 33.3%, #ffffff 66.6%, #138808 66.6%); }
+    .status-badge { display: inline-flex; align-items: center; padding: 0.25rem 0.65rem; border-radius: 9999px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+    .badge-pending { background-color: #fef3c7; color: #92400e; }
+    .badge-verified, .badge-approved, .badge-completed { background-color: #d1fae5; color: #065f46; }
+    .badge-rejected { background-color: #fee2e2; color: #991b1b; }
+    .badge-review { background-color: #e0e7ff; color: #3730a3; }
+    .tab-btn.active { border-bottom: 3px solid #e06612; color: #0f2942; font-weight: 700; }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen overflow-x-hidden">
+
+  <!-- Top Tricolor Accent Bar -->
+  <div class="tricolor-bar"></div>
+
+  <!-- National Portal Header Banner -->
+  <header class="bg-gov-navy text-white border-b border-slate-700 shadow-md">
+    <div class="max-w-7xl mx-auto px-4 py-2 text-xs flex flex-wrap justify-between items-center text-slate-300 border-b border-slate-700">
+      <div class="flex items-center space-x-2">
+        <span class="bg-amber-500 text-slate-900 font-bold px-1.5 py-0.5 rounded text-[10px]">NATIONAL REPOSITORY</span>
+        <span>National Unclaimed Financial Asset Discovery Platform (Government of India Initiative)</span>
+      </div>
+      <div class="flex items-center space-x-3 mt-1 sm:mt-0">
+        <span><i class="fa-solid fa-clock"></i> System Time: Active</span>
+        
+        <span class="text-amber-400 font-semibold"><i class="fa-solid fa-shield-halved"></i> Network Status: Connected and Secured</span>
+      </div>
+    </div>
+
+    <!-- Main Navigation Bar -->
+    <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap justify-between items-center gap-4">
+      <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('home')">
+        <div class="w-10 h-10 rounded-lg bg-white flex items-center justify-center text-gov-navy shadow">
+          <i class="fa-solid fa-monument text-2xl text-gov-saffron"></i>
+        </div>
+        <div>
+          <h1 class="text-xl font-bold tracking-tight text-white flex items-center gap-2">
+            विरासत सेतु <span class="text-slate-300 font-light text-base hidden sm:inline">(Virasat Setu)</span>
+          </h1>
+          <p class="text-[11px] text-slate-300">Digital Inheritance and Unclaimed Financial Asset Discovery</p>
+        </div>
+      </div>
+
+      <!-- Quick Demo Role Switcher (For Evaluators) -->
+      <div class="flex items-center bg-slate-800 p-1.5 rounded-lg border border-slate-600 text-xs">
+        <span class="text-slate-400 mr-2 font-medium hidden md:inline">Quick Login:</span>
+        <div class="flex gap-1">
+          <button onclick="demoLogin('family')" class="px-2.5 py-1 rounded bg-slate-700 hover:bg-slate-600 text-amber-300 font-medium transition" title="Ramesh Kumar (Son of Rajesh Kumar)">
+            <i class="fa-solid fa-users mr-1"></i> Family
+          </button>
+          <button onclick="demoLogin('admin')" class="px-2.5 py-1 rounded bg-slate-700 hover:bg-slate-600 text-blue-300 font-medium transition" title="Administrator">
+            <i class="fa-solid fa-shield mr-1"></i> Admin
+          </button>
+          <button onclick="demoLogin('sbi')" class="px-2 py-1 rounded bg-slate-700 hover:bg-slate-600 text-emerald-300 font-medium transition" title="SBI Bank Representative">
+            <i class="fa-solid fa-building-columns mr-1"></i> SBI
+          </button>
+          <button onclick="demoLogin('lic')" class="px-2 py-1 rounded bg-slate-700 hover:bg-slate-600 text-purple-300 font-medium transition" title="LIC Insurance Representative">
+            <i class="fa-solid fa-file-contract mr-1"></i> LIC
+          </button>
+          <button onclick="demoLogin('hdfcmf')" class="px-2 py-1 rounded bg-slate-700 hover:bg-slate-600 text-cyan-300 font-medium transition" title="HDFC Mutual Fund Representative">
+            <i class="fa-solid fa-chart-line mr-1"></i> HDFC
+          </button>
+        </div>
+      </div>
+
+      <!-- User Status and Actions -->
+      <div class="flex items-center space-x-3">
+        <!-- Notification Center Bell -->
+        <button id="notif-btn" onclick="openNotificationsModal()" class="relative p-2 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-200 transition">
+          <i class="fa-solid fa-bell"></i>
+          <span id="notif-badge" class="hidden absolute -top-1 -right-1 bg-red-600 text-white text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center">0</span>
+        </button>
+
+        <div id="auth-buttons" class="flex space-x-2">
+          <button onclick="openAuthModal('login')" class="px-3 py-1.5 text-xs font-semibold rounded bg-transparent border border-slate-400 hover:bg-slate-800 text-white transition">Login</button>
+          <button onclick="openAuthModal('register')" class="px-3 py-1.5 text-xs font-semibold rounded bg-gov-saffron hover:bg-amber-600 text-white transition">Register</button>
+        </div>
+
+        <div id="user-profile" class="hidden flex items-center space-x-2">
+          <div class="text-right hidden sm:block">
+            <div id="user-display-name" class="text-xs font-bold text-white">Citizen</div>
+            <div id="user-display-role" class="text-[10px] text-amber-300 uppercase">Family User</div>
+          </div>
+          <button onclick="logout()" class="p-2 rounded-lg bg-slate-800 hover:bg-red-800 text-slate-300 hover:text-white transition text-xs" title="Logout">
+            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation Tabs -->
+    <nav class="bg-white border-b border-slate-200 text-slate-700 text-xs shadow-sm overflow-x-auto">
+      <div class="max-w-7xl mx-auto px-4 flex space-x-6 whitespace-nowrap">
+        <button onclick="switchTab('home')" class="tab-btn py-3 px-1 border-b-2 border-transparent hover:text-gov-navy active" data-tab="home">
+          <i class="fa-solid fa-house mr-1 text-slate-500"></i> Home
+        </button>
+        <button onclick="switchTab('dashboard')" class="tab-btn py-3 px-1 border-b-2 border-transparent hover:text-gov-navy" data-tab="dashboard">
+          <i class="fa-solid fa-gauge mr-1 text-slate-500"></i> Family Dashboard
+        </button>
+        <button onclick="switchTab('register-deceased')" class="tab-btn py-3 px-1 border-b-2 border-transparent hover:text-gov-navy" data-tab="register-deceased">
+          <i class="fa-solid fa-user-plus mr-1 text-slate-500"></i> Register Deceased Member
+        </button>
+        <button onclick="switchTab('matches')" class="tab-btn py-3 px-1 border-b-2 border-transparent hover:text-gov-navy" data-tab="matches">
+          <i class="fa-solid fa-magnifying-glass-dollar mr-1 text-slate-500"></i> Discovered Assets and Matching
+        </button>
+        <button onclick="switchTab('claims')" class="tab-btn py-3 px-1 border-b-2 border-transparent hover:text-gov-navy" data-tab="claims">
+          <i class="fa-solid fa-clipboard-check mr-1 text-slate-500"></i> Claim Tracking
+        </button>
+        <button onclick="switchTab('financial-db')" class="tab-btn py-3 px-1 border-b-2 border-transparent hover:text-gov-navy" data-tab="financial-db">
+          <i class="fa-solid fa-database mr-1 text-slate-500"></i> Browse Database
+        </button>
+        <button id="nav-admin-tab" onclick="switchTab('admin')" class="tab-btn py-3 px-1 border-b-2 border-transparent hover:text-gov-navy" data-tab="admin">
+          <i class="fa-solid fa-user-shield mr-1 text-slate-500"></i> Administrator Dashboard
+        </button>
+        <button id="nav-inst-tab" onclick="switchTab('institution')" class="tab-btn py-3 px-1 border-b-2 border-transparent hover:text-gov-navy" data-tab="institution">
+          <i class="fa-solid fa-building-columns mr-1 text-slate-500"></i> Institution Portal
+        </button>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Interactive Demo Scenario Banner -->
+  <section class="bg-gradient-to-r from-amber-50 to-blue-50 border-b border-amber-200 py-2.5 px-4 text-xs text-slate-700">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
+      <div class="flex items-center space-x-2">
+        <span class="bg-gov-saffron text-white font-bold px-2 py-0.5 rounded text-[10px]">DEMO SCENARIO</span>
+        <span><strong>Rajesh Kumar Test Case:</strong> ₹17,86,240 across SBI Bank, LIC Policy and HDFC Mutual Fund.</span>
+      </div>
+      <div class="flex items-center space-x-3">
+        <button onclick="loadRajeshScenario()" class="bg-gov-navy hover:bg-slate-800 text-white font-semibold px-3 py-1 rounded shadow-sm transition">
+          <i class="fa-solid fa-play mr-1 text-amber-400"></i> Load Rajesh Kumar Discovery and Matches
+        </button>
+        <button onclick="resetDemoData()" class="bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 px-2.5 py-1 rounded transition" title="Reset all demo records">
+          <i class="fa-solid fa-rotate-left mr-1"></i> Reset DB
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- MAIN CONTENT CONTAINER -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 py-6">
+
+    <!-- TAB 1: HOME PAGE (Module 1) -->
+    <div id="tab-home" class="tab-content space-y-8">
+      <!-- Hero Banner -->
+      <div class="bg-gradient-to-br from-gov-navy via-slate-800 to-slate-900 text-white rounded-2xl p-8 shadow-xl relative overflow-hidden">
+        <div class="max-w-2xl space-y-4 relative z-10">
+          <span class="bg-gov-saffron text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">
+            National Inheritance and Heritage Bridge
+          </span>
+          <h2 class="text-3xl sm:text-4xl font-extrabold tracking-tight">
+            Bridging Families to Unclaimed Financial Legacies
+          </h2>
+          <p class="text-slate-300 text-sm leading-relaxed">
+            Every year, thousands of bank accounts, mature insurance policies, and mutual fund investments remain unclaimed following a family member's demise. <strong>Virasat Setu</strong> centralises automated cross-dataset matching to help lawful nominees and legal heirs discover and initiate claims for what is rightfully theirs.
+          </p>
+          <div class="flex flex-wrap gap-3 pt-2">
+            <button onclick="switchTab('dashboard')" class="bg-gov-saffron hover:bg-amber-600 text-white font-bold px-5 py-2.5 rounded-lg shadow transition flex items-center gap-2 text-sm">
+              <i class="fa-solid fa-magnifying-glass"></i> Discover Unclaimed Assets
+            </button>
+            <button onclick="switchTab('financial-db')" class="bg-slate-700 hover:bg-slate-600 text-white font-medium px-4 py-2.5 rounded-lg transition text-sm">
+              <i class="fa-solid fa-database"></i> Browse Database
+            </button>
+          </div>
+        </div>
+        <div class="hidden lg:block absolute right-8 bottom-0 opacity-20 transform translate-y-6">
+          <i class="fa-solid fa-building-columns text-[220px]"></i>
+        </div>
+      </div>
+
+      <!-- Problem and Context Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow transition">
+          <div class="w-12 h-12 bg-blue-100 text-blue-700 rounded-lg flex items-center justify-center text-xl mb-4">
+            <i class="fa-solid fa-piggy-bank"></i>
+          </div>
+          <h3 class="font-bold text-base text-slate-900 mb-2">Unclaimed Bank Deposits</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            Over ₹42,000+ Crore in inoperative savings, current, and matured fixed deposit accounts lying dormant for over 10 years across commercial banks and transferred to the RBI Depositor Education and Awareness (DEA) Fund.
+          </p>
+        </div>
+
+        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow transition">
+          <div class="w-12 h-12 bg-amber-100 text-amber-700 rounded-lg flex items-center justify-center text-xl mb-4">
+            <i class="fa-solid fa-shield-halved"></i>
+          </div>
+          <h3 class="font-bold text-base text-slate-900 mb-2">Unclaimed Insurance Policies</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            Over ₹25,000+ Crore in matured life insurance policies, survival benefits, and unsettled death claim benefits lying unclaimed with insurers due to missing contact details or untraceable legal heirs.
+          </p>
+        </div>
+
+        <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm hover:shadow transition">
+          <div class="w-12 h-12 bg-emerald-100 text-emerald-700 rounded-lg flex items-center justify-center text-xl mb-4">
+            <i class="fa-solid fa-chart-line"></i>
+          </div>
+          <h3 class="font-bold text-base text-slate-900 mb-2">Mutual Funds and Dividends</h3>
+          <p class="text-xs text-slate-600 leading-relaxed">
+            Billions in unclaimed dividend warrants, unpaid redemptions, and folios without active nominees lying in mutual fund folios and Investor Education and Protection Fund (IEPF).
+          </p>
+        </div>
+      </div>
+
+      <!-- How It Works Flow -->
+      <div class="bg-white p-8 rounded-xl border border-slate-200 shadow-sm">
+        <div class="text-center max-w-xl mx-auto mb-8">
+          <span class="text-gov-saffron font-bold text-xs uppercase tracking-wider">End-to-End Workflow</span>
+          <h3 class="text-2xl font-bold text-slate-900 mt-1">How Virasat Setu Works</h3>
+          <p class="text-xs text-slate-500 mt-1">A transparent, secure four-stage process connecting verified families with financial institutions.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6 relative">
+          <div class="space-y-2 text-center p-4 bg-slate-50 rounded-lg border border-slate-100">
+            <div class="w-10 h-10 bg-gov-navy text-white rounded-full flex items-center justify-center font-bold mx-auto text-sm">1</div>
+            <h4 class="font-bold text-sm text-slate-800">Submit Record</h4>
+            <p class="text-xs text-slate-500">Citizen submits deceased family details, death cert ref and identity reference (e.g. PAN).</p>
+          </div>
+
+          <div class="space-y-2 text-center p-4 bg-slate-50 rounded-lg border border-slate-100">
+            <div class="w-10 h-10 bg-gov-saffron text-white rounded-full flex items-center justify-center font-bold mx-auto text-sm">2</div>
+            <h4 class="font-bold text-sm text-slate-800">Admin Verification</h4>
+            <p class="text-xs text-slate-500">Civil registrar records and death certificate are verified by administrator before discovery begins.</p>
+          </div>
+
+          <div class="space-y-2 text-center p-4 bg-slate-50 rounded-lg border border-slate-100">
+            <div class="w-10 h-10 bg-blue-600 text-white rounded-full flex items-center justify-center font-bold mx-auto text-sm">3</div>
+            <h4 class="font-bold text-sm text-slate-800">Automated Matching</h4>
+            <p class="text-xs text-slate-500">Weighted algorithm searches Banks, Insurance and Mutual Funds (Exact ID 50, Name 25, DOB 15, Nominee 10).</p>
+          </div>
+
+          <div class="space-y-2 text-center p-4 bg-slate-50 rounded-lg border border-slate-100">
+            <div class="w-10 h-10 bg-gov-green text-white rounded-full flex items-center justify-center font-bold mx-auto text-sm">4</div>
+            <h4 class="font-bold text-sm text-slate-800">Claim and Payout</h4>
+            <p class="text-xs text-slate-500">Heir submits relationship proof; institutional representative processes and updates claim status.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- FAQ Accordion -->
+      <div class="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+        <h3 class="text-xl font-bold text-slate-900 mb-4 flex items-center gap-2">
+          <i class="fa-solid fa-circle-question text-gov-saffron"></i> Frequently Asked Questions
+        </h3>
+        <div class="space-y-3 text-xs">
+          <details class="p-3 bg-slate-50 rounded-lg border border-slate-200 cursor-pointer">
+            <summary class="font-bold text-slate-800">Does this prototype access live bank accounts or transfer real money?</summary>
+            <p class="mt-2 text-slate-600 pl-4 border-l-2 border-amber-400">
+              No. As specified in the Project Scope (Section 13), this is an academic working prototype developed with fictional datasets (40+ bank records, 25+ insurance, 25+ mutual funds). It simulates the end-to-end legal and technical workflow without touching restricted or live financial networks.
+            </p>
+          </details>
+
+          <details class="p-3 bg-slate-50 rounded-lg border border-slate-200 cursor-pointer">
+            <summary class="font-bold text-slate-800">How does the 100-Point Weighted Matching Algorithm work?</summary>
+            <p class="mt-2 text-slate-600 pl-4 border-l-2 border-amber-400">
+              The matching engine queries across all financial datasets evaluating four weighted criteria: Sample Identity Ref (PAN/Aadhaar) = 50 pts, Name Token Similarity = 25 pts, Exact Date of Birth = 15 pts, and Nominee Family Relationship/City = 10 pts. Scores of 80-100 generate Strong Potential Matches; 60-79 require manual review; below 60 are discarded.
+            </p>
+          </details>
+
+          <details class="p-3 bg-slate-50 rounded-lg border border-slate-200 cursor-pointer">
+            <summary class="font-bold text-slate-800">How do notifications and emails work in this system?</summary>
+            <p class="mt-2 text-slate-600 pl-4 border-l-2 border-amber-400">
+              The system generates both in-app database notifications and simulated official email dispatches logged with full headers, timestamps, and recipient alerts. You can inspect the email body directly from the notification bell icon!
+            </p>
+          </details>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- TAB 2: FAMILY DASHBOARD (Module 3) -->
+    <div id="tab-dashboard" class="tab-content hidden space-y-6">
+      <!-- Welcome Header -->
+      <div class="flex flex-wrap justify-between items-center bg-white p-5 rounded-xl border border-slate-200 shadow-sm gap-4">
+        <div>
+          <h2 class="text-xl font-bold text-slate-900" id="dash-welcome">Welcome, Citizen</h2>
+          <p class="text-xs text-slate-500">Track your submitted family death records, discovered unclaimed assets, and ongoing claims.</p>
+        </div>
+        <button onclick="switchTab('register-deceased')" class="bg-gov-saffron hover:bg-amber-600 text-white font-bold px-4 py-2 rounded-lg text-xs shadow transition flex items-center gap-2">
+          <i class="fa-solid fa-plus"></i> Add Deceased Family Member
+        </button>
+      </div>
+
+      <!-- 4 Metric Cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+          <div class="text-slate-500 text-xs font-semibold uppercase">Deceased Records</div>
+          <div class="text-3xl font-extrabold text-slate-900 mt-2" id="stat-deceased">0</div>
+          <div class="text-[11px] text-slate-400 mt-1">Submitted for verification</div>
+        </div>
+
+        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+          <div class="text-slate-500 text-xs font-semibold uppercase">Potential Assets Found</div>
+          <div class="text-3xl font-extrabold text-emerald-600 mt-2" id="stat-assets">0</div>
+          <div class="text-[11px] text-emerald-600 mt-1"><i class="fa-solid fa-bolt"></i> Auto-matched across DBs</div>
+        </div>
+
+        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+          <div class="text-slate-500 text-xs font-semibold uppercase">Claims In Progress</div>
+          <div class="text-3xl font-extrabold text-blue-600 mt-2" id="stat-claims">0</div>
+          <div class="text-[11px] text-blue-500 mt-1">Pending institution action</div>
+        </div>
+
+        <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm">
+          <div class="text-slate-500 text-xs font-semibold uppercase">Unread Notifications</div>
+          <div class="text-3xl font-extrabold text-amber-600 mt-2" id="stat-notifs">0</div>
+          <div class="text-[11px] text-amber-600 mt-1"><i class="fa-solid fa-envelope"></i> Email and System alerts</div>
+        </div>
+      </div>
+
+      <!-- Submitted Deceased Members Table -->
+      <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="p-4 border-b border-slate-200 flex justify-between items-center bg-slate-50">
+          <h3 class="font-bold text-sm text-slate-800 flex items-center gap-2">
+            <i class="fa-solid fa-users text-gov-navy"></i> Submitted Deceased Family Members
+          </h3>
+          <span class="text-xs text-slate-500" id="deceased-table-count">0 Records</span>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs text-slate-700">
+            <thead class="bg-slate-100 text-slate-600 uppercase font-semibold text-[11px]">
+              <tr>
+                <th class="p-3">Full Name</th>
+                <th class="p-3">Identity (PAN/Ref)</th>
+                <th class="p-3">Date of Death</th>
+                <th class="p-3">Death Cert #</th>
+                <th class="p-3">Status</th>
+                <th class="p-3">Discovered Assets</th>
+                <th class="p-3 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="deceased-table-body" class="divide-y divide-slate-200">
+              <tr>
+                <td colspan="7" class="p-6 text-center text-slate-400">Loading submitted records...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Claims in Progress and Recent Activity Split -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Claims Summary Card -->
+        <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-5 space-y-4">
+          <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+            <h4 class="font-bold text-sm text-slate-800 flex items-center gap-2">
+              <i class="fa-solid fa-file-invoice text-blue-600"></i> Active Claims Summary
+            </h4>
+            <button onclick="switchTab('claims')" class="text-xs text-gov-blue hover:underline">View All</button>
+          </div>
+          <div id="dash-claims-list" class="space-y-3">
+            <p class="text-xs text-slate-400">No active claims initiated yet.</p>
+          </div>
+        </div>
+
+        <!-- Recent Activity Feed -->
+        <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-5 space-y-4">
+          <div class="flex justify-between items-center border-b border-slate-100 pb-3">
+            <h4 class="font-bold text-sm text-slate-800 flex items-center gap-2">
+              <i class="fa-solid fa-clock-rotate-left text-amber-600"></i> Recent Activity and Alerts
+            </h4>
+            <button onclick="openNotificationsModal()" class="text-xs text-gov-blue hover:underline">Notification History</button>
+          </div>
+          <div id="dash-activity-list" class="space-y-3 text-xs">
+            <p class="text-xs text-slate-400">No recent notifications.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- TAB 3: REGISTER DECEASED (Module 4) -->
+    <div id="tab-register-deceased" class="tab-content hidden space-y-6">
+      <div class="max-w-3xl mx-auto bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="bg-gov-navy text-white p-5">
+          <h2 class="text-lg font-bold">Register Deceased Family Member</h2>
+          <p class="text-xs text-slate-300">Submit official details of the deceased individual to initiate discovery across sample bank, insurance, and fund databases.</p>
+        </div>
+
+        <form id="deceased-form" onsubmit="handleDeceasedSubmit(event)" class="p-6 space-y-6 text-xs">
+          <!-- Section 1: Personal Info -->
+          <div class="space-y-3">
+            <h3 class="font-bold text-sm text-gov-navy border-b pb-1 flex items-center gap-2">
+              <i class="fa-solid fa-user"></i> 1. Personal Information of the Deceased
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Full Legal Name *</label>
+                <input type="text" id="dec-fullname" required placeholder="e.g. Rajesh Kumar" class="w-full p-2 border border-slate-300 rounded focus:ring-2 focus:ring-amber-500 focus:outline-none" />
+              </div>
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Date of Birth *</label>
+                <input type="date" id="dec-dob" required class="w-full p-2 border border-slate-300 rounded focus:ring-2 focus:ring-amber-500 focus:outline-none" />
+              </div>
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Date of Death *</label>
+                <input type="date" id="dec-dod" required class="w-full p-2 border border-slate-300 rounded focus:ring-2 focus:ring-amber-500 focus:outline-none" />
+              </div>
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Gender *</label>
+                <select id="dec-gender" required class="w-full p-2 border border-slate-300 rounded focus:ring-2 focus:ring-amber-500 focus:outline-none">
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Last Known City</label>
+                <input type="text" id="dec-city" placeholder="e.g. New Delhi" class="w-full p-2 border border-slate-300 rounded" />
+              </div>
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Last Known State</label>
+                <input type="text" id="dec-state" placeholder="e.g. Delhi" class="w-full p-2 border border-slate-300 rounded" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 2: Registration Info -->
+          <div class="space-y-3 pt-2">
+            <h3 class="font-bold text-sm text-gov-navy border-b pb-1 flex items-center gap-2">
+              <i class="fa-solid fa-stamp"></i> 2. Civil Registration and Identity References
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Death Certificate Reference Number *</label>
+                <input type="text" id="dec-cert-ref" required placeholder="e.g. DC-DL-2023-88992" class="w-full p-2 border border-slate-300 rounded focus:ring-2 focus:ring-amber-500 focus:outline-none" />
+              </div>
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Identity Reference (PAN / National Identifier) *</label>
+                <input type="text" id="dec-id-ref" required placeholder="e.g. ABCDE1234F" class="w-full p-2 border border-slate-300 rounded uppercase focus:ring-2 focus:ring-amber-500 focus:outline-none" />
+                <span class="text-[10px] text-slate-500">Crucial for matching algorithm (50 points weightage)</span>
+              </div>
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Registration Date</label>
+                <input type="date" id="dec-reg-date" class="w-full p-2 border border-slate-300 rounded" />
+              </div>
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Issuing Authority</label>
+                <input type="text" id="dec-authority" placeholder="e.g. Municipal Corporation of Delhi (MCD)" class="w-full p-2 border border-slate-300 rounded" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 3: Submitter Claimant Info -->
+          <div class="space-y-3 pt-2">
+            <h3 class="font-bold text-sm text-gov-navy border-b pb-1 flex items-center gap-2">
+              <i class="fa-solid fa-id-card"></i> 3. Submitter / Nominee Details
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Submitter Full Name *</label>
+                <input type="text" id="dec-claimant-name" required placeholder="e.g. Ramesh Kumar" class="w-full p-2 border border-slate-300 rounded" />
+              </div>
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Relationship with Deceased *</label>
+                <select id="dec-claimant-rel" required class="w-full p-2 border border-slate-300 rounded">
+                  <option value="Son">Son</option>
+                  <option value="Spouse">Spouse</option>
+                  <option value="Daughter">Daughter</option>
+                  <option value="Brother">Brother</option>
+                  <option value="Sister">Sister</option>
+                  <option value="Legal Heir">Other Legal Heir</option>
+                </select>
+              </div>
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Claimant Capacity / Type *</label>
+                <select id="dec-claimant-type" required class="w-full p-2 border border-slate-300 rounded">
+                  <option value="Nominee">Nominee (Designated on Asset)</option>
+                  <option value="Legal Heir">Legal Heir (Class I / Class II Succession)</option>
+                </select>
+              </div>
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Submitter Email *</label>
+                <input type="email" id="dec-claimant-email" required placeholder="e.g. rajesh.family@example.com" class="w-full p-2 border border-slate-300 rounded" />
+              </div>
+              <div>
+                <label class="block font-semibold text-slate-700 mb-1">Submitter Mobile *</label>
+                <input type="text" id="dec-claimant-mobile" required placeholder="e.g. 9876543210" class="w-full p-2 border border-slate-300 rounded" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 4: Document Upload -->
+          <div class="space-y-3 pt-2">
+            <h3 class="font-bold text-sm text-gov-navy border-b pb-1 flex items-center gap-2">
+              <i class="fa-solid fa-file-arrow-up"></i> 4. Upload Supporting Documents
+            </h3>
+            <div class="border-2 border-dashed border-slate-300 rounded-lg p-4 text-center bg-slate-50 hover:bg-slate-100 transition">
+              <i class="fa-solid fa-cloud-arrow-up text-2xl text-slate-400 mb-2"></i>
+              <p class="font-semibold text-slate-700">Attach Death Certificate (PDF, PNG, JPG)</p>
+              <p class="text-[11px] text-slate-400 mb-2">Uploaded file will be safely stored in secure document repository</p>
+              <input type="file" id="dec-doc-file" class="text-xs text-slate-500 mx-auto" />
+            </div>
+          </div>
+
+          <!-- Submit Buttons -->
+          <div class="flex justify-end gap-3 pt-4 border-t">
+            <button type="button" onclick="switchTab('dashboard')" class="px-4 py-2 rounded border border-slate-300 text-slate-600 hover:bg-slate-100">Cancel</button>
+            <button type="submit" class="bg-gov-saffron hover:bg-amber-600 text-white font-bold px-6 py-2 rounded shadow transition">
+              Submit Record for Admin Verification
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+
+    <!-- TAB 4: DISCOVERED ASSETS AND MATCHING RESULTS (Modules 6 and 7) -->
+    <div id="tab-matches" class="tab-content hidden space-y-6">
+      <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-wrap justify-between items-center gap-4">
+        <div>
+          <span class="text-gov-saffron font-bold text-xs uppercase tracking-wider">Automated Discovery Results</span>
+          <h2 class="text-xl font-bold text-slate-900 mt-0.5" id="match-header-title">Unclaimed Financial Asset Matches</h2>
+          <p class="text-xs text-slate-500">Cross-matched against 94 central financial records in Bank, Insurance, and Mutual Fund datasets.</p>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+          <label class="text-xs font-semibold text-slate-600">Select Deceased Person:</label>
+          <select id="match-deceased-selector" onchange="loadMatchesForSelected()" class="p-1.5 border border-slate-300 rounded text-xs">
+            <option value="">Select deceased record...</option>
+          </select>
+          <button onclick="reRunMatchingForCurrent()" class="bg-gov-navy text-white px-3 py-1.5 rounded text-xs hover:bg-slate-800 transition" title="Re-run matching algorithm">
+            <i class="fa-solid fa-arrows-rotate mr-1"></i> Re-Match
+          </button>
+        </div>
+      </div>
+
+      <!-- Matching Algorithm Weightage Legend Card -->
+      <div class="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-xl p-4 text-xs text-slate-700">
+        <h4 class="font-bold text-slate-900 mb-2 flex items-center gap-1.5">
+          <i class="fa-solid fa-circle-nodes text-blue-600"></i> Matching Algorithm Criteria (100-Point Scoring Model)
+        </h4>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
+          <div class="bg-white p-2.5 rounded-lg border border-blue-100 shadow-sm">
+            <div class="font-extrabold text-blue-700 text-base">50 Pts</div>
+            <div class="text-[11px] font-semibold text-slate-700">Exact Identity Ref</div>
+            <div class="text-[10px] text-slate-400">PAN / Sample ID Ref Match</div>
+          </div>
+          <div class="bg-white p-2.5 rounded-lg border border-blue-100 shadow-sm">
+            <div class="font-extrabold text-blue-700 text-base">25 Pts</div>
+            <div class="text-[11px] font-semibold text-slate-700">Name Similarity</div>
+            <div class="text-[10px] text-slate-400">Fuzzy and Token Set Matching</div>
+          </div>
+          <div class="bg-white p-2.5 rounded-lg border border-blue-100 shadow-sm">
+            <div class="font-extrabold text-blue-700 text-base">15 Pts</div>
+            <div class="text-[11px] font-semibold text-slate-700">Exact Date of Birth</div>
+            <div class="text-[10px] text-slate-400">Civil Registrar Comparison</div>
+          </div>
+          <div class="bg-white p-2.5 rounded-lg border border-blue-100 shadow-sm">
+            <div class="font-extrabold text-blue-700 text-base">10 Pts</div>
+            <div class="text-[11px] font-semibold text-slate-700">Nominee and City</div>
+            <div class="text-[10px] text-slate-400">Family Heir Connection</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Discovered Assets Categories: Bank, Insurance, Mutual Funds -->
+      <div id="matches-container" class="space-y-6">
+        <p class="text-center text-xs text-slate-400 py-8">Select a verified deceased record above or click 'Load Rajesh Kumar Scenario'.</p>
+      </div>
+    </div>
+
+
+    <!-- TAB 5: CLAIM TRACKING AND INITIATION (Modules 8 and 10) -->
+    <div id="tab-claims" class="tab-content hidden space-y-6">
+      <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-wrap justify-between items-center gap-4">
+        <div>
+          <span class="text-gov-saffron font-bold text-xs uppercase tracking-wider">Claim Status and Verification</span>
+          <h2 class="text-xl font-bold text-slate-900 mt-0.5">Claim Management and Tracking</h2>
+          <p class="text-xs text-slate-500">Monitor active simulated claim applications, heir verifications, and institution reviews.</p>
+        </div>
+        <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+          <label class="text-xs font-semibold text-slate-600">Filter Status:</label>
+          <select id="claim-filter-status" onchange="renderClaimsList()" class="p-1.5 border border-slate-300 rounded text-xs">
+            <option value="">All Statuses</option>
+            <option value="Submitted">Submitted</option>
+            <option value="Under Review">Under Review</option>
+            <option value="Documents Required">Documents Required</option>
+            <option value="Approved">Approved</option>
+            <option value="Completed">Completed</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Claims List Container -->
+      <div id="claims-container" class="space-y-4">
+        <p class="text-center text-xs text-slate-400 py-8">Loading claim records...</p>
+      </div>
+    </div>
+
+
+    <!-- TAB 6: FINANCIAL INSTITUTION DATABASES (Module 5) -->
+    <div id="tab-financial-db" class="tab-content hidden space-y-6">
+      <div class="bg-white p-5 rounded-xl border border-slate-200 shadow-sm flex flex-wrap justify-between items-center gap-4">
+        <div>
+          <span class="text-gov-saffron font-bold text-xs uppercase tracking-wider">Central Financial Repository</span>
+          <h2 class="text-xl font-bold text-slate-900 mt-0.5">Browse Database</h2>
+          <p class="text-xs text-slate-500">Explore 94 institutional records (42 Banks, 26 Insurance, 26 Mutual Funds) indexed by the matching engine.</p>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-3">
+          <div class="relative">
+            <input type="text" id="fdb-search" oninput="debounceFdbSearch()" placeholder="Search name, PAN, account..." class="pl-8 pr-3 py-1.5 text-xs border border-slate-300 rounded w-56 focus:outline-none focus:ring-1 focus:ring-amber-500" />
+            <i class="fa-solid fa-magnifying-glass absolute left-2.5 top-2.5 text-slate-400 text-xs"></i>
+          </div>
+          <button onclick="openAddAssetModal()" class="bg-gov-navy hover:bg-slate-800 text-white font-semibold px-3 py-1.5 rounded text-xs transition">
+            <i class="fa-solid fa-plus mr-1"></i> Add Financial Record
+          </button>
+        </div>
+      </div>
+
+      <!-- Category Filter Tabs -->
+      <div class="flex space-x-2 border-b border-slate-200 pb-2 text-xs font-semibold">
+        <button onclick="filterFdbCategory('all')" class="fdb-cat-btn px-4 py-1.5 rounded-full bg-gov-navy text-white" data-cat="all">All (94)</button>
+        <button onclick="filterFdbCategory('bank')" class="fdb-cat-btn px-4 py-1.5 rounded-full bg-slate-100 text-slate-700 hover:bg-slate-200" data-cat="bank"><i class="fa-solid fa-building-columns mr-1 text-blue-600"></i> Bank Accounts (42)</button>
+        <button onclick="filterFdbCategory('insurance')" class="fdb-cat-btn px-4 py-1.5 rounded-full bg-slate-100 text-slate-700 hover:bg-slate-200" data-cat="insurance"><i class="fa-solid fa-shield-halved mr-1 text-emerald-600"></i> Insurance Policies (26)</button>
+        <button onclick="filterFdbCategory('mutual_fund')" class="fdb-cat-btn px-4 py-1.5 rounded-full bg-slate-100 text-slate-700 hover:bg-slate-200" data-cat="mutual_fund"><i class="fa-solid fa-chart-line mr-1 text-purple-600"></i> Mutual Funds (26)</button>
+      </div>
+
+      <!-- Financial Assets Table -->
+      <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs text-slate-700">
+            <thead class="bg-slate-100 text-slate-600 uppercase font-semibold text-[11px]">
+              <tr>
+                <th class="p-3">Type</th>
+                <th class="p-3">Institution Name</th>
+                <th class="p-3">Holder Name</th>
+                <th class="p-3">Date of Birth</th>
+                <th class="p-3">Identity (PAN/Ref)</th>
+                <th class="p-3">Account / Folio Ref</th>
+                <th class="p-3">Nominee</th>
+                <th class="p-3">Approx Value</th>
+                <th class="p-3">Unclaimed Status</th>
+              </tr>
+            </thead>
+            <tbody id="fdb-table-body" class="divide-y divide-slate-200">
+              <tr>
+                <td colspan="9" class="p-6 text-center text-slate-400">Loading records...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- TAB 7: ADMINISTRATOR DASHBOARD (Module 11) -->
+    <div id="tab-admin" class="tab-content hidden space-y-6">
+      <div class="bg-gov-navy text-white p-6 rounded-xl shadow-md flex flex-wrap justify-between items-center gap-4">
+        <div>
+          <span class="bg-amber-500 text-slate-900 font-bold px-2 py-0.5 rounded text-[10px]">ADMINISTRATION</span>
+          <h2 class="text-2xl font-bold mt-1">Platform Central Oversight Panel</h2>
+          <p class="text-xs text-slate-300">Approve death records, trigger matching, oversee claims, review audit logs and institutions.</p>
+        </div>
+        <div class="flex items-center gap-3">
+          <button onclick="resetDemoData()" class="bg-red-600 hover:bg-red-700 text-white font-bold px-3 py-1.5 rounded text-xs transition">
+            <i class="fa-solid fa-trash-can mr-1"></i> Reset Demo Database
+          </button>
+        </div>
+      </div>
+
+      <!-- Admin Overview Stats -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+          <div class="text-slate-500 text-xs font-semibold">Registered Users</div>
+          <div class="text-2xl font-bold text-slate-900 mt-1" id="admin-stat-users">0</div>
+        </div>
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+          <div class="text-slate-500 text-xs font-semibold">Pending Verifications</div>
+          <div class="text-2xl font-bold text-amber-600 mt-1" id="admin-stat-pending">0</div>
+        </div>
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+          <div class="text-slate-500 text-xs font-semibold">Total Financial Records</div>
+          <div class="text-2xl font-bold text-blue-600 mt-1" id="admin-stat-assets">0</div>
+        </div>
+        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+          <div class="text-slate-500 text-xs font-semibold">Generated Matches</div>
+          <div class="text-2xl font-bold text-emerald-600 mt-1" id="admin-stat-matches">0</div>
+        </div>
+      </div>
+
+      <!-- Admin Actions: Pending Deceased Records Review -->
+      <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-5 space-y-4">
+        <div class="flex justify-between items-center border-b pb-3">
+          <h3 class="font-bold text-sm text-slate-900 flex items-center gap-2">
+            <i class="fa-solid fa-stamp text-amber-600"></i> Pending Death Records for Civil Verification
+          </h3>
+          <span class="text-xs text-slate-500" id="admin-pending-count">0 pending</span>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs text-slate-700">
+            <thead class="bg-slate-100 text-slate-600 uppercase font-semibold text-[11px]">
+              <tr>
+                <th class="p-3">Deceased Name</th>
+                <th class="p-3">Death Cert #</th>
+                <th class="p-3">Identity (PAN)</th>
+                <th class="p-3">City / Authority</th>
+                <th class="p-3">Submitted By</th>
+                <th class="p-3">Current Status</th>
+                <th class="p-3 text-right">Verification Action</th>
+              </tr>
+            </thead>
+            <tbody id="admin-pending-table-body" class="divide-y divide-slate-200">
+              <tr>
+                <td colspan="7" class="p-4 text-center text-slate-400">No records pending verification.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Admin Audit Log Section -->
+      <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-5 space-y-4">
+        <h3 class="font-bold text-sm text-slate-900 flex items-center gap-2 border-b pb-3">
+          <i class="fa-solid fa-list-check text-blue-600"></i> Immutable System Audit Trail (Activity Logs)
+        </h3>
+        <div class="overflow-x-auto max-h-72">
+          <table class="w-full text-left text-xs text-slate-700">
+            <thead class="bg-slate-100 text-slate-600 uppercase font-semibold text-[11px] sticky top-0">
+              <tr>
+                <th class="p-2.5">Timestamp (UTC)</th>
+                <th class="p-2.5">Action</th>
+                <th class="p-2.5">Entity</th>
+                <th class="p-2.5">Details</th>
+              </tr>
+            </thead>
+            <tbody id="admin-audit-table-body" class="divide-y divide-slate-100">
+              <tr>
+                <td colspan="4" class="p-4 text-center text-slate-400">Loading audit trail...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- TAB 8: INSTITUTION DASHBOARD (Module 12) -->
+    <div id="tab-institution" class="tab-content hidden space-y-6">
+      <div class="bg-slate-800 text-white p-6 rounded-xl shadow-md flex flex-wrap justify-between items-center gap-4">
+        <div>
+          <span class="bg-emerald-500 text-slate-900 font-bold px-2 py-0.5 rounded text-[10px]">INSTITUTION REP</span>
+          <h2 class="text-2xl font-bold mt-1" id="inst-portal-title">Financial Institution Processing Desk</h2>
+          <p class="text-xs text-slate-300" id="inst-portal-desc">Manage inbound claims and heir documentation for your designated institution.</p>
+        </div>
+        <div class="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+          <span class="text-xs text-slate-400">Active Node:</span>
+          <span class="bg-slate-700 px-3 py-1 rounded text-xs font-semibold text-emerald-400" id="inst-node-name">SBI / LIC / HDFC</span>
+        </div>
+      </div>
+
+      <!-- Institution Inbound Claims -->
+      <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-5 space-y-4">
+        <h3 class="font-bold text-sm text-slate-900 border-b pb-3 flex items-center gap-2">
+          <i class="fa-solid fa-inbox text-emerald-600"></i> Assigned Claims for Review
+        </h3>
+        <div id="inst-claims-list" class="space-y-4">
+          <p class="text-center text-xs text-slate-400 py-6">No claims assigned to this institution yet.</p>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-slate-900 text-slate-400 text-xs border-t border-slate-800 mt-auto py-6">
+    <div class="max-w-7xl mx-auto px-4 flex flex-wrap justify-between items-center gap-4">
+      <div>
+        <p class="font-bold text-slate-200">Virasat Setu (विरासत सेतु)</p>
+        <p class="text-[11px] text-slate-500 mt-0.5">Academic Working Prototype (Department of Technology and Innovation Project)</p>
+      </div>
+      <div class="text-[11px] text-slate-400">
+        <span>Designed for College Presentation and Prototype Demonstration</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==================== MODALS ==================== -->
+
+  <!-- 1. AUTH MODAL (Login and Register) -->
+  <div id="modal-auth" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4 text-xs">
+      <div class="flex justify-between items-center border-b pb-3">
+        <h3 class="text-base font-bold text-slate-900" id="auth-modal-title">Sign In to Virasat Setu</h3>
+        <button onclick="closeAuthModal()" class="text-slate-400 hover:text-slate-600 text-base"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="flex border-b border-slate-200 pb-2 gap-4">
+        <button onclick="setAuthMode('login')" id="auth-tab-login" class="font-bold text-gov-navy border-b-2 border-amber-500 pb-1">Login</button>
+        <button onclick="setAuthMode('register')" id="auth-tab-register" class="text-slate-500 pb-1">Register New Account</button>
+      </div>
+
+      <form id="auth-form" onsubmit="handleAuthSubmit(event)" class="space-y-3">
+        <div id="reg-fields" class="hidden space-y-3">
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Full Legal Name *</label>
+            <input type="text" id="auth-fullname" placeholder="e.g. Ramesh Kumar" class="w-full p-2 border border-slate-300 rounded" />
+          </div>
+          <div>
+            <label class="block font-semibold text-slate-700 mb-1">Mobile Number</label>
+            <input type="text" id="auth-mobile" placeholder="e.g. 9876543210" class="w-full p-2 border border-slate-300 rounded" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Email Address *</label>
+          <input type="email" id="auth-email" required placeholder="name@example.com" class="w-full p-2 border border-slate-300 rounded" />
+        </div>
+
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Password *</label>
+          <input type="password" id="auth-password" required placeholder="••••••••" class="w-full p-2 border border-slate-300 rounded" />
+        </div>
+
+        <button type="submit" class="w-full bg-gov-saffron hover:bg-amber-600 text-white font-bold py-2.5 rounded shadow transition">
+          <span id="auth-submit-text">Log In</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 2. INITIATE CLAIM MODAL -->
+  <div id="modal-claim" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-4 text-xs">
+      <div class="flex justify-between items-center border-b pb-3">
+        <div>
+          <span class="text-gov-saffron font-bold text-[10px] uppercase">Simulated Heir Application</span>
+          <h3 class="text-base font-bold text-slate-900">Initiate Financial Asset Claim</h3>
+        </div>
+        <button onclick="closeClaimModal()" class="text-slate-400 hover:text-slate-600 text-base"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <form id="claim-form" onsubmit="handleClaimSubmit(event)" class="space-y-4">
+        <input type="hidden" id="claim-match-id" />
+
+        <div class="bg-slate-50 p-3 rounded-lg border border-slate-200 space-y-1">
+          <div class="font-bold text-slate-800" id="claim-asset-title">State Bank of India (Fixed Deposit)</div>
+          <div class="text-slate-600" id="claim-asset-ref">Account Ref: SB-4019284102</div>
+          <div class="text-emerald-700 font-bold" id="claim-asset-val">Estimated Value: ₹3,45,000</div>
+        </div>
+
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Claimant Full Name</label>
+          <input type="text" id="claim-name" required class="w-full p-2 border border-slate-300 rounded" />
+        </div>
+
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Relationship / Capacity</label>
+          <input type="text" id="claim-rel" required placeholder="e.g. Son / Registered Nominee" class="w-full p-2 border border-slate-300 rounded" />
+        </div>
+
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Supporting Remarks / Claim Justification</label>
+          <textarea id="claim-remarks" rows="2" placeholder="Details regarding legal heir certificate or nominee declaration..." class="w-full p-2 border border-slate-300 rounded"></textarea>
+        </div>
+
+        <div class="flex justify-end gap-2 pt-2 border-t">
+          <button type="button" onclick="closeClaimModal()" class="px-4 py-2 rounded border border-slate-300 text-slate-600">Cancel</button>
+          <button type="submit" class="bg-gov-saffron hover:bg-amber-600 text-white font-bold px-5 py-2 rounded shadow transition">
+            Submit Claim to Institution
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 3. NOTIFICATIONS AND EMAIL LOGS MODAL -->
+  <div id="modal-notif" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-xl w-full p-6 shadow-2xl space-y-4 text-xs flex flex-col max-h-[85vh]">
+      <div class="flex justify-between items-center border-b pb-3">
+        <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+          <i class="fa-solid fa-envelope-open-text text-amber-600"></i> Notification Center and Email Dispatch Logs
+        </h3>
+        <button onclick="closeNotifModal()" class="text-slate-400 hover:text-slate-600 text-base"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <div class="flex justify-between items-center">
+        <span class="text-slate-500">All alerts generated by the FastAPI event notification pipeline</span>
+        <button onclick="markAllNotifsRead()" class="text-gov-blue hover:underline">Mark all read</button>
+      </div>
+
+      <div id="notif-modal-list" class="flex-1 overflow-y-auto space-y-3 pr-1">
+        <p class="text-center text-slate-400 py-6">No notifications found.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. EMAIL DISPATCH PREVIEW MODAL -->
+  <div id="modal-email-view" class="hidden fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-3 text-xs">
+      <div class="flex justify-between items-center border-b pb-2">
+        <span class="font-bold text-gov-navy"><i class="fa-solid fa-envelope mr-1 text-gov-saffron"></i> Simulated Email Dispatch Inspection</span>
+        <button onclick="closeEmailModal()" class="text-slate-400 hover:text-slate-600 text-base"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <pre id="email-preview-content" class="bg-slate-900 text-emerald-300 p-4 rounded-lg font-mono text-[11px] overflow-x-auto whitespace-pre-wrap max-h-96"></pre>
+      <div class="text-right">
+        <button onclick="closeEmailModal()" class="bg-slate-200 hover:bg-slate-300 text-slate-800 font-semibold px-4 py-1.5 rounded">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 5. ADD FINANCIAL ASSET MODAL (Admin) -->
+  <div id="modal-add-asset" class="hidden fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4 text-xs">
+      <div class="flex justify-between items-center border-b pb-3">
+        <h3 class="text-base font-bold text-slate-900">Add Financial Record</h3>
+        <button onclick="closeAddAssetModal()" class="text-slate-400 hover:text-slate-600 text-base"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+
+      <form id="add-asset-form" onsubmit="handleAddAssetSubmit(event)" class="space-y-3">
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Financial Institution *</label>
+          <select id="asset-inst-select" required class="w-full p-2 border border-slate-300 rounded"></select>
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Asset Category *</label>
+          <select id="asset-type-select" required class="w-full p-2 border border-slate-300 rounded">
+            <option value="bank">Bank Deposit</option>
+            <option value="insurance">Insurance Policy</option>
+            <option value="mutual_fund">Mutual Fund Folio</option>
+          </select>
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Holder Name *</label>
+          <input type="text" id="asset-holder" required placeholder="e.g. Ramesh Chandra Das" class="w-full p-2 border border-slate-300 rounded" />
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Identity Ref (PAN / Identifier) *</label>
+          <input type="text" id="asset-idref" required placeholder="e.g. RCDPD3322B" class="w-full p-2 border border-slate-300 rounded uppercase" />
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Account / Policy / Folio Ref *</label>
+          <input type="text" id="asset-accref" required placeholder="e.g. SB-9900112233" class="w-full p-2 border border-slate-300 rounded" />
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Estimated Asset Value (₹) *</label>
+          <input type="number" id="asset-val" required placeholder="150000" class="w-full p-2 border border-slate-300 rounded" />
+        </div>
+        <div>
+          <label class="block font-semibold text-slate-700 mb-1">Nominee on Record</label>
+          <input type="text" id="asset-nominee" placeholder="e.g. Pranab Das (Son)" class="w-full p-2 border border-slate-300 rounded" />
+        </div>
+        <div class="flex justify-end gap-2 pt-2 border-t">
+          <button type="button" onclick="closeAddAssetModal()" class="px-4 py-2 rounded border border-slate-300 text-slate-600">Cancel</button>
+          <button type="submit" class="bg-gov-navy hover:bg-slate-800 text-white font-bold px-5 py-2 rounded shadow transition">Save Record</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 space-y-2"></div>
+
+  <!-- CORE FRONTEND APPLICATION LOGIC -->
+  <script src="/static/app.js"></script>
+</body>
+</html>
