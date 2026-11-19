@@ -3,13 +3,13 @@
 This document provides a comprehensive structural guide to the Virasat Setu codebase. It outlines the directory hierarchy, functional responsibilities of every file, data flow linkages and cross component dependencies.
 
 Virasat Setu Codebase Visual Architecture:
+
 1. Client Interface Layer (app/static): index html (Responsive Single Page UI) and app js (State Machine and Fetch Logic).
 2. Application Gateway (api/index py and app/main py): Vercel Serverless Entrypoint and FastAPI Application.
 3. API Routers Layer (app/routers): auth py, deceased py, matching py, claimants py, claims py, institutions py, notifications py, documents py, dashboard py, admin py.
 4. Business Logic Services (app/services): matching service py (100 Point Matching Engine), notification service py (Notification and Email Dispatch), supabase service py (Supabase PostgREST Client).
 5. Data Models and Schemas (app/models and app/schemas): models py (Eleven Relational Entities), schemas py (Pydantic Validation Schemas).
 6. Dual Persistence Layer (app/database py and supabase): Local Storage (SQLite Database) and Cloud Storage (Supabase Hosted PostgreSQL with Row Level Security).
-
 
 ## Detailed Directory Tree Structure:
 
@@ -72,7 +72,6 @@ run server bat .............. Windows One Click Execution File
 test system py .............. Ten Step Verification Test Suite
 ReadMe md ................... Primary Project Overview
 
-
 ## Detailed File Inventory and Responsibilities:
 
 ### Gateway and Application Bootstrap:
@@ -82,12 +81,10 @@ ReadMe md ................... Primary Project Overview
 3. app config py: Centralized configuration class utilizing pydantic settings to load environment variables, database URLs, Supabase credentials and storage paths.
 4. app database py: Manages SQLAlchemy database engine connections with automatic fallback to local SQLite for zero setup demonstrations and PostgreSQL for cloud deployment.
 
-
 ### Relational Models and Validation Schemas:
 
 1. app models models py: Defines eleven database tables using SQLAlchemy Declarative Base including User, DeceasedPerson, Claimant, ClaimantRelationship, Document, Institution, FinancialAsset, AssetMatch, Claim, Notification and AuditLog.
 2. app schemas schemas py: Pydantic schemas validating input payloads and formatting outgoing JSON responses across all domain entities.
-
 
 ### Modular API Routers:
 
@@ -102,7 +99,6 @@ ReadMe md ................... Primary Project Overview
 9. app routers dashboard py: Aggregates family statistics including total deceased records, discovered assets, active claims and recent events.
 10. app routers admin py: Delivers platform statistics, pending verification queues, audit logs and central financial asset management.
 
-
 ### Core Business Logic and Services:
 
 1. app services matching service py: Implements the one hundred point weighted matching engine calculating identity equality, token name similarity, birth date matches and nominee relationships.
@@ -110,12 +106,10 @@ ReadMe md ................... Primary Project Overview
 3. app services supabase service py: Provides direct PostgREST client integrations communicating with hosted Supabase tables.
 4. app utils auth py: Provides cryptographic password hashing using passlib bcrypt and JWT token encoding and decoding using pyjwt.
 
-
 ### Presentation Interface Layer:
 
 1. app static index html: Single Page Application markup featuring the tricolor banner, hero discovery section, family dashboard, deceased registration form, discovered assets console, claim progress tracker, browse database explorer, administrative dashboard and institution desks.
 2. app static app js: Client side state controller managing user sessions, asynchronous API communications, dynamic DOM rendering, role switching and toast alerts.
-
 
 ### Cloud Migrations and Testing:
 
