@@ -59,7 +59,7 @@ class DeceasedPersonCreate(BaseModel):
     gender: str
     last_known_city: Optional[str] = None
     last_known_state: Optional[str] = None
-    death_cert_ref: str
+    death_cert_ref: Optional[str] = "Pending Civil Issuance"
     death_reg_date: Optional[str] = None
     issuing_authority: Optional[str] = None
     sample_identity_ref: str  # PAN / Sample Aadhaar
@@ -83,7 +83,7 @@ class DeceasedPersonResponse(BaseModel):
     gender: str
     last_known_city: Optional[str] = None
     last_known_state: Optional[str] = None
-    death_cert_ref: str
+    death_cert_ref: Optional[str] = None
     death_reg_date: Optional[str] = None
     issuing_authority: Optional[str] = None
     sample_identity_ref: str
@@ -278,3 +278,27 @@ class AdminDashboardStats(BaseModel):
     strong_matches_count: int
     total_claims: int
     pending_claims: int
+
+
+# Admin User Management Schemas
+class AdminCreateUserRequest(BaseModel):
+    email: str
+    password: str
+    full_name: str
+    mobile: Optional[str] = None
+    role: str = "family_user"
+    institution_id: Optional[str] = None
+
+class AdminUserItemResponse(BaseModel):
+    id: str
+    email: str
+    full_name: str
+    mobile: Optional[str] = None
+    role: str
+    institution_id: Optional[str] = None
+    institution_name: Optional[str] = None
+    created_at: datetime
+
+    class Config:
+        from_attributes = True
+

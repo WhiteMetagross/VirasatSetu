@@ -28,7 +28,7 @@ def create_deceased_record(
         gender=payload.gender,
         last_known_city=payload.last_known_city,
         last_known_state=payload.last_known_state,
-        death_cert_ref=payload.death_cert_ref,
+        death_cert_ref=(payload.death_cert_ref.strip() if payload.death_cert_ref and payload.death_cert_ref.strip() else "Pending Civil Issuance"),
         death_reg_date=payload.death_reg_date,
         issuing_authority=payload.issuing_authority,
         sample_identity_ref=payload.sample_identity_ref.strip().upper(),

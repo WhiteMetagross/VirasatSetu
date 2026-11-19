@@ -21,7 +21,7 @@ Citizens and legal heirs follow an intuitive self service workflow to discover f
 2. Deceased Person Registration: The user navigates to Register Deceased tab and submits personal information including full name, birth date, death date, gender and last known city.
 3. Official Certificate Details: The user inputs civil registration details including death certificate number, issuing municipal authority and identity reference.
 4. Claimant Declaration: The submitter provides their own name, contact details, relationship with the deceased and claimant capacity as legal heir or nominee.
-5. Document Attachment: The citizen attaches digital copies of municipal death certificates or legal succession proofs.
+5. Document Attachment (Optional): The citizen may optionally attach digital copies of death certificates or succession proofs. Deceased registration can proceed successfully without uploading any certificate file.
 6. Initial Record Queuing: Upon submission the record enters Pending Verification status and awaits administrative civil review.
 7. Discovered Assets Exploration: Once verified the citizen visits the Discovered Assets tab to review potential bank accounts, insurance policies and mutual fund folios.
 8. Claim Initiation: The citizen clicks Initiate Claim on identified assets, confirms claimant details and provides supporting remarks.
@@ -53,15 +53,29 @@ Institutional desks provide segregated operational consoles for nodal claim offi
 6. Official Nodal Remarks: Officers append binding instructions, payout details or documentation requisitions visible to the claimant.
 
 
-## Browse Central Database Workflow:
+## Browse Central Database Workflow (Administrator Exclusive):
 
-Citizens and officers can explore central institutional repositories transparently:
+The central database catalog contains sensitive institutional banking, insurance and fund records. To preserve regulatory privacy and data security, browsing this repository is restricted exclusively to authorized platform administrators:
 
-1. Navigate to Browse Database: Click Browse Database from the main navigation header or home hero banner.
-2. Comprehensive Repository View: Explore ninety four indexed records encompassing forty two bank deposits, twenty six insurance policies and twenty six mutual funds.
-3. Category Filtering: Filter records by clicking category pills for Bank Accounts, Insurance Policies or Mutual Funds.
-4. Instant Search Filtering: Enter citizen names, account references or identity numbers in the search field with dynamic filtering.
-5. Detailed Asset Metadata: Review asset types, institution names, holder names, birth dates, approximate valuations and dormancy states.
+1. Administrative Authorization: The Browse Database navigation tab is visible and accessible only when logged in as an administrator.
+2. Comprehensive Repository View: Administrators can review ninety four indexed records encompassing forty two bank deposits, twenty six insurance policies and twenty six mutual funds.
+3. Category Filtering: Administrators can filter records by clicking category pills for Bank Accounts, Insurance Policies or Mutual Funds.
+4. Instant Search Filtering: Search across citizen holder names, account references or identity numbers with live real time filtering.
+5. Sensitive Asset Metadata: Inspect asset types, institution names, holder names, birth dates, approximate valuations and dormancy states.
+
+
+## Administrator User Management and Account Provisioning:
+
+Administrators have full administrative authority to create and manage system accounts across all platform roles directly from the Administrator Dashboard:
+
+1. Navigate to Administrator Panel: Sign in with administrator credentials and open the Administrator Dashboard tab.
+2. User Provisioning Console: Access the User Management and Administrative Account Provisioning console located within the dashboard.
+3. Role Selection: Select the intended operational role:
+   * Administrator: Grants full platform oversight, verification capabilities and user creation rights.
+   * Institution Representative: Creates accounts for nodal bank or insurance officers, requiring selection of the assigned financial institution.
+   * Citizen Family User: Creates standard legal heir or nominee accounts.
+4. User Details Submission: Enter the full legal name, official email address, mobile number and initial account password.
+5. Real Time Directory Inspection: Once created, the new user immediately appears in the Registered System Users Directory table and can sign into the platform right away.
 
 
 ## Event Notification and Email Dispatch Inspection:

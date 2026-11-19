@@ -7,9 +7,10 @@ from app.models.models import (
     User, DeceasedPerson, FinancialAsset, AssetMatch, Claim, AuditLog, Institution
 )
 from app.schemas.schemas import (
-    AdminDashboardStats, FinancialAssetResponse, FinancialAssetCreate
+    AdminDashboardStats, FinancialAssetResponse, FinancialAssetCreate,
+    AdminCreateUserRequest, AdminUserItemResponse
 )
-from app.utils.auth import require_admin, get_current_user
+from app.utils.auth import require_admin, get_current_user, hash_password
 
 router = APIRouter(prefix="/api/admin", tags=["Administrator Dashboard"])
 
@@ -52,7 +53,7 @@ def get_all_financial_assets(
     asset_type: Optional[str] = None,
     search: Optional[str] = None,
     limit: int = 100,
-    current_user: User = Depends(get_current_user),
+    admin: User = Depends(require_admin),
     db: Session = Depends(get_db)
 ):
     query = db.query(FinancialAsset)
@@ -110,6 +111,88 @@ def add_financial_asset(
     db.commit()
 
     return fa
+
+@router.get("/users", response_model=List[AdminUserItemResponse])
+def get_all_users(
+    admin: User = Depends(require_admin),
+    db: Session = Depends(get_db)
+):
+    users = db.query(User).order_by(User.created_at.desc()).all()
+    result = []
+    for u in users:
+        inst_name = u.institution.name if u.institution else None
+        result.append(
+            AdminUserItemResponse(
+                id=u.id,
+                email=u.email,
+                full_name=u.full_name,
+                mobile=u.mobile,
+                role=u.role,
+                institution_id=u.institution_id,
+                institution_name=inst_name,
+                created_at=u.created_at
+            )
+        )
+    return result
+
+@router.post("/users", response_model=AdminUserItemResponse)
+def create_user_by_admin(
+    payload: AdminCreateUserRequest,
+    admin: User = Depends(require_admin),
+    db: Session = Depends(get_db)
+):
+    existing = db.query(User).filter(User.email == payload.email).first()
+    if existing:
+        raise HTTPException(
+            status_code=400,
+            detail="An account with this email address already exists in the system."
+        )
+
+    inst_name = None
+    if payload.role == "institution_rep":
+        if not payload.institution_id:
+            first_inst = db.query(Institution).first()
+            if first_inst:
+                payload.institution_id = first_inst.id
+                inst_name = first_inst.name
+        else:
+            inst = db.query(Institution).filter(Institution.id == payload.institution_id).first()
+            if inst:
+                inst_name = inst.name
+
+    new_user = User(
+        id=str(uuid.uuid4()),
+        email=payload.email,
+        hashed_password=hash_password(payload.password),
+        full_name=payload.full_name,
+        mobile=payload.mobile,
+        role=payload.role,
+        institution_id=payload.institution_id if payload.role == "institution_rep" else None
+    )
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+
+    audit = AuditLog(
+        user_id=admin.id,
+        action="USER_CREATED_BY_ADMIN",
+        entity_type="user",
+        entity_id=new_user.id,
+        details=f"Administrator {admin.full_name} created user {new_user.email} with role {new_user.role}."
+    )
+    db.add(audit)
+    db.commit()
+
+    return AdminUserItemResponse(
+        id=new_user.id,
+        email=new_user.email,
+        full_name=new_user.full_name,
+        mobile=new_user.mobile,
+        role=new_user.role,
+        institution_id=new_user.institution_id,
+        institution_name=inst_name,
+        created_at=new_user.created_at
+    )
 
 @router.get("/audit-logs")
 def get_audit_logs(

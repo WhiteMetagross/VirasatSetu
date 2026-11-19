@@ -11,16 +11,26 @@ let fdbSearchTimeout = null;
 document.addEventListener("DOMContentLoaded", async () => {
   if (currentToken) {
     await fetchCurrentUser();
-  } else {
-    // Default demo login as family user for instant exploration
-    await demoLogin("family");
   }
   updateUIForUser();
-  await loadDashboardData();
-  await loadFinancialDB();
-  await pollNotifications();
-  // Set up periodic notification refresh
-  setInterval(pollNotifications, 10000);
+
+  if (currentUser) {
+    if (currentUser.role === "admin") {
+      await loadAdminData();
+    } else if (currentUser.role === "institution_rep") {
+      await loadInstitutionData();
+    } else {
+      await loadDashboardData();
+    }
+    await pollNotifications();
+  } else {
+    switchTab("home");
+  }
+
+  // Periodic notification polling for active session
+  setInterval(() => {
+    if (currentUser) pollNotifications();
+  }, 10000);
 });
 
 // Toast notification helper
@@ -57,9 +67,11 @@ async function apiFetch(endpoint, options = {}) {
   try {
     const res = await fetch(`${API_BASE}${endpoint}`, options);
     if (res.status === 401) {
-      // Token expired
-      logout();
-      throw new Error("Session expired, please log in again.");
+      if (endpoint === "/api/auth/me") {
+        logout();
+        throw new Error("Session expired, please log in again.");
+      }
+      throw new Error("Authentication required or session expired.");
     }
     const data = await res.json();
     if (!res.ok) {
@@ -67,7 +79,9 @@ async function apiFetch(endpoint, options = {}) {
     }
     return data;
   } catch (err) {
-    showToast(err.message, "error");
+    if (!options.silent) {
+      showToast(err.message, "error");
+    }
     throw err;
   }
 }
@@ -76,7 +90,7 @@ async function apiFetch(endpoint, options = {}) {
 
 async function fetchCurrentUser() {
   try {
-    currentUser = await apiFetch("/api/auth/me");
+    currentUser = await apiFetch("/api/auth/me", { silent: true });
     updateUIForUser();
   } catch {
     currentUser = null;
@@ -105,6 +119,7 @@ async function demoLogin(role) {
     currentToken = data.access_token;
     localStorage.setItem("token", currentToken);
     currentUser = data.user;
+    activeDeceasedId = null;
     updateUIForUser();
     showToast(`Logged in as ${currentUser.full_name} (${currentUser.role})`, "success");
 
@@ -122,11 +137,23 @@ async function demoLogin(role) {
   }
 }
 
+function handleBrowseDatabaseClick() {
+  if (currentUser && currentUser.role === "admin") {
+    switchTab("financial-db");
+  } else if (currentUser) {
+    showToast("Browse Database is an administrator-only oversight repository.", "info");
+  } else {
+    showToast("Administrator login required to browse central financial database.", "info");
+    openAuthModal("login");
+  }
+}
+
 function updateUIForUser() {
   const authButtons = document.getElementById("auth-buttons");
   const userProfile = document.getElementById("user-profile");
   const navAdminTab = document.getElementById("nav-admin-tab");
   const navInstTab = document.getElementById("nav-inst-tab");
+  const navDbTab = document.getElementById("nav-db-tab");
 
   if (currentUser) {
     authButtons.classList.add("hidden");
@@ -137,26 +164,31 @@ function updateUIForUser() {
 
     // Tabs visibility based on role
     if (currentUser.role === "admin") {
-      navAdminTab.classList.remove("hidden");
-      navInstTab.classList.remove("hidden");
+      if (navAdminTab) navAdminTab.classList.remove("hidden");
+      if (navInstTab) navInstTab.classList.remove("hidden");
+      if (navDbTab) navDbTab.classList.remove("hidden");
     } else if (currentUser.role === "institution_rep") {
-      navAdminTab.classList.add("hidden");
-      navInstTab.classList.remove("hidden");
+      if (navAdminTab) navAdminTab.classList.add("hidden");
+      if (navInstTab) navInstTab.classList.remove("hidden");
+      if (navDbTab) navDbTab.classList.add("hidden");
     } else {
-      navAdminTab.classList.add("hidden");
-      navInstTab.classList.add("hidden");
+      if (navAdminTab) navAdminTab.classList.add("hidden");
+      if (navInstTab) navInstTab.classList.add("hidden");
+      if (navDbTab) navDbTab.classList.add("hidden");
     }
   } else {
     authButtons.classList.remove("hidden");
     userProfile.classList.add("hidden");
-    navAdminTab.classList.add("hidden");
-    navInstTab.classList.add("hidden");
+    if (navAdminTab) navAdminTab.classList.add("hidden");
+    if (navInstTab) navInstTab.classList.add("hidden");
+    if (navDbTab) navDbTab.classList.add("hidden");
   }
 }
 
 function logout() {
   currentUser = null;
   currentToken = null;
+  activeDeceasedId = null;
   localStorage.removeItem("token");
   updateUIForUser();
   switchTab("home");
@@ -213,6 +245,7 @@ async function handleAuthSubmit(e) {
       currentToken = data.access_token;
       localStorage.setItem("token", currentToken);
       currentUser = data.user;
+      activeDeceasedId = null;
       closeAuthModal();
       updateUIForUser();
       switchTab("dashboard");
@@ -227,9 +260,16 @@ async function handleAuthSubmit(e) {
       currentToken = data.access_token;
       localStorage.setItem("token", currentToken);
       currentUser = data.user;
+      activeDeceasedId = null;
       closeAuthModal();
       updateUIForUser();
-      switchTab("dashboard");
+      if (currentUser.role === "admin") {
+        switchTab("admin");
+      } else if (currentUser.role === "institution_rep") {
+        switchTab("institution");
+      } else {
+        switchTab("dashboard");
+      }
       showToast("Logged in successfully!");
     } catch {}
   }
@@ -238,6 +278,12 @@ async function handleAuthSubmit(e) {
 // NAVIGATION TAB SWITCHER
 
 function switchTab(tabId) {
+  if (tabId === "financial-db" && (!currentUser || currentUser.role !== "admin")) {
+    showToast("Browse Database is restricted to administrators only", "error");
+    switchTab(currentUser ? "dashboard" : "home");
+    return;
+  }
+
   document.querySelectorAll(".tab-content").forEach((el) => el.classList.add("hidden"));
   document.querySelectorAll(".tab-btn").forEach((el) => el.classList.remove("active"));
 
@@ -251,8 +297,12 @@ function switchTab(tabId) {
   if (tabId === "dashboard") loadDashboardData();
   if (tabId === "matches") populateMatchesDropdown();
   if (tabId === "claims") renderClaimsList();
-  if (tabId === "financial-db") renderFinancialTable();
-  if (tabId === "admin") loadAdminData();
+  if (tabId === "financial-db") loadFinancialDB();
+  if (tabId === "admin") {
+    loadAdminData();
+    loadAdminUsers();
+    loadInstitutionsDropdown();
+  }
   if (tabId === "institution") loadInstitutionData();
 }
 
@@ -362,21 +412,22 @@ function renderDeceasedTable(records) {
 
 async function handleDeceasedSubmit(e) {
   e.preventDefault();
+  const certRef = document.getElementById("dec-cert-ref").value.trim();
   const payload = {
-    full_name: document.getElementById("dec-fullname").value,
+    full_name: document.getElementById("dec-fullname").value.trim(),
     date_of_birth: document.getElementById("dec-dob").value,
     date_of_death: document.getElementById("dec-dod").value,
     gender: document.getElementById("dec-gender").value,
-    last_known_city: document.getElementById("dec-city").value,
-    last_known_state: document.getElementById("dec-state").value,
-    death_cert_ref: document.getElementById("dec-cert-ref").value,
-    sample_identity_ref: document.getElementById("dec-id-ref").value,
-    death_reg_date: document.getElementById("dec-reg-date").value,
-    issuing_authority: document.getElementById("dec-authority").value,
-    claimant_name: document.getElementById("dec-claimant-name").value,
+    last_known_city: document.getElementById("dec-city").value.trim() || null,
+    last_known_state: document.getElementById("dec-state").value.trim() || null,
+    death_cert_ref: certRef || "Pending Civil Issuance",
+    sample_identity_ref: document.getElementById("dec-id-ref").value.trim(),
+    death_reg_date: document.getElementById("dec-reg-date").value || null,
+    issuing_authority: document.getElementById("dec-authority").value.trim() || null,
+    claimant_name: document.getElementById("dec-claimant-name").value.trim(),
     claimant_relationship: document.getElementById("dec-claimant-rel").value,
-    claimant_email: document.getElementById("dec-claimant-email").value,
-    claimant_mobile: document.getElementById("dec-claimant-mobile").value,
+    claimant_email: document.getElementById("dec-claimant-email").value.trim(),
+    claimant_mobile: document.getElementById("dec-claimant-mobile").value.trim(),
     claimant_type: document.getElementById("dec-claimant-type") ? document.getElementById("dec-claimant-type").value : "Nominee",
   };
 
@@ -388,15 +439,19 @@ async function handleDeceasedSubmit(e) {
 
     // Optional document upload
     const fileInput = document.getElementById("dec-doc-file");
-    if (fileInput.files.length > 0) {
-      const formData = new FormData();
-      formData.append("file", fileInput.files[0]);
-      formData.append("document_type", "death_certificate");
-      formData.append("deceased_person_id", res.id);
-      await apiFetch("/api/documents/upload", {
-        method: "POST",
-        body: formData,
-      });
+    if (fileInput && fileInput.files && fileInput.files.length > 0) {
+      try {
+        const formData = new FormData();
+        formData.append("file", fileInput.files[0]);
+        formData.append("document_type", "death_certificate");
+        formData.append("deceased_person_id", res.id);
+        await apiFetch("/api/documents/upload", {
+          method: "POST",
+          body: formData,
+        });
+      } catch (uploadErr) {
+        console.warn("Document upload notice:", uploadErr);
+      }
     }
 
     showToast("Deceased record submitted for verification!");
@@ -407,31 +462,62 @@ async function handleDeceasedSubmit(e) {
   }
 }
 
-// ASSET DISCOVERY & MATCHING (Module 6 & 7)
+// ASSET DISCOVERY AND MATCHING (Module 6 and 7)
 
 let activeDeceasedId = null;
+let allUserDeceasedRecords = [];
 
 async function populateMatchesDropdown() {
+  const selector = document.getElementById("match-deceased-selector");
+  const container = document.getElementById("matches-container");
   try {
     const records = await apiFetch("/api/deceased");
-    const verified = records.filter((r) => r.status === "Verified");
-    const selector = document.getElementById("match-deceased-selector");
-    selector.innerHTML = `<option value="">Select deceased record...</option>`;
+    allUserDeceasedRecords = records || [];
 
-    verified.forEach((r) => {
-      selector.innerHTML += `<option value="${r.id}">${r.full_name} (${r.sample_identity_ref})</option>`;
-    });
-
-    if (verified.length > 0 && !activeDeceasedId) {
-      activeDeceasedId = verified[0].id;
-      selector.value = activeDeceasedId;
-      await loadMatchesForSelected();
-    } else if (activeDeceasedId) {
-      selector.value = activeDeceasedId;
-      await loadMatchesForSelected();
+    if (!records || records.length === 0) {
+      if (selector) selector.innerHTML = `<option value="">No deceased records registered</option>`;
+      activeDeceasedId = null;
+      if (container) {
+        container.innerHTML = `
+          <div class="bg-white p-8 rounded-xl border border-slate-200 text-center space-y-4">
+            <div class="w-16 h-16 bg-amber-50 text-amber-600 rounded-full flex items-center justify-center text-2xl mx-auto shadow-sm">
+              <i class="fa-solid fa-user-plus"></i>
+            </div>
+            <div>
+              <h4 class="font-bold text-slate-800 text-base">No Deceased Family Records Registered Yet</h4>
+              <p class="text-xs text-slate-500 max-w-md mx-auto mt-1 leading-relaxed">
+                To discover potential unclaimed financial assets across Bank, Insurance, and Mutual Fund datasets, please first register a deceased family member.
+              </p>
+            </div>
+            <button onclick="switchTab('register-deceased')" class="bg-gov-saffron hover:bg-amber-600 text-white font-bold px-5 py-2.5 rounded-lg text-xs shadow transition inline-flex items-center gap-2">
+              <i class="fa-solid fa-user-plus"></i> Register Deceased Member
+            </button>
+          </div>
+        `;
+      }
+      return;
     }
+
+    if (selector) {
+      selector.innerHTML = `<option value="">Select deceased record...</option>`;
+      records.forEach((r) => {
+        const statusLabel = r.status === "Verified" ? "Verified" : "Verification Pending";
+        selector.innerHTML += `<option value="${r.id}">${r.full_name} (${r.sample_identity_ref}) [${statusLabel}]</option>`;
+      });
+
+      // Verify if activeDeceasedId belongs to current records
+      const exists = records.some((r) => r.id === activeDeceasedId);
+      if (!exists) {
+        const verifiedFirst = records.find((r) => r.status === "Verified");
+        activeDeceasedId = verifiedFirst ? verifiedFirst.id : records[0].id;
+      }
+
+      selector.value = activeDeceasedId || "";
+    }
+
+    await loadMatchesForSelected();
   } catch (err) {
-    console.error(err);
+    console.error("Error populating matches dropdown:", err);
   }
 }
 
@@ -445,9 +531,47 @@ async function viewMatchesForDeceased(deceasedId) {
 
 async function loadMatchesForSelected() {
   const selector = document.getElementById("match-deceased-selector");
-  const deceasedId = selector.value || activeDeceasedId;
-  if (!deceasedId) return;
+  const deceasedId = (selector && selector.value) || activeDeceasedId;
+  const container = document.getElementById("matches-container");
+
+  if (!deceasedId) {
+    if (allUserDeceasedRecords.length === 0) return;
+    if (container) {
+      container.innerHTML = `
+        <div class="bg-white p-8 rounded-xl border border-slate-200 text-center text-slate-400 text-xs">
+          Please select a deceased family member from the dropdown above to view potential asset matches.
+        </div>
+      `;
+    }
+    return;
+  }
+
   activeDeceasedId = deceasedId;
+  const currentRecord = allUserDeceasedRecords.find((r) => r.id === deceasedId);
+
+  // If the record is still pending verification
+  if (currentRecord && currentRecord.status !== "Verified") {
+    if (container) {
+      container.innerHTML = `
+        <div class="bg-white p-8 rounded-xl border border-slate-200 text-center space-y-4 shadow-sm">
+          <div class="w-16 h-16 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center text-2xl mx-auto shadow-sm">
+            <i class="fa-solid fa-hourglass-half"></i>
+          </div>
+          <div>
+            <span class="bg-amber-100 text-amber-800 text-[10px] uppercase font-bold px-2.5 py-1 rounded">Status: Pending Verification</span>
+            <h4 class="font-bold text-slate-800 text-base mt-2">Civil Verification in Progress</h4>
+            <p class="text-xs text-slate-600 max-w-lg mx-auto mt-1 leading-relaxed">
+              Your submitted record for <strong>${currentRecord.full_name}</strong> (Identity Reference: <span class="font-mono">${currentRecord.sample_identity_ref}</span>) has been submitted to the administrative verification cell.
+            </p>
+            <p class="text-[11px] text-slate-400 max-w-md mx-auto mt-2">
+              Once verified by an administrator, the automated 100 point matching engine will automatically cross reference 94 central financial records and surface potential assets here.
+            </p>
+          </div>
+        </div>
+      `;
+    }
+    return;
+  }
 
   try {
     const matches = await apiFetch(`/api/matches/${deceasedId}`);
@@ -459,11 +583,17 @@ async function loadMatchesForSelected() {
 
 async function reRunMatchingForCurrent() {
   if (!activeDeceasedId) {
-    showToast("Please select a verified record first", "error");
+    showToast("Please select a deceased record first", "error");
     return;
   }
+  const currentRecord = allUserDeceasedRecords.find((r) => r.id === activeDeceasedId);
+  if (currentRecord && currentRecord.status !== "Verified") {
+    showToast("Automated matching requires administrator civil verification first", "info");
+    return;
+  }
+
   try {
-    showToast("Executing 100-point matching algorithm across all financial datasets...");
+    showToast("Executing 100 point matching algorithm across all financial datasets...");
     const matches = await apiFetch(`/api/matching/${activeDeceasedId}`, { method: "POST" });
     renderMatchesList(matches);
     showToast(`Matching complete! Discovered ${matches.length} financial record(s).`);
@@ -883,8 +1013,122 @@ async function loadAdminData() {
     `
       )
       .join("");
+
+    await loadAdminUsers();
+    await loadInstitutionsDropdown();
   } catch (err) {
     console.error(err);
+  }
+}
+
+async function loadAdminUsers() {
+  const tbody = document.getElementById("admin-users-table-body");
+  const countSpan = document.getElementById("admin-users-count");
+  if (!tbody) return;
+
+  try {
+    const users = await apiFetch("/api/admin/users");
+    if (countSpan) countSpan.textContent = `${users.length} registered users`;
+
+    if (!users || users.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="5" class="p-4 text-center text-slate-400">No registered users found.</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = users
+      .map((u) => {
+        let roleBadge = '<span class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded text-[10px] font-bold">Family User</span>';
+        if (u.role === "admin") {
+          roleBadge = '<span class="bg-amber-100 text-amber-800 px-2 py-0.5 rounded text-[10px] font-bold">Administrator</span>';
+        } else if (u.role === "institution_rep") {
+          roleBadge = '<span class="bg-blue-100 text-blue-800 px-2 py-0.5 rounded text-[10px] font-bold">Institution Rep</span>';
+        }
+
+        return `
+          <tr class="hover:bg-slate-50 transition">
+            <td class="p-2.5 font-bold text-slate-900">${u.full_name}</td>
+            <td class="p-2.5 font-mono text-slate-600 text-[11px]">${u.email}</td>
+            <td class="p-2.5">${roleBadge}</td>
+            <td class="p-2.5 text-slate-600">${u.institution_name || "-"}</td>
+            <td class="p-2.5 text-slate-400 font-mono text-[10px]">${new Date(u.created_at).toLocaleDateString()}</td>
+          </tr>
+        `;
+      })
+      .join("");
+  } catch (err) {
+    console.error("Error loading admin users:", err);
+  }
+}
+
+function onAdminRoleChange() {
+  const roleSelect = document.getElementById("admin-user-role");
+  const role = roleSelect ? roleSelect.value : "admin";
+  const instContainer = document.getElementById("admin-user-inst-container");
+  if (!instContainer) return;
+  if (role === "institution_rep") {
+    instContainer.classList.remove("hidden");
+  } else {
+    instContainer.classList.add("hidden");
+  }
+}
+
+async function loadInstitutionsDropdown() {
+  const instSelect = document.getElementById("admin-user-inst");
+  const assetInstSelect = document.getElementById("asset-inst-select");
+  try {
+    const insts = await apiFetch("/api/institutions");
+    if (instSelect) {
+      instSelect.innerHTML = `<option value="">Select Financial Institution...</option>`;
+      insts.forEach((inst) => {
+        instSelect.innerHTML += `<option value="${inst.id}">${inst.name} (${inst.institution_type})</option>`;
+      });
+    }
+    if (assetInstSelect) {
+      assetInstSelect.innerHTML = `<option value="">Select Institution...</option>`;
+      insts.forEach((inst) => {
+        assetInstSelect.innerHTML += `<option value="${inst.id}">${inst.name}</option>`;
+      });
+    }
+  } catch (err) {
+    console.error("Error loading institutions dropdown:", err);
+  }
+}
+
+async function handleAdminCreateUser(e) {
+  e.preventDefault();
+  const role = document.getElementById("admin-user-role").value;
+  const fullName = document.getElementById("admin-user-fullname").value.trim();
+  const email = document.getElementById("admin-user-email").value.trim();
+  const mobile = document.getElementById("admin-user-mobile").value.trim();
+  const password = document.getElementById("admin-user-password").value;
+  const instSelect = document.getElementById("admin-user-inst");
+  const institutionId = (instSelect && instSelect.value) ? instSelect.value : null;
+
+  if (role === "institution_rep" && !institutionId) {
+    showToast("Please select a financial institution for the representative", "error");
+    return;
+  }
+
+  try {
+    const res = await apiFetch("/api/admin/users", {
+      method: "POST",
+      body: JSON.stringify({
+        role,
+        full_name: fullName,
+        email,
+        mobile,
+        password,
+        institution_id: institutionId,
+      }),
+    });
+    showToast(`Account created successfully for ${res.full_name} (${res.role})!`);
+    document.getElementById("admin-create-user-form").reset();
+    onAdminRoleChange();
+    await loadAdminUsers();
+    const stats = await apiFetch("/api/admin/stats");
+    document.getElementById("admin-stat-users").textContent = stats.total_users;
+  } catch (err) {
+    console.error("Error creating user:", err);
   }
 }
 
