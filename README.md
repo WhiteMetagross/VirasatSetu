@@ -2,6 +2,8 @@
 
 DTI Project: Group 14.
 
+Live Public Portal: https://virasat-setu-eight.vercel.app
+
 ![Virasat Setu Official Emblem](Visuals/logo.jpg)
 
 Caption: Virasat Setu official visual identity emblem featuring the sovereign arch, Kalpavriksha seedling and national wealth nodes.
@@ -83,10 +85,19 @@ To launch and explore the platform locally:
 1. Ensure Python version three point ten or higher is installed on your computer.
 2. Install all necessary dependencies by executing pip install with requirements text.
 3. Run the application server using python run server py or executing run server bat.
-4. Navigate to http 127 0 0 1 8000 in your web browser.
+4. Navigate to http 127 0 0 1 8000 in your web browser or access the live deployment directly at https://virasat-setu-eight.vercel.app.
 5. Select the Admin portal or quick login to view an instant complete verification scenario.
 6. Inspect the four discovered assets totaling seventeen lakh eighty six thousand two hundred and forty rupees across State Bank of India, Life Insurance Corporation of India and HDFC Mutual Fund.
 7. Switch roles using the top navigation header to test administrator verification and institutional claim approvals.
+
+
+## Live Production Deployment:
+
+The complete platform is hosted live on Vercel with serverless Python and Supabase cloud data storage:
+
+1. Public Web Portal URL: https://virasat-setu-eight.vercel.app.
+2. System Health Verification: https://virasat-setu-eight.vercel.app/api/health.
+3. Central Financial Institutions Endpoint: https://virasat-setu-eight.vercel.app/api/institutions.
 
 
 ## Documentation Index:
