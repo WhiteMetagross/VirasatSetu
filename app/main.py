@@ -21,8 +21,12 @@ from app.routers import (
     dashboard
 )
 
-# Initialize tables
+# Initialize tables and verify seed data
 Base.metadata.create_all(bind=engine)
+try:
+    seed_all()
+except Exception as err:
+    print(f"Startup initialization notice: {err}")
 
 app = FastAPI(
     title=settings.PROJECT_NAME,

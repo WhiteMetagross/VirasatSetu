@@ -532,7 +532,7 @@ function createMatchCardHTML(m) {
     typeBadge = "Mutual Fund";
   }
 
-  // Masked Account Ref (e.g. SB-XXXX-4102)
+  // Masked Account Ref (like SB-XXXX-4102)
   const refParts = asset.account_ref;
   const maskedRef = refParts.length > 6 ? `${refParts.substring(0, 3)}••••${refParts.substring(refParts.length - 4)}` : refParts;
 

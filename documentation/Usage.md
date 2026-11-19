@@ -71,3 +71,50 @@ Virasat Setu ensures complete operational transparency through real time alerts:
 1. In Portal Notification Center: Citizens click the top bell icon to inspect incoming alerts regarding asset discoveries and claim approvals.
 2. Unread Badge Counter: A visual indicator highlights unread alerts and updates automatically.
 3. Simulated Email Dispatch Inspector: Users can click Inspect Simulated Email Dispatch inside notification details to review official transactional emails formatted with government headers.
+
+
+## Platform Test Credentials and User Accounts:
+
+The platform comes pre configured with representative user accounts across all operational roles for testing and evaluation:
+
+1. Government Administrator Account:
+   * Email Address: admin@virasatsetu.gov.in.
+   * Account Password: admin123.
+   * Assigned Role: admin.
+   * Full Name: Rajiv Nambiar (Govt Administrator).
+   * Operational Access: Full administrative oversight panel, civil death certificate verification, one hundred point matching engine execution, central financial assets catalog and system audit trails.
+
+2. State Bank of India Representative Account:
+   * Email Address: sbi@institution.in.
+   * Account Password: sbi123.
+   * Assigned Role: institution_rep.
+   * Full Name: Sanjay Verma (SBI Officer).
+   * Operational Access: State Bank of India institutional claims desk, inbound fixed deposit and savings account claim reviews, nodal status determinations and remark logs.
+
+3. Life Insurance Corporation Representative Account:
+   * Email Address: lic@institution.in.
+   * Account Password: lic123.
+   * Assigned Role: institution_rep.
+   * Full Name: Meenakshi Sundaram (LIC Claims Officer).
+   * Operational Access: LIC institutional claims desk, matured policy claim adjudications, succession documentation requests and approval determinations.
+
+4. HDFC Mutual Fund Representative Account:
+   * Email Address: hdfcmf@institution.in.
+   * Account Password: hdfc123.
+   * Assigned Role: institution_rep.
+   * Full Name: Arunav Sen (HDFC MF Representative).
+   * Operational Access: HDFC Mutual Fund institutional claims desk, equity folio claim inspections and settlement verifications.
+
+5. Primary Individual and Family Citizen Account:
+   * Email Address: rajesh.family@example.com.
+   * Account Password: family123.
+   * Assigned Role: family_user.
+   * Full Name: Ramesh Kumar (Son of Rajesh Kumar).
+   * Operational Access: Citizen dashboard, deceased family member registration, discovered asset portfolio viewing, legal heir claim initiation and lifecycle tracking steppers.
+
+6. Secondary Individual Citizen Account:
+   * Email Address: priya.sharma@example.com.
+   * Account Password: family123.
+   * Assigned Role: family_user.
+   * Full Name: Priya Sharma.
+   * Operational Access: Citizen family dashboard, independent deceased profile submissions and multi claimant verification flows.

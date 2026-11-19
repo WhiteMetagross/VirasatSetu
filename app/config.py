@@ -8,7 +8,7 @@ class Settings(BaseSettings):
     ALGORITHM: str = "HS256"
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 1440
     ALLOWED_ORIGINS: str = "http://127.0.0.1:5173,http://127.0.0.1:3000,http://127.0.0.1:8000,*"
-    UPLOAD_DIR: str = "./uploads"
+    UPLOAD_DIR: str = "/tmp/uploads" if (os.environ.get("VERCEL") or not os.access(".", os.W_OK)) else "./uploads"
     ENABLE_MOCK_EMAIL: bool = True
     SMTP_HOST: str = ""
     SMTP_PORT: int = 587

@@ -21,7 +21,7 @@ def calculate_name_similarity(name1: str, name2: str) -> Tuple[int, str]:
     if n1 == n2:
         return 25, f"Exact Name Match ('{name1}' == '{name2}')"
     
-    # Token set check (e.g., 'Rajesh Kumar' vs 'Kumar Rajesh')
+    # Token set check (like 'Rajesh Kumar' vs 'Kumar Rajesh')
     tokens1 = set(n1.split())
     tokens2 = set(n2.split())
     if tokens1 and tokens1 == tokens2:
