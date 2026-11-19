@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+venv/
+ENV/
+env/
+.env
+virasat_setu.db
+uploads/*
+!uploads/.gitkeep
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
