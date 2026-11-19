@@ -11,6 +11,7 @@ from app.schemas.schemas import (
     AdminCreateUserRequest, AdminUserItemResponse
 )
 from app.utils.auth import require_admin, get_current_user, hash_password
+from app.utils.security import validate_input_safety
 
 router = APIRouter(prefix="/api/admin", tags=["Administrator Dashboard"])
 
@@ -60,7 +61,8 @@ def get_all_financial_assets(
     if asset_type:
         query = query.filter(FinancialAsset.asset_type == asset_type)
     if search:
-        s = f"%{search.strip()}%"
+        clean_search = validate_input_safety(search[:100], "Search query")
+        s = f"%{clean_search.strip()}%"
         query = query.filter(
             (FinancialAsset.holder_name.ilike(s)) |
             (FinancialAsset.sample_identity_ref.ilike(s)) |

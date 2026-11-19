@@ -6,6 +6,11 @@ from fastapi.responses import FileResponse
 from app.config import settings
 from app.database import engine, Base
 from app.seed.sample_data import seed_all
+from app.middleware.security_middleware import (
+    SecurityHeadersMiddleware,
+    CSRFProtectionMiddleware,
+    RateLimitingMiddleware
+)
 
 # Routers
 from app.routers import (
@@ -43,6 +48,11 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Cybersecurity Defenses: Security Headers, CSRF Protection, and Rate Limiting
+app.add_middleware(SecurityHeadersMiddleware)
+app.add_middleware(CSRFProtectionMiddleware)
+app.add_middleware(RateLimitingMiddleware)
 
 # Register API Routers
 app.include_router(auth.router)

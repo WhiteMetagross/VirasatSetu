@@ -1,11 +1,23 @@
 // VIRASAT SETU CLIENT APPLICATION LOGIC
 
+// Security helper: Escape HTML entities to prevent Cross-Site Scripting (XSS)
+function escapeHTML(str) {
+  if (str === null || str === undefined) return "";
+  return String(str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 const API_BASE = "";
 let currentUser = null;
 let currentToken = localStorage.getItem("token") || null;
 let allFinancialAssets = [];
 let fdbFilterCategory = "all";
 let fdbSearchTimeout = null;
+let currentRenderedMatches = [];
 
 // Initialize on DOM load
 document.addEventListener("DOMContentLoaded", async () => {
@@ -40,7 +52,7 @@ function showToast(message, type = "success") {
   const bg = type === "success" ? "bg-emerald-600" : type === "error" ? "bg-red-600" : "bg-slate-800";
   toast.className = `${bg} text-white px-4 py-3 rounded-lg shadow-xl text-xs flex items-center justify-between gap-3 transform transition-all duration-300 translate-y-2 opacity-0`;
   toast.innerHTML = `
-    <span>${message}</span>
+    <span>${escapeHTML(message)}</span>
     <button onclick="this.parentElement.remove()" class="text-white/80 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
   `;
   container.appendChild(toast);
@@ -59,6 +71,10 @@ async function apiFetch(endpoint, options = {}) {
   if (currentToken && !headers["Authorization"]) {
     headers["Authorization"] = `Bearer ${currentToken}`;
   }
+  // Anti-CSRF verification headers for state-changing requests
+  headers["X-Requested-With"] = "VirasatSetuApp";
+  headers["X-CSRF-Token"] = "virasat-setu-csrf-protection";
+
   if (!(options.body instanceof FormData) && !headers["Content-Type"]) {
     headers["Content-Type"] = "application/json";
   }
@@ -327,11 +343,11 @@ async function loadDashboardData() {
           (a) => `
         <div class="p-2.5 bg-slate-50 border border-slate-100 rounded-lg flex items-start justify-between gap-2">
           <div>
-            <div class="font-bold text-slate-800">${a.title}</div>
-            <div class="text-[11px] text-slate-600 line-clamp-2">${a.message}</div>
+            <div class="font-bold text-slate-800">${escapeHTML(a.title)}</div>
+            <div class="text-[11px] text-slate-600 line-clamp-2">${escapeHTML(a.message)}</div>
             <div class="text-[10px] text-slate-400 mt-1">${new Date(a.created_at).toLocaleString()}</div>
           </div>
-          <span class="bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded text-[10px] uppercase font-bold">${a.type}</span>
+          <span class="bg-amber-100 text-amber-800 px-1.5 py-0.5 rounded text-[10px] uppercase font-bold">${escapeHTML(a.type)}</span>
         </div>
       `
         )
@@ -348,10 +364,10 @@ async function loadDashboardData() {
           (c) => `
         <div class="p-3 bg-slate-50 border border-slate-200 rounded-lg flex justify-between items-center">
           <div>
-            <div class="font-bold text-slate-800">${c.institution} - ${c.asset_category}</div>
-            <div class="text-[11px] text-slate-500">Ref: ${c.reference} (Value: ₹${c.value.toLocaleString()})</div>
+            <div class="font-bold text-slate-800">${escapeHTML(c.institution)} - ${escapeHTML(c.asset_category)}</div>
+            <div class="text-[11px] text-slate-500">Ref: ${escapeHTML(c.reference)} (Value: ₹${Number(c.value || 0).toLocaleString()})</div>
           </div>
-          <span class="status-badge badge-${c.status.toLowerCase().replace(/\s+/g, "")}">${c.status}</span>
+          <span class="status-badge badge-${escapeHTML(c.status).toLowerCase().replace(/\s+/g, "")}">${escapeHTML(c.status)}</span>
         </div>
       `
         )
@@ -383,22 +399,22 @@ function renderDeceasedTable(records) {
 
       return `
       <tr class="hover:bg-slate-50 transition">
-        <td class="p-3 font-semibold text-slate-900">${r.full_name}</td>
-        <td class="p-3 font-mono text-[11px] text-slate-600">${r.sample_identity_ref}</td>
-        <td class="p-3 text-slate-600">${r.date_of_death}</td>
-        <td class="p-3 font-mono text-[11px] text-slate-600">${r.death_cert_ref}</td>
-        <td class="p-3"><span class="status-badge ${badgeClass}">${r.status}</span></td>
+        <td class="p-3 font-semibold text-slate-900">${escapeHTML(r.full_name)}</td>
+        <td class="p-3 font-mono text-[11px] text-slate-600">${escapeHTML(r.sample_identity_ref)}</td>
+        <td class="p-3 text-slate-600">${escapeHTML(r.date_of_death)}</td>
+        <td class="p-3 font-mono text-[11px] text-slate-600">${escapeHTML(r.death_cert_ref)}</td>
+        <td class="p-3"><span class="status-badge ${badgeClass}">${escapeHTML(r.status)}</span></td>
         <td class="p-3">
           ${
             r.total_matches > 0
-              ? `<span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-[11px]"><i class="fa-solid fa-bolt mr-1"></i>${r.total_matches} Potential Assets</span>`
+              ? `<span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-[11px]"><i class="fa-solid fa-bolt mr-1"></i>${Number(r.total_matches)} Potential Assets</span>`
               : `<span class="text-slate-400">Pending Verification</span>`
           }
         </td>
         <td class="p-3 text-right">
           ${
             r.status === "Verified"
-              ? `<button onclick="viewMatchesForDeceased('${r.id}')" class="bg-gov-saffron hover:bg-amber-600 text-white font-semibold px-2.5 py-1 rounded text-xs transition">
+              ? `<button onclick="viewMatchesForDeceased('${escapeHTML(r.id)}')" class="bg-gov-saffron hover:bg-amber-600 text-white font-semibold px-2.5 py-1 rounded text-xs transition">
                   <i class="fa-solid fa-magnifying-glass-dollar mr-1"></i> View Assets
                 </button>`
               : `<span class="text-slate-400 text-[11px] italic">Verification Pending</span>`
@@ -502,7 +518,7 @@ async function populateMatchesDropdown() {
       selector.innerHTML = `<option value="">Select deceased record...</option>`;
       records.forEach((r) => {
         const statusLabel = r.status === "Verified" ? "Verified" : "Verification Pending";
-        selector.innerHTML += `<option value="${r.id}">${r.full_name} (${r.sample_identity_ref}) [${statusLabel}]</option>`;
+        selector.innerHTML += `<option value="${escapeHTML(r.id)}">${escapeHTML(r.full_name)} (${escapeHTML(r.sample_identity_ref)}) [${escapeHTML(statusLabel)}]</option>`;
       });
 
       // Verify if activeDeceasedId belongs to current records
@@ -561,7 +577,7 @@ async function loadMatchesForSelected() {
             <span class="bg-amber-100 text-amber-800 text-[10px] uppercase font-bold px-2.5 py-1 rounded">Status: Pending Verification</span>
             <h4 class="font-bold text-slate-800 text-base mt-2">Civil Verification in Progress</h4>
             <p class="text-xs text-slate-600 max-w-lg mx-auto mt-1 leading-relaxed">
-              Your submitted record for <strong>${currentRecord.full_name}</strong> (Identity Reference: <span class="font-mono">${currentRecord.sample_identity_ref}</span>) has been submitted to the administrative verification cell.
+              Your submitted record for <strong>${escapeHTML(currentRecord.full_name)}</strong> (Identity Reference: <span class="font-mono">${escapeHTML(currentRecord.sample_identity_ref)}</span>) has been submitted to the administrative verification cell.
             </p>
             <p class="text-[11px] text-slate-400 max-w-md mx-auto mt-2">
               Once verified by an administrator, the automated 100 point matching engine will automatically cross reference 94 central financial records and surface potential assets here.
@@ -604,6 +620,7 @@ async function reRunMatchingForCurrent() {
 
 function renderMatchesList(matches) {
   const container = document.getElementById("matches-container");
+  currentRenderedMatches = matches || [];
   if (!matches || matches.length === 0) {
     container.innerHTML = `
       <div class="bg-white p-8 rounded-xl border border-slate-200 text-center space-y-3">
@@ -675,40 +692,40 @@ function createMatchCardHTML(m) {
             <span class="bg-slate-100 text-slate-800 text-[11px] font-bold px-2 py-0.5 rounded flex items-center gap-1">
               <i class="fa-solid ${typeIcon} text-gov-saffron"></i> ${typeBadge}
             </span>
-            <span class="text-xs font-bold text-slate-800">${asset.institution_name}</span>
+            <span class="text-xs font-bold text-slate-800">${escapeHTML(asset.institution_name)}</span>
           </div>
 
-          <h4 class="text-base font-bold text-slate-900">${asset.category}</h4>
+          <h4 class="text-base font-bold text-slate-900">${escapeHTML(asset.category)}</h4>
 
           <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 text-xs text-slate-600 pt-1">
-            <div><span class="text-slate-400">Account Ref:</span> <span class="font-mono font-semibold">${maskedRef}</span></div>
-            <div><span class="text-slate-400">Holder Name:</span> <span class="font-semibold">${asset.holder_name}</span></div>
-            <div><span class="text-slate-400">Approx Value:</span> <span class="font-bold text-emerald-700">₹${asset.approximate_value.toLocaleString()}</span></div>
-            <div><span class="text-slate-400">Identity Ref:</span> <span class="font-mono">${asset.sample_identity_ref}</span></div>
-            <div><span class="text-slate-400">Nominee on File:</span> <span>${asset.nominee_ref || "None specified"}</span></div>
-            <div><span class="text-slate-400">Status:</span> <span class="text-amber-700 font-semibold">${asset.unclaimed_status || "Unclaimed"}</span></div>
+            <div><span class="text-slate-400">Account Ref:</span> <span class="font-mono font-semibold">${escapeHTML(maskedRef)}</span></div>
+            <div><span class="text-slate-400">Holder Name:</span> <span class="font-semibold">${escapeHTML(asset.holder_name)}</span></div>
+            <div><span class="text-slate-400">Approx Value:</span> <span class="font-bold text-emerald-700">₹${Number(asset.approximate_value).toLocaleString()}</span></div>
+            <div><span class="text-slate-400">Identity Ref:</span> <span class="font-mono">${escapeHTML(asset.sample_identity_ref)}</span></div>
+            <div><span class="text-slate-400">Nominee on File:</span> <span>${escapeHTML(asset.nominee_ref || "None specified")}</span></div>
+            <div><span class="text-slate-400">Status:</span> <span class="text-amber-700 font-semibold">${escapeHTML(asset.unclaimed_status || "Unclaimed")}</span></div>
           </div>
 
           <!-- Matching Reason Breakdown -->
           <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200 mt-2 text-[11px] text-slate-600">
-            <strong class="text-slate-800">Match Evidence:</strong> ${m.matching_reason || "Verified record comparison"}
+            <strong class="text-slate-800">Match Evidence:</strong> ${escapeHTML(m.matching_reason || "Verified record comparison")}
           </div>
         </div>
 
         <!-- Matching Score and Claim Button -->
         <div class="flex flex-col sm:items-end justify-between self-stretch gap-4 w-full sm:w-auto sm:min-w-[140px]">
           <div class="border ${scoreColor} rounded-xl px-4 py-2 text-center shadow-sm w-full">
-            <div class="text-2xl font-black">${m.matching_score}/100</div>
-            <div class="text-[10px] font-bold uppercase tracking-wider">${m.match_category}</div>
+            <div class="text-2xl font-black">${Number(m.matching_score)}/100</div>
+            <div class="text-[10px] font-bold uppercase tracking-wider">${escapeHTML(m.match_category)}</div>
           </div>
 
           <div>
             ${
               m.claim_id
                 ? `<span class="bg-blue-100 text-blue-800 font-bold px-3 py-1.5 rounded-lg text-xs flex items-center gap-1.5">
-                    <i class="fa-solid fa-check"></i> Claim Initiated (${m.claim_status})
+                    <i class="fa-solid fa-check"></i> Claim Initiated (${escapeHTML(m.claim_status)})
                    </span>`
-                : `<button onclick="openClaimModal('${m.id}', '${asset.institution_name}', '${asset.category}', '${asset.account_ref}', ${asset.approximate_value})" class="bg-gov-saffron hover:bg-amber-600 text-white font-bold px-4 py-2 rounded-lg text-xs shadow transition flex items-center gap-1.5">
+                : `<button onclick="openClaimModal('${escapeHTML(m.id)}')" class="bg-gov-saffron hover:bg-amber-600 text-white font-bold px-4 py-2 rounded-lg text-xs shadow transition flex items-center gap-1.5">
                     <i class="fa-solid fa-stamp"></i> Initiate Claim
                    </button>`
             }
@@ -725,11 +742,18 @@ let activeClaimMatch = null;
 
 function openClaimModal(matchId, instName, category, ref, val) {
   activeClaimMatch = matchId;
+  const matchObj = currentRenderedMatches.find((x) => x.id === matchId);
+  const asset = matchObj ? matchObj.financial_asset : null;
+  const resolvedInstName = asset ? asset.institution_name : (instName || "Financial Institution");
+  const resolvedCategory = asset ? asset.category : (category || "Asset");
+  const resolvedRef = asset ? asset.account_ref : (ref || "-");
+  const resolvedVal = asset ? asset.approximate_value : (val || 0);
+
   document.getElementById("modal-claim").classList.remove("hidden");
   document.getElementById("claim-match-id").value = matchId;
-  document.getElementById("claim-asset-title").textContent = `${instName} (${category})`;
-  document.getElementById("claim-asset-ref").textContent = `Account / Policy Ref: ${ref}`;
-  document.getElementById("claim-asset-val").textContent = `Simulated Value: ₹${val.toLocaleString()}`;
+  document.getElementById("claim-asset-title").textContent = `${resolvedInstName} (${resolvedCategory})`;
+  document.getElementById("claim-asset-ref").textContent = `Account / Policy Ref: ${resolvedRef}`;
+  document.getElementById("claim-asset-val").textContent = `Simulated Value: ₹${Number(resolvedVal).toLocaleString()}`;
 
   if (currentUser) {
     document.getElementById("claim-name").value = currentUser.full_name;
@@ -792,13 +816,13 @@ function createClaimCardHTML(c) {
     <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-5 space-y-4">
       <div class="flex flex-wrap justify-between items-center border-b pb-3 gap-2">
         <div>
-          <span class="text-xs font-mono font-bold text-gov-navy">${c.claim_reference}</span>
-          <h4 class="text-sm font-bold text-slate-900 mt-0.5">${c.institution_name} - ${c.asset_category}</h4>
-          <span class="text-xs text-slate-500">Deceased: ${c.deceased_name} (Claimant: ${c.claimant_name}) (${c.claimant_relationship || "Heir"})</span>
+          <span class="text-xs font-mono font-bold text-gov-navy">${escapeHTML(c.claim_reference)}</span>
+          <h4 class="text-sm font-bold text-slate-900 mt-0.5">${escapeHTML(c.institution_name)} - ${escapeHTML(c.asset_category)}</h4>
+          <span class="text-xs text-slate-500">Deceased: ${escapeHTML(c.deceased_name)} (Claimant: ${escapeHTML(c.claimant_name)}) (${escapeHTML(c.claimant_relationship || "Heir")})</span>
         </div>
         <div class="text-right">
-          <span class="status-badge badge-${c.status.toLowerCase().replace(/\s+/g, "")}">${c.status}</span>
-          <div class="text-xs font-bold text-emerald-700 mt-1">₹${c.approximate_value.toLocaleString()}</div>
+          <span class="status-badge badge-${escapeHTML(c.status).toLowerCase().replace(/\s+/g, "")}">${escapeHTML(c.status)}</span>
+          <div class="text-xs font-bold text-emerald-700 mt-1">₹${Number(c.approximate_value || 0).toLocaleString()}</div>
         </div>
       </div>
 
@@ -817,7 +841,7 @@ function createClaimCardHTML(c) {
                 <div class="w-6 h-6 rounded-full flex items-center justify-center ${circleBg} mb-1 shadow-sm">
                   ${isPast ? '<i class="fa-solid fa-check text-[10px]"></i>' : idx + 1}
                 </div>
-                <span class="${labelColor}">${stage}</span>
+                <span class="${labelColor}">${escapeHTML(stage)}</span>
               </div>
             `;
             })
@@ -827,7 +851,7 @@ function createClaimCardHTML(c) {
 
       <!-- Official Remarks Box -->
       <div class="bg-slate-50 p-3 rounded-lg border border-slate-200 text-xs text-slate-600">
-        <span class="font-bold text-slate-800">Institution Notes / Instructions:</span> ${c.remarks || "Under review by nodal claims officer."}
+        <span class="font-bold text-slate-800">Institution Notes / Instructions:</span> ${escapeHTML(c.remarks || "Under review by nodal claims officer.")}
       </div>
     </div>
   `;
@@ -872,10 +896,10 @@ function renderFinancialTable() {
   if (query) {
     filtered = filtered.filter(
       (a) =>
-        a.holder_name.toLowerCase().includes(query) ||
-        a.sample_identity_ref.toLowerCase().includes(query) ||
-        a.account_ref.toLowerCase().includes(query) ||
-        a.institution_name.toLowerCase().includes(query)
+        (a.holder_name && a.holder_name.toLowerCase().includes(query)) ||
+        (a.sample_identity_ref && a.sample_identity_ref.toLowerCase().includes(query)) ||
+        (a.account_ref && a.account_ref.toLowerCase().includes(query)) ||
+        (a.institution_name && a.institution_name.toLowerCase().includes(query))
     );
   }
 
@@ -896,14 +920,14 @@ function renderFinancialTable() {
       return `
       <tr class="hover:bg-slate-50 transition">
         <td class="p-3">${typeBadge}</td>
-        <td class="p-3 font-semibold text-slate-900">${a.institution_name}</td>
-        <td class="p-3 font-semibold">${a.holder_name}</td>
-        <td class="p-3 text-slate-500">${a.date_of_birth || "N/A"}</td>
-        <td class="p-3 font-mono text-[11px] text-slate-700">${a.sample_identity_ref}</td>
-        <td class="p-3 font-mono text-[11px] text-slate-600">${a.account_ref}</td>
-        <td class="p-3 text-slate-600">${a.nominee_ref || "-"}</td>
-        <td class="p-3 font-bold text-emerald-700">₹${a.approximate_value.toLocaleString()}</td>
-        <td class="p-3 text-slate-500 text-[11px]">${a.unclaimed_status || "Dormant > 10 Yrs"}</td>
+        <td class="p-3 font-semibold text-slate-900">${escapeHTML(a.institution_name)}</td>
+        <td class="p-3 font-semibold">${escapeHTML(a.holder_name)}</td>
+        <td class="p-3 text-slate-500">${escapeHTML(a.date_of_birth || "N/A")}</td>
+        <td class="p-3 font-mono text-[11px] text-slate-700">${escapeHTML(a.sample_identity_ref)}</td>
+        <td class="p-3 font-mono text-[11px] text-slate-600">${escapeHTML(a.account_ref)}</td>
+        <td class="p-3 text-slate-600">${escapeHTML(a.nominee_ref || "-")}</td>
+        <td class="p-3 font-bold text-emerald-700">₹${Number(a.approximate_value || 0).toLocaleString()}</td>
+        <td class="p-3 text-slate-500 text-[11px]">${escapeHTML(a.unclaimed_status || "Dormant > 10 Yrs")}</td>
       </tr>
     `;
     })
@@ -978,17 +1002,17 @@ async function loadAdminData() {
         .map(
           (d) => `
         <tr class="hover:bg-slate-50 transition">
-          <td class="p-3 font-bold text-slate-900">${d.full_name}</td>
-          <td class="p-3 font-mono text-slate-700">${d.death_cert_ref}</td>
-          <td class="p-3 font-mono">${d.sample_identity_ref}</td>
-          <td class="p-3 text-slate-600">${d.last_known_city || "-"} (${d.issuing_authority || "-"})</td>
-          <td class="p-3 text-slate-600">${d.submitted_by_name || "Citizen"}</td>
+          <td class="p-3 font-bold text-slate-900">${escapeHTML(d.full_name)}</td>
+          <td class="p-3 font-mono text-slate-700">${escapeHTML(d.death_cert_ref)}</td>
+          <td class="p-3 font-mono">${escapeHTML(d.sample_identity_ref)}</td>
+          <td class="p-3 text-slate-600">${escapeHTML(d.last_known_city || "-")} (${escapeHTML(d.issuing_authority || "-")})</td>
+          <td class="p-3 text-slate-600">${escapeHTML(d.submitted_by_name || "Citizen")}</td>
           <td class="p-3"><span class="status-badge badge-pending">Pending</span></td>
           <td class="p-3 text-right space-x-1">
-            <button onclick="adminVerifyRecord('${d.id}', 'Verified')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3 py-1 rounded text-xs transition">
+            <button onclick="adminVerifyRecord('${escapeHTML(d.id)}', 'Verified')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-3 py-1 rounded text-xs transition">
               <i class="fa-solid fa-check mr-1"></i> Verify and Auto-Match
             </button>
-            <button onclick="adminVerifyRecord('${d.id}', 'Rejected')" class="bg-red-600 hover:bg-red-700 text-white font-bold px-2 py-1 rounded text-xs transition">
+            <button onclick="adminVerifyRecord('${escapeHTML(d.id)}', 'Rejected')" class="bg-red-600 hover:bg-red-700 text-white font-bold px-2 py-1 rounded text-xs transition">
               Reject
             </button>
           </td>
@@ -1006,9 +1030,9 @@ async function loadAdminData() {
         (a) => `
       <tr>
         <td class="p-2.5 font-mono text-[11px] text-slate-500">${new Date(a.created_at).toLocaleString()}</td>
-        <td class="p-2.5 font-bold text-gov-navy">${a.action}</td>
-        <td class="p-2.5 uppercase font-semibold text-slate-600 text-[10px]">${a.entity_type}</td>
-        <td class="p-2.5 text-slate-700">${a.details}</td>
+        <td class="p-2.5 font-bold text-gov-navy">${escapeHTML(a.action)}</td>
+        <td class="p-2.5 uppercase font-semibold text-slate-600 text-[10px]">${escapeHTML(a.entity_type)}</td>
+        <td class="p-2.5 text-slate-700">${escapeHTML(a.details)}</td>
       </tr>
     `
       )
@@ -1046,10 +1070,10 @@ async function loadAdminUsers() {
 
         return `
           <tr class="hover:bg-slate-50 transition">
-            <td class="p-2.5 font-bold text-slate-900">${u.full_name}</td>
-            <td class="p-2.5 font-mono text-slate-600 text-[11px]">${u.email}</td>
+            <td class="p-2.5 font-bold text-slate-900">${escapeHTML(u.full_name)}</td>
+            <td class="p-2.5 font-mono text-slate-600 text-[11px]">${escapeHTML(u.email)}</td>
             <td class="p-2.5">${roleBadge}</td>
-            <td class="p-2.5 text-slate-600">${u.institution_name || "-"}</td>
+            <td class="p-2.5 text-slate-600">${escapeHTML(u.institution_name || "-")}</td>
             <td class="p-2.5 text-slate-400 font-mono text-[10px]">${new Date(u.created_at).toLocaleDateString()}</td>
           </tr>
         `;
@@ -1183,34 +1207,34 @@ async function loadInstitutionData() {
       <div class="p-4 bg-slate-50 border border-slate-200 rounded-xl space-y-3">
         <div class="flex justify-between items-start">
           <div>
-            <span class="font-mono text-xs font-bold text-gov-navy">${c.claim_reference}</span>
-            <h4 class="font-bold text-sm text-slate-900">${c.asset_category} (${c.account_ref})</h4>
+            <span class="font-mono text-xs font-bold text-gov-navy">${escapeHTML(c.claim_reference)}</span>
+            <h4 class="font-bold text-sm text-slate-900">${escapeHTML(c.asset_category)} (${escapeHTML(c.account_ref)})</h4>
             <div class="text-xs text-slate-600 mt-0.5">
-              Deceased: <strong>${c.deceased_name}</strong> (Claimant: <strong>${c.claimant_name}</strong>) (${c.claimant_relationship})
+              Deceased: <strong>${escapeHTML(c.deceased_name)}</strong> (Claimant: <strong>${escapeHTML(c.claimant_name)}</strong>) (${escapeHTML(c.claimant_relationship)})
             </div>
           </div>
           <div class="text-right">
-            <span class="status-badge badge-${c.status.toLowerCase().replace(/\s+/g, "")}">${c.status}</span>
-            <div class="text-xs font-bold text-emerald-700 mt-1">₹${c.approximate_value.toLocaleString()}</div>
+            <span class="status-badge badge-${escapeHTML(c.status).toLowerCase().replace(/\s+/g, "")}">${escapeHTML(c.status)}</span>
+            <div class="text-xs font-bold text-emerald-700 mt-1">₹${Number(c.approximate_value || 0).toLocaleString()}</div>
           </div>
         </div>
 
         <div class="text-xs text-slate-600 bg-white p-2.5 rounded border border-slate-200">
-          <strong>Claimant Notes:</strong> ${c.remarks || "No claimant remarks."}
+          <strong>Claimant Notes:</strong> ${escapeHTML(c.remarks || "No claimant remarks.")}
         </div>
 
         <!-- Action Drawer: Update Claim Status -->
         <div class="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-slate-200">
           <span class="text-xs font-semibold text-slate-700">Update Official Claim Status:</span>
           <div class="flex items-center gap-2">
-            <select id="inst-status-${c.id}" class="p-1.5 border border-slate-300 rounded text-xs">
+            <select id="inst-status-${escapeHTML(c.id)}" class="p-1.5 border border-slate-300 rounded text-xs">
               <option value="Under Review" ${c.status === "Under Review" ? "selected" : ""}>Under Review</option>
               <option value="Documents Required" ${c.status === "Documents Required" ? "selected" : ""}>Documents Required</option>
               <option value="Approved" ${c.status === "Approved" ? "selected" : ""}>Approved for Payout</option>
               <option value="Completed" ${c.status === "Completed" ? "selected" : ""}>Completed</option>
               <option value="Rejected" ${c.status === "Rejected" ? "selected" : ""}>Rejected</option>
             </select>
-            <button onclick="instUpdateStatus('${c.id}')" class="bg-gov-navy hover:bg-slate-800 text-white font-bold px-3 py-1.5 rounded text-xs transition">
+            <button onclick="instUpdateStatus('${escapeHTML(c.id)}')" class="bg-gov-navy hover:bg-slate-800 text-white font-bold px-3 py-1.5 rounded text-xs transition">
               Save Decision
             </button>
           </div>
@@ -1283,17 +1307,17 @@ function renderNotificationsModal() {
       (n) => `
     <div class="p-3 rounded-lg border ${n.is_read ? "bg-slate-50 border-slate-200" : "bg-amber-50/70 border-amber-200"} space-y-2">
       <div class="flex justify-between items-start">
-        <h5 class="font-bold text-slate-900">${n.title}</h5>
+        <h5 class="font-bold text-slate-900">${escapeHTML(n.title)}</h5>
         <span class="text-[10px] text-slate-400">${new Date(n.created_at).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}</span>
       </div>
-      <p class="text-slate-600 leading-relaxed text-xs">${n.message}</p>
+      <p class="text-slate-600 leading-relaxed text-xs">${escapeHTML(n.message)}</p>
       <div class="flex justify-between items-center pt-1 text-[11px]">
-        <button onclick="viewSimulatedEmail('${n.id}')" class="text-gov-blue hover:underline font-semibold flex items-center gap-1">
+        <button onclick="viewSimulatedEmail('${escapeHTML(n.id)}')" class="text-gov-blue hover:underline font-semibold flex items-center gap-1">
           <i class="fa-solid fa-envelope"></i> Inspect Simulated Email Dispatch
         </button>
         ${
           !n.is_read
-            ? `<button onclick="markNotifRead('${n.id}')" class="text-slate-500 hover:text-slate-800">Mark read</button>`
+            ? `<button onclick="markNotifRead('${escapeHTML(n.id)}')" class="text-slate-500 hover:text-slate-800">Mark read</button>`
             : `<span class="text-slate-400">Read</span>`
         }
       </div>

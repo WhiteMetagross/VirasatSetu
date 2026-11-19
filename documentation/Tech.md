@@ -239,3 +239,45 @@ The application exposes structured JSON endpoints organized across domain router
 3. Role Based Access Middleware: Role guards ensure family users cannot access administrative commands or review claims from other citizens.
 4. Institutional Data Partitioning: Institution representatives can view and update only claims matching their assigned institution identifier.
 5. Supabase Row Level Security: Cloud PostgreSQL policies guarantee database level isolation even if application endpoints are bypassed.
+
+
+## Web Cybersecurity Defenses and Threat Mitigations:
+
+The Virasat Setu platform incorporates multi tiered defensive cybersecurity controls designed to eliminate standard Open Web Application Security Project vulnerability vectors:
+
+### 1. SQL Injection Defense in Depth:
+1. Primary Defense: SQLAlchemy Object Relational Mapping automatically implements parameterized queries with separated query compilation and bound values, preventing SQL syntax manipulation.
+2. Secondary Signature Filter: The validation engine screens incoming textual fields with regular expressions detecting common injection signatures like UNION SELECT, OR 1=1, DROP TABLE, DELETE FROM and comment dashes.
+3. Search Query Sanitization: Administrative search endpoints enforce input length boundaries and execute safe parameterized string filters.
+
+### 2. Cross Site Scripting (XSS) Mitigation:
+1. Backend Entity Encoding: The text sanitizer strips null bytes and control characters while replacing sensitive characters like ampersands and angle brackets with secure HTML entities.
+2. Script Pattern Blocking: Pydantic field validators inspect submitted payloads and reject script tags, javascript URI schemes, event handler attributes and iframes with HTTP 400 Bad Request.
+3. Frontend Template Escaping: All dynamic document template literals in the client application invoke an escapeHTML utility before setting innerHTML properties, ensuring untrusted user content cannot execute as markup.
+
+### 3. Cross Site Request Forgery (CSRF) Protection:
+1. Bearer Token Isolation: The platform stores session JSON Web Tokens in browser local storage and transmits them via Authorization headers. Browsers never attach Authorization headers to cross origin requests automatically.
+2. Custom Verification Headers: The CSRF Protection Middleware requires state modifying requests (POST, PUT, PATCH, DELETE) to present custom client headers like X-Requested-With or X-CSRF-Token, which cross site forms cannot forge.
+3. Preflight Enforcement: Custom headers force modern browsers to execute Cross Origin Resource Sharing preflight OPTIONS requests, blocking unauthorized cross origin submission attempts.
+
+### 4. HTTP Defensive Security Headers:
+The platform attaches comprehensive security headers to all HTTP responses:
+1. Content-Security-Policy: Enforces default self origin restrictions while whitelisting designated trustworthy content delivery networks.
+2. X-Frame-Options: Set to DENY to prevent Clickjacking attacks and disallow embedding the application inside foreign iframes.
+3. X-Content-Type-Options: Set to nosniff to prevent browsers from executing files with mismatched MIME types.
+4. X-XSS-Protection: Set to 1; mode=block for defense on legacy browser agents.
+5. Referrer-Policy: Configured as strict-origin-when-cross-origin to eliminate sensitive query leakage.
+6. Permissions-Policy: Restricts unneeded hardware APIs including camera, microphone and geolocation.
+7. Cross-Origin-Opener-Policy: Set to same-origin to isolate the browsing context.
+
+### 5. Document Storage and Path Traversal Hardening:
+1. Extension Whitelisting: Document upload endpoints strictly accept only verified extensions including .pdf, .png, .jpg, .jpeg and .webp.
+2. File Size Enforcement: Maximum file size is strictly capped at ten megabytes to prevent server storage exhaustion.
+3. Path Traversal Elimination: Filenames containing path traversal tokens like double periods or directory slashes are detected and blocked immediately.
+4. Random UUID Storage: Uploaded files are persisted using randomly generated UUIDs, completely detaching physical filenames on disk from user supplied names.
+5. Insecure Direct Object Reference (IDOR) Protection: Document download endpoints authenticate the requesting user and verify ownership, restricting downloads strictly to the document owner, authorized administrators or assigned institutional representatives.
+
+### 6. Brute Force and Abuse Rate Limiting:
+1. In-Memory Sliding Window: A sliding window rate limiting middleware tracks incoming client IP requests across rolling sixty second intervals.
+2. Authentication Route Protection: Login and registration endpoints are protected with a strict rate threshold of thirty requests per minute per IP address to thwart credential stuffing.
+3. General API Rate Limiting: Standard platform endpoints are governed by a three hundred request per minute ceiling, guarding against denial of service and automated scraping.

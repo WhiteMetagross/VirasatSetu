@@ -9,6 +9,7 @@ from app.database import get_db
 from app.models.models import Document, User
 from app.schemas.schemas import DocumentResponse
 from app.utils.auth import get_current_user
+from app.utils.security import validate_file_upload
 
 router = APIRouter(prefix="/api/documents", tags=["Document Storage"])
 
@@ -24,11 +25,13 @@ async def upload_document(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
-    ext = os.path.splitext(file.filename)[1]
+    content = await file.read()
+    # Validate extension, file size, and MIME type against arbitrary upload attacks
+    safe_filename = validate_file_upload(file.filename or "document.pdf", content, file.content_type)
+
+    ext = os.path.splitext(safe_filename)[1].lower()
     unique_filename = f"{uuid.uuid4()}{ext}"
     file_path = os.path.join(settings.UPLOAD_DIR, unique_filename)
-
-    content = await file.read()
     file_size = len(content)
 
     async with aiofiles.open(file_path, "wb") as f:
@@ -41,7 +44,7 @@ async def upload_document(
         claimant_id=claimant_id if claimant_id else None,
         claim_id=claim_id if claim_id else None,
         document_type=document_type,
-        file_name=file.filename,
+        file_name=safe_filename,
         file_path=file_path,
         file_size=file_size,
         content_type=file.content_type
@@ -60,6 +63,13 @@ def download_document(
     doc = db.query(Document).filter(Document.id == document_id).first()
     if not doc:
         raise HTTPException(status_code=404, detail="Document not found")
+
+    # Access control: prevent Insecure Direct Object Reference (IDOR) attacks
+    is_owner = (doc.user_id == current_user.id)
+    is_admin = (current_user.role == "admin")
+    is_institution = (current_user.role == "institution_rep")
+    if not (is_owner or is_admin or is_institution):
+        raise HTTPException(status_code=403, detail="Not authorized to access this document")
 
     if not os.path.exists(doc.file_path):
         raise HTTPException(status_code=404, detail="File on disk not found")

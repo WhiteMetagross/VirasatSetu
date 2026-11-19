@@ -132,3 +132,12 @@ The platform comes pre configured with representative user accounts across all o
    * Assigned Role: family_user.
    * Full Name: Priya Sharma.
    * Operational Access: Citizen family dashboard, independent deceased profile submissions and multi claimant verification flows.
+
+
+## Cybersecurity Verification and Audit Procedures:
+
+The platform incorporates comprehensive automated security verification tools to confirm continuous defensive posture:
+
+1. Execute Security Test Suite: Run the dedicated cybersecurity test suite using the command: python test_security.py.
+2. Verified Attack Scenarios: The automated suite validates defense against SQL injection payloads, script injection sequences, forged cross site requests, arbitrary file upload attempts and unauthorized document access.
+3. Ongoing Audit Trail: All security relevant administrative actions and authentication events are logged to the immutable audit database for compliance review.

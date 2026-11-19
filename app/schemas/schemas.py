@@ -1,6 +1,7 @@
-from pydantic import BaseModel, EmailStr, Field
+from pydantic import BaseModel, EmailStr, Field, field_validator
 from typing import Optional, List, Dict, Any
 from datetime import datetime
+from app.utils.security import validate_input_safety
 
 # Auth and Profile Schemas
 class UserCreate(BaseModel):
@@ -10,6 +11,13 @@ class UserCreate(BaseModel):
     mobile: Optional[str] = None
     role: Optional[str] = "family_user"
     institution_id: Optional[str] = None
+
+    @field_validator("full_name", "mobile", mode="before")
+    @classmethod
+    def sanitize_user_fields(cls, v):
+        if isinstance(v, str):
+            return validate_input_safety(v, "User registration field")
+        return v
 
 class UserLogin(BaseModel):
     email: EmailStr
@@ -70,9 +78,23 @@ class DeceasedPersonCreate(BaseModel):
     claimant_mobile: Optional[str] = None
     claimant_type: Optional[str] = "Nominee"
 
+    @field_validator("full_name", "last_known_city", "last_known_state", "death_cert_ref", "issuing_authority", "sample_identity_ref", "claimant_name", "claimant_relationship", "claimant_mobile", "claimant_type", mode="before")
+    @classmethod
+    def sanitize_deceased_fields(cls, v):
+        if isinstance(v, str):
+            return validate_input_safety(v, "Deceased registration field")
+        return v
+
 class DeceasedVerifyRequest(BaseModel):
     status: str  # "Verified" or "Rejected"
     admin_notes: Optional[str] = None
+
+    @field_validator("admin_notes", mode="before")
+    @classmethod
+    def sanitize_admin_notes(cls, v):
+        if isinstance(v, str):
+            return validate_input_safety(v, "Admin notes")
+        return v
 
 class DeceasedPersonResponse(BaseModel):
     id: str
@@ -113,6 +135,13 @@ class FinancialAssetCreate(BaseModel):
     unclaimed_status: Optional[str] = "Dormant > 10 Yrs"
     approximate_value: Optional[float] = 0.0
     details_json: Optional[str] = None
+
+    @field_validator("institution_name", "holder_name", "sample_identity_ref", "account_ref", "category", "nominee_ref", mode="before")
+    @classmethod
+    def sanitize_asset_fields(cls, v):
+        if isinstance(v, str):
+            return validate_input_safety(v, "Financial asset field")
+        return v
 
 class FinancialAssetResponse(BaseModel):
     id: str
@@ -163,9 +192,23 @@ class ClaimantCreate(BaseModel):
     mobile: str
     claimant_type: str = "Nominee"  # Nominee or Legal Heir
 
+    @field_validator("name", "relationship", "mobile", "claimant_type", mode="before")
+    @classmethod
+    def sanitize_claimant_fields(cls, v):
+        if isinstance(v, str):
+            return validate_input_safety(v, "Claimant field")
+        return v
+
 class ClaimantVerifyRequest(BaseModel):
     status: str  # Approved, Rejected, Additional Documents Required
     admin_notes: Optional[str] = None
+
+    @field_validator("admin_notes", mode="before")
+    @classmethod
+    def sanitize_claimant_admin_notes(cls, v):
+        if isinstance(v, str):
+            return validate_input_safety(v, "Claimant admin notes")
+        return v
 
 class ClaimantResponse(BaseModel):
     id: str
@@ -191,9 +234,23 @@ class ClaimCreate(BaseModel):
     claimant_id: Optional[str] = None
     remarks: Optional[str] = None
 
+    @field_validator("remarks", mode="before")
+    @classmethod
+    def sanitize_claim_remarks(cls, v):
+        if isinstance(v, str):
+            return validate_input_safety(v, "Claim remarks")
+        return v
+
 class ClaimStatusUpdate(BaseModel):
     status: str  # Submitted, Under Review, Documents Required, Approved, Rejected, Completed
     remarks: Optional[str] = None
+
+    @field_validator("remarks", mode="before")
+    @classmethod
+    def sanitize_claim_status_remarks(cls, v):
+        if isinstance(v, str):
+            return validate_input_safety(v, "Claim status remarks")
+        return v
 
 class ClaimResponse(BaseModel):
     id: str
@@ -288,6 +345,13 @@ class AdminCreateUserRequest(BaseModel):
     mobile: Optional[str] = None
     role: str = "family_user"
     institution_id: Optional[str] = None
+
+    @field_validator("full_name", "mobile", "role", mode="before")
+    @classmethod
+    def sanitize_admin_create_user(cls, v):
+        if isinstance(v, str):
+            return validate_input_safety(v, "Admin create user field")
+        return v
 
 class AdminUserItemResponse(BaseModel):
     id: str
