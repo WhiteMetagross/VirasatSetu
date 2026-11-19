@@ -70,7 +70,7 @@ Name comparison uses a combined token sort and Jaro Winkler similarity metric. L
 4. Score Attribution: High similarity exceeding zero point nine yields the full twenty five points, while similarity between zero point seven and zero point nine awards fifteen points.
 
 
-## End to End Data Flow Lifecycle:
+## Complete Data Flow Lifecycle:
 
 Lifecycle Data Flow Sequence:
 1. Citizen Submits Death Record: Citizen enters civil death certificate details and attaches supporting documents.

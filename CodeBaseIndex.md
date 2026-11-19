@@ -112,4 +112,4 @@ DTI md ...................... Digital Transformation and Innovation Specificatio
 
 1. supabase schema sql: Complete PostgreSQL schema script defining all eleven tables, primary UUID keys, foreign key constraints, indexes and Row Level Security policies.
 2. supabase seed sql: SQL seed script pre populating ninety four realistic Indian financial records across public sector banks, private insurers and mutual funds.
-3. test system py: Automated end to end testing script verifying logins, deceased submissions, matching scores, claim lifecycles, administrative stats and frontend delivery.
+3. test system py: Automated complete testing script verifying logins, deceased submissions, matching scores, claim lifecycles, administrative stats and frontend delivery.

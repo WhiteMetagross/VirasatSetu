@@ -2,7 +2,7 @@
 
 This document provides a thorough operational guide for citizens, government administrators and financial institution representatives using the Virasat Setu platform.
 
-Virasat Setu End to End User Journey:
+Virasat Setu Complete User Journey:
 1. Citizen Registration: Citizen signs up or logs into portal.
 2. Submit Deceased Civil Record: Enters death certificate details and PAN.
 3. Government Admin Verification: Admin approves record and triggers auto matching.

@@ -235,7 +235,7 @@ The platform data store comprises eleven relational tables linked via UUID prima
 5. Protected Document Repository: Civil documents like death certificates are stored in private storage accessible only via authenticated endpoints.
 
 
-## Complete End to End Operational Workflow:
+## Complete Operational Workflow:
 
 The complete lifecycle operates through nine distinct operational steps:
 

@@ -56,7 +56,7 @@ To launch and explore the platform locally:
 2. Install all necessary dependencies by executing pip install with requirements text.
 3. Run the application server using python run server py or executing run server bat.
 4. Navigate to http 127 0 0 1 8000 in your web browser.
-5. Click the top banner button Load Rajesh Kumar Discovery and Matches to view an instant end to end scenario.
+5. Select the Admin portal or quick login to view an instant complete verification scenario.
 6. Inspect the four discovered assets totaling seventeen lakh eighty six thousand two hundred and forty rupees across State Bank of India, Life Insurance Corporation of India and HDFC Mutual Fund.
 7. Switch roles using the top navigation header to test administrator verification and institutional claim approvals.
 

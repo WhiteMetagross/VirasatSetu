@@ -770,6 +770,6 @@ For a college project, I recommend prioritising these features as essential:
 
 Do not spend too much development time trying to connect real government APIs, real banks or real identity verification services. Those are outside the realistic scope of this college prototype.
 
-**Final recommendation:** Build a functional end to end website where every important operation works with Supabase data. The strongest part of your demonstration should be the automatic matching of three financial datasets following administrator approval of a death record, followed by notification and claim tracking.
+**Final recommendation:** Build a functional complete website where every important operation works with Supabase data. The strongest part of your demonstration should be the automatic matching of three financial datasets following administrator approval of a death record, followed by notification and claim tracking.
 
 This will show that Virasat Setu is not just a website design or a conceptual business model. It is a working prototype of the proposed digital asset discovery system.

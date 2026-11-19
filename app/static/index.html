@@ -151,24 +151,6 @@
     </nav>
   </header>
 
-  <!-- Interactive Demo Scenario Banner -->
-  <section class="bg-gradient-to-r from-amber-50 to-blue-50 border-b border-amber-200 py-2.5 px-4 text-xs text-slate-700">
-    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
-      <div class="flex items-center space-x-2">
-        <span class="bg-gov-saffron text-white font-bold px-2 py-0.5 rounded text-[10px]">DEMO SCENARIO</span>
-        <span><strong>Rajesh Kumar Test Case:</strong> ₹17,86,240 across SBI Bank, LIC Policy and HDFC Mutual Fund.</span>
-      </div>
-      <div class="flex items-center space-x-3">
-        <button onclick="loadRajeshScenario()" class="bg-gov-navy hover:bg-slate-800 text-white font-semibold px-3 py-1 rounded shadow-sm transition">
-          <i class="fa-solid fa-play mr-1 text-amber-400"></i> Load Rajesh Kumar Discovery and Matches
-        </button>
-        <button onclick="resetDemoData()" class="bg-white hover:bg-slate-100 text-slate-700 border border-slate-300 px-2.5 py-1 rounded transition" title="Reset all demo records">
-          <i class="fa-solid fa-rotate-left mr-1"></i> Reset DB
-        </button>
-      </div>
-    </div>
-  </section>
-
   <!-- MAIN CONTENT CONTAINER -->
   <main class="flex-1 max-w-7xl w-full mx-auto px-4 py-6">
 
@@ -247,7 +229,7 @@
       <!-- How It Works Flow -->
       <div class="bg-white p-8 rounded-xl border border-slate-200 shadow-sm">
         <div class="text-center max-w-xl mx-auto mb-8">
-          <span class="text-gov-saffron font-bold text-xs uppercase tracking-wider">End-to-End Workflow</span>
+          <span class="text-gov-saffron font-bold text-xs uppercase tracking-wider">Complete Workflow</span>
           <h3 class="text-2xl font-bold text-slate-900 mt-1">How Virasat Setu Works</h3>
           <p class="text-xs text-slate-500 mt-1">A transparent, secure four-stage process connecting verified families with financial institutions.</p>
         </div>
@@ -288,7 +270,7 @@
           <details class="p-3 bg-slate-50 rounded-lg border border-slate-200 cursor-pointer">
             <summary class="font-bold text-slate-800">Does this prototype access live bank accounts or transfer real money?</summary>
             <p class="mt-2 text-slate-600 pl-4 border-l-2 border-amber-400">
-              No. As specified in the Project Scope (Section 13), this is an academic working prototype developed with fictional datasets (40+ bank records, 25+ insurance, 25+ mutual funds). It simulates the end-to-end legal and technical workflow without touching restricted or live financial networks.
+              No. As specified in the Project Scope (Section 13), this is an academic working prototype developed with fictional datasets (40+ bank records, 25+ insurance, 25+ mutual funds). It simulates the complete legal and technical workflow without touching restricted or live financial networks.
             </p>
           </details>
 
@@ -710,9 +692,12 @@
             <p class="text-xs text-slate-300">Approve death records, trigger matching, oversee claims, review audit logs and institutions.</p>
           </div>
         </div>
-        <div class="flex items-center gap-3">
+        <div class="flex flex-wrap items-center gap-3">
+          <button onclick="loadRajeshScenario()" class="bg-gov-navy hover:bg-slate-800 text-white font-bold px-3 py-1.5 rounded text-xs transition border border-slate-600">
+            <i class="fa-solid fa-play mr-1 text-amber-400"></i> Load Verification Case
+          </button>
           <button onclick="resetDemoData()" class="bg-red-600 hover:bg-red-700 text-white font-bold px-3 py-1.5 rounded text-xs transition">
-            <i class="fa-solid fa-trash-can mr-1"></i> Reset Demo Database
+            <i class="fa-solid fa-trash-can mr-1"></i> Reset Database
           </button>
         </div>
       </div>
@@ -834,7 +819,7 @@
         </div>
       </div>
       <div class="text-[11px] text-slate-400">
-        <span>Department of Technology and Innovation Project</span>
+        <span>DTI Project: Group 14</span>
       </div>
     </div>
   </footer>

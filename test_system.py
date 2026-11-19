@@ -3,7 +3,7 @@ import json
 import uuid
 
 def test_system():
-    print("VIRASAT SETU: COMPREHENSIVE END TO END TEST SUITE")
+    print("VIRASAT SETU: COMPREHENSIVE COMPLETE TEST SUITE")
 
     # 1. Family Login
     req = urllib.request.Request(
