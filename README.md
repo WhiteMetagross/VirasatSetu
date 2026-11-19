@@ -1,5 +1,14 @@
 # Virasat Setu Digital Inheritance Platform:
 
+DTI Project: Group 14.
+
+![Virasat Setu Official Emblem](Visuals/logo.jpg)
+
+Caption: Virasat Setu official visual identity emblem featuring the sovereign arch, Kalpavriksha seedling and national wealth nodes.
+
+
+## Project Overview:
+
 Virasat Setu is an enterprise digital inheritance and asset discovery portal created to solve the challenge of unclaimed wealth across India. Every year substantial savings, term deposits, matured insurance policies and mutual fund folios remain dormant because legal heirs and designated nominees remain unaware of their existence. Virasat Setu bridges citizen families with institutional repositories through automated identity matching, civil registration verification and transparent claim tracking.
 
 Virasat Setu Platform Flow:
@@ -8,6 +17,25 @@ Virasat Setu Platform Flow:
 3. Central Matching Engine: One Hundred Point Identity and Record Verification.
 4. Banking Desk: State Bank of India, Punjab National Bank and Bank of Baroda.
 5. Insurance and Funds Desk: Life Insurance Corporation, HDFC Mutual Fund and SBI Funds Management.
+
+
+## Platform Visual Interface Gallery:
+
+![Citizen Portal Home and Overview](Visuals/portal_home.png)
+
+Caption: Virasat Setu citizen portal landing page and four stage discovery workflow overview.
+
+![Discovered Unclaimed Financial Assets](Visuals/discovered_matches.png)
+
+Caption: Automated asset discovery interface displaying verified holdings and one hundred point match scores.
+
+![Browse Financial Institution Database](Visuals/browse_database.png)
+
+Caption: Central repository database browser searching across ninety four institutional financial records.
+
+![Platform Central Oversight Console](Visuals/admin_console.png)
+
+Caption: Administrative oversight console managing civil record verifications, platform metrics and claim workflows.
 
 
 ## Executive Summary and Scope:
@@ -48,7 +76,7 @@ The matching engine searches across institutional records without human bias. It
 Potential records with scores from eighty to one hundred points are categorized as Strong Potential Matches. Records with scores from sixty to seventy nine points are marked as Requires Manual Review. Records below sixty points are excluded from candidate generation.
 
 
-## Quick Start Demonstration Guide:
+## Quick Start Verification Guide:
 
 To launch and explore the platform locally:
 
@@ -63,11 +91,13 @@ To launch and explore the platform locally:
 
 ## Documentation Index:
 
-Detailed operational and technical manuals are organized across the following documents:
+Detailed operational and technical manuals are organized in the documentation folder:
 
-1. Usage md: Comprehensive user guide explaining citizen, administrator and institution workflows.
-2. CodeBaseIndex md: Complete file directory map, structural charts and module descriptions.
-3. Architecture md: Detailed architectural specification, data flow diagrams and scoring algorithms.
-4. InstallationAndSetup md: Step by step local setup, automated testing and cloud deployment procedures.
-5. Tech md: In depth technical specifications, database schema definitions and API endpoint references.
-6. DTI md: Complete Digital Transformation and Innovation specification and Business Model Canvas.
+1. documentation/Usage md: Comprehensive user guide explaining citizen, administrator and institution workflows.
+2. documentation/CodeBaseIndex md: Complete file directory map, structural charts and module descriptions.
+3. documentation/Architecture md: Detailed architectural specification, data flow diagrams and scoring algorithms.
+4. documentation/InstallationAndSetup md: Step by step local setup, automated testing and cloud deployment procedures.
+5. documentation/Tech md: In depth technical specifications, database schema definitions and API endpoint references.
+6. documentation/DTI md: Complete Digital Transformation and Innovation specification and Business Model Canvas.
+7. documentation/LogoDesign md: Official brand identity, color palette and geometric construction rules.
+8. documentation/DTIProjectPlan md: Project planning specifications and phase by phase milestones.

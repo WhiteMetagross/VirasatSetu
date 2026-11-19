@@ -46,6 +46,22 @@ The project follows a human interpretable modular layout separating concerns cle
     app js .................. Client Single Page Controller
   /utils
     auth py ................. Password Hashing and JWT Tokens
+/Visuals
+  logo jpg .................. Official Brand Identity Emblem Master Asset
+  GroupNumber_14 jpeg ....... Coursework Project Reference Visual
+  portal_home png ........... Citizen Portal Landing Interface Screenshot
+  discovered_matches png .... Discovered Assets and Matching Results Screenshot
+  browse_database png ....... Financial Institution Database Browser Screenshot
+  admin_console png ......... Central Administrative Oversight Console Screenshot
+/documentation
+  Architecture md ............. Deep Technical Architecture
+  CodeBaseIndex md ............ Detailed Codebase Index
+  DTI md ...................... Digital Transformation and Innovation Specification
+  DTIProjectPlan md ........... Project Planning Specifications
+  InstallationAndSetup md ..... Local Setup and Deployment Guide
+  LogoDesign md ............... Official Brand Identity Design Specification
+  Tech md ..................... Full Technical Specifications
+  Usage md .................... Comprehensive Operational Manual
 /supabase
   schema sql ................ PostgreSQL DDL and Security Policies
   seed sql .................. Ninety Four Central Financial Records
@@ -54,14 +70,7 @@ vercel json ................. Serverless Routing Rules
 run server py ............... Local Server Runner
 run server bat .............. Windows One Click Execution File
 test system py .............. Ten Step Verification Test Suite
-DTIProjectPlan md ........... Project Planning Specifications
 ReadMe md ................... Primary Project Overview
-Usage md .................... Comprehensive Operational Manual
-CodeBaseIndex md ............ Detailed Codebase Index
-Architecture md ............. Deep Technical Architecture
-InstallationAndSetup md ..... Local Setup and Deployment Guide
-Tech md ..................... Full Technical Specifications
-DTI md ...................... Digital Transformation and Innovation Specification
 
 
 ## Detailed File Inventory and Responsibilities:
