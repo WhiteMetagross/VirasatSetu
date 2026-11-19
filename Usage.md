@@ -2,34 +2,15 @@
 
 This document provides a thorough operational guide for citizens, government administrators and financial institution representatives using the Virasat Setu platform.
 
-[==================================================================]
-[                   VIRASAT SETU END TO END USER JOURNEY           ]
-[==================================================================]
-                                 v
-                     [ 1. Citizen Registration ]
-                     Citizen signs up or logs into portal
-                                 v
-                 [ 2. Submit Deceased Civil Record ]
-                 Enters death certificate details and PAN
-                                 v
-               [ 3. Government Admin Verification ]
-               Admin approves record and triggers auto matching
-                                 v
-                 [ 4. Automated Discovery Engine ]
-                 Evaluates bank, insurance and fund datasets
-                                 v
-                  [ 5. Discovered Assets Display ]
-                  Citizen reviews matched assets and scores
-                                 v
-                 [ 6. Legal Heir Claim Initiation ]
-                 Submits claimant capacity and documentation
-                                 v
-                [ 7. Institution Representative Desk ]
-                Bank or insurer reviews claim and issues decision
-                                 v
-                 [ 8. Transparent Status Tracking ]
-                 Citizen monitors five stage visual progress bar
-[==================================================================]
+Virasat Setu End to End User Journey:
+1. Citizen Registration: Citizen signs up or logs into portal.
+2. Submit Deceased Civil Record: Enters death certificate details and PAN.
+3. Government Admin Verification: Admin approves record and triggers auto matching.
+4. Automated Discovery Engine: Evaluates bank, insurance and fund datasets.
+5. Discovered Assets Display: Citizen reviews matched assets and scores.
+6. Legal Heir Claim Initiation: Submits claimant capacity and documentation.
+7. Institution Representative Desk: Bank or insurer reviews claim and issues decision.
+8. Transparent Status Tracking: Citizen monitors five stage visual progress bar.
 
 
 ## Citizen and Family User Workflow:
@@ -64,7 +45,7 @@ Government administrators oversee civil validation and platform security through
 
 Institutional desks provide segregated operational consoles for nodal claim officers:
 
-1. Institution Authentication: Representatives log in using institution specific credentials such as LIC claims desk or SBI settlement office.
+1. Institution Authentication: Representatives log in using institution specific credentials like LIC claims desk or SBI settlement office.
 2. Contextual Desk Routing: The platform routes officers directly to their assigned institutional desk without exposing unrelated records.
 3. Assigned Claims Queue: Officers view incoming claim requests matching assets held within their specific institution.
 4. Claimant Verification Review: Officers inspect claimant declarations, succession credentials and uploaded death certificates.

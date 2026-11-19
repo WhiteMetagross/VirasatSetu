@@ -2,7 +2,7 @@ from pydantic import BaseModel, EmailStr, Field
 from typing import Optional, List, Dict, Any
 from datetime import datetime
 
-# --- Auth & Profile ---
+# Auth and Profile Schemas
 class UserCreate(BaseModel):
     email: EmailStr
     password: str
@@ -37,7 +37,7 @@ class TokenData(BaseModel):
     role: Optional[str] = None
 
 
-# --- Institution ---
+# Institution Schemas
 class InstitutionResponse(BaseModel):
     id: str
     name: str
@@ -51,7 +51,7 @@ class InstitutionResponse(BaseModel):
         from_attributes = True
 
 
-# --- Deceased Person ---
+# Deceased Person Schemas
 class DeceasedPersonCreate(BaseModel):
     full_name: str
     date_of_birth: str  # YYYY-MM-DD
@@ -98,7 +98,7 @@ class DeceasedPersonResponse(BaseModel):
         from_attributes = True
 
 
-# --- Financial Asset ---
+# Financial Asset Schemas
 class FinancialAssetCreate(BaseModel):
     institution_id: str
     asset_type: str  # bank, insurance, mutual_fund
@@ -135,7 +135,7 @@ class FinancialAssetResponse(BaseModel):
         from_attributes = True
 
 
-# --- Asset Match ---
+# Asset Match Schemas
 class AssetMatchResponse(BaseModel):
     id: str
     deceased_person_id: str
@@ -154,7 +154,7 @@ class AssetMatchResponse(BaseModel):
         from_attributes = True
 
 
-# --- Claimant ---
+# Claimant Schemas
 class ClaimantCreate(BaseModel):
     deceased_person_id: str
     name: str
@@ -185,7 +185,7 @@ class ClaimantResponse(BaseModel):
         from_attributes = True
 
 
-# --- Claim ---
+# Claim Schemas
 class ClaimCreate(BaseModel):
     asset_match_id: str
     claimant_id: Optional[str] = None
@@ -222,7 +222,7 @@ class ClaimResponse(BaseModel):
         from_attributes = True
 
 
-# --- Document ---
+# Document Schemas
 class DocumentResponse(BaseModel):
     id: str
     user_id: str
@@ -240,7 +240,7 @@ class DocumentResponse(BaseModel):
         from_attributes = True
 
 
-# --- Notification ---
+# Notification Schemas
 class NotificationResponse(BaseModel):
     id: str
     user_id: str
@@ -257,7 +257,7 @@ class NotificationResponse(BaseModel):
         from_attributes = True
 
 
-# --- Dashboard Stats ---
+# Dashboard Stats Schemas
 class FamilyDashboardStats(BaseModel):
     total_deceased: int
     total_potential_assets: int

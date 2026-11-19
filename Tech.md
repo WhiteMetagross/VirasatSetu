@@ -2,21 +2,16 @@
 
 This document provides complete technical specifications for the Virasat Setu platform, covering the framework components, database architecture, API endpoint reference, security models and algorithmic definitions.
 
-[==================================================================]
-[                   TECHNOLOGY STACK ARCHITECTURE                  ]
-[==================================================================]
-  Component                 Technology          Specification
-[==================================================================]
-  Backend Application       FastAPI             Asynchronous Python
-  ASGI Server Engine        Uvicorn             High Concurrency
-  Data Access Layer         SQLAlchemy ORM      Declarative Models
-  Data Validation           Pydantic v2         Strict Type Safety
-  Primary Cloud Database    Supabase            PostgreSQL with RLS
-  Local Embedded Database   SQLite              Zero Setup Storage
-  Security Infrastructure   PyJWT and Passlib   Bcrypt and JWT
-  Frontend Presentation     Tailwind CSS        Responsive Semantic
-  Serverless Hosting        Vercel              Unified Gateway
-[==================================================================]
+Technology Stack Architecture:
+1. Backend Application: FastAPI (Asynchronous Python).
+2. ASGI Server Engine: Uvicorn (High Concurrency).
+3. Data Access Layer: SQLAlchemy ORM (Declarative Models).
+4. Data Validation: Pydantic v2 (Strict Type Safety).
+5. Primary Cloud Database: Supabase (PostgreSQL with RLS).
+6. Local Embedded Database: SQLite (Zero Setup Storage).
+7. Security Infrastructure: PyJWT and Passlib (Bcrypt and JWT).
+8. Frontend Presentation: Tailwind CSS (Responsive Semantic).
+9. Serverless Hosting: Vercel (Unified Gateway).
 
 
 ## Detailed Database Schema Definitions:
@@ -128,7 +123,7 @@ Maintains profiles of individuals claiming inheritance or nominee rights.
 Tracks the formal lifecycle of asset claims from filing through institutional determination.
 
 1. id: String UUID primary key.
-2. claim reference: Unique human readable tracking identifier (e.g. CLM 2026 88AB).
+2. claim reference: Unique human readable tracking identifier like CLM 2026 88AB.
 3. claimant id: Foreign key linking claim to verified claimant.
 4. asset match id: Foreign key to the validated asset match.
 5. deceased person id: Foreign key to the deceased record.

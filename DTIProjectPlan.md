@@ -27,18 +27,17 @@ The website must demonstrate the complete process, from user registration and de
 
 The technology stack is based on Supabase and Vercel (unified full-stack architecture).
 
-| Component         | Technology                     | Purpose                                  |
-| ----------------- | ------------------------------ | ---------------------------------------- |
-| Framework         | Next.js (App Router, React 19) | Full-stack web application and UI        |
-| Styling           | Tailwind CSS and shadcn/ui     | Modern, responsive website design        |
-| Backend / APIs    | Next.js Route Handlers         | Business logic, APIs and matching engine |
-| Database          | Supabase PostgreSQL            | Store all project data                   |
-| Authentication    | Supabase Auth (`@supabase/ssr`)| Registration, login and role middleware  |
-| File storage      | Supabase Storage               | Store uploaded verification documents    |
-| Database security | Supabase RLS                   | Control access to records                |
-| Notifications     | Resend API and Supabase        | Email and in-website notifications       |
-| Hosting           | Vercel                         | Unified deployment (Frontend and Backend)|
-| Version control   | GitHub                         | Store and manage project code            |
+Technology Stack Summary:
+1. Framework: Next.js (App Router, React 19) for full stack web application and UI.
+2. Styling: Tailwind CSS and shadcn/ui for modern, responsive website design.
+3. Backend APIs: Next.js Route Handlers for business logic, APIs and matching engine.
+4. Database: Supabase PostgreSQL to store all project data.
+5. Authentication: Supabase Auth (@supabase/ssr) for registration, login and role middleware.
+6. File storage: Supabase Storage to store uploaded verification documents.
+7. Database security: Supabase RLS to control access to records.
+8. Notifications: Resend API and Supabase for email and in website notifications.
+9. Hosting: Vercel for unified deployment (Frontend and Backend).
+10. Version control: GitHub to store and manage project code.
 
 **Why Supabase?**
 
@@ -236,23 +235,21 @@ The matching process will work as follows.
 
 You can implement a simple weighted matching algorithm.
 
-| Matching information             | Proposed score |
-| -------------------------------- | -------------- |
-| Exact sample identity reference  | 50             |
-| Name similarity                  | 25             |
-| Exact date of birth              | 15             |
-| Other matching reference details | 10             |
-| Total                            | 100            |
+Weighted matching scoring model:
+1. Exact sample identity reference: 50 points.
+2. Name similarity: 25 points.
+3. Exact date of birth: 15 points.
+4. Other matching reference details: 10 points.
+5. Total maximum score: 100 points.
 
 The score will be used for candidate identification, not legal identity verification.
 
 Define three possible outcomes.
 
-| Score     | Outcome                |
-| --------- | ---------------------- |
-| 80 to 100 | Strong potential match |
-| 60 to 79  | Requires manual review |
-| Below 60  | No match generated     |
+Three possible outcomes:
+1. Score 80 to 100: Strong potential match.
+2. Score 60 to 79: Requires manual review.
+3. Score below 60: No match generated.
 
 Exact sample identity references should receive priority. Name similarity alone should never be enough to confirm an identity.
 
@@ -414,19 +411,18 @@ Use Supabase PostgreSQL as the central database.
 
 For easier development, create the following tables.
 
-| Table name             | Purpose                                             |
-| ---------------------- | --------------------------------------------------- |
-| profiles               | User information and roles                          |
-| deceased_persons       | Deceased individual records                         |
-| claimants              | Nominee and legal heir details                      |
-| claimant_relationships | Relationship between claimants and deceased persons |
-| documents              | Uploaded document references                        |
-| institutions           | Bank, insurance and fund company information        |
-| financial_assets       | Sample financial records                            |
-| asset_matches          | Matching algorithm results                          |
-| claims                 | Claim applications and statuses                     |
-| notifications          | Email and in website notification records           |
-| audit_logs             | Record of important user and administrator actions  |
+Database Tables Summary:
+1. profiles: User information and roles.
+2. deceased_persons: Deceased individual records.
+3. claimants: Nominee and legal heir details.
+4. claimant_relationships: Relationship between claimants and deceased persons.
+5. documents: Uploaded document references.
+6. institutions: Bank, insurance and fund company information.
+7. financial_assets: Sample financial records.
+8. asset_matches: Matching algorithm results.
+9. claims: Claim applications and statuses.
+10. notifications: Email and in website notification records.
+11. audit_logs: Record of important user and administrator actions.
 
 ### **Important database relationships**
 
@@ -489,21 +485,20 @@ Next.js Route Handlers (`app/api/.../route.ts`) will provide the server-side ope
 
 The following API routes are recommended:
 
-| API endpoint                 | Method | Next.js File Path                         | Purpose                         |
-| ---------------------------- | ------ | ----------------------------------------- | ------------------------------- |
-| `/api/deceased`              | POST   | `app/api/deceased/route.ts`               | Submit a deceased person record |
-| `/api/deceased`              | GET    | `app/api/deceased/route.ts`               | Retrieve authorised records     |
-| `/api/deceased/{id}`         | GET    | `app/api/deceased/[id]/route.ts`          | View an individual record       |
-| `/api/deceased/{id}/verify`  | PATCH  | `app/api/deceased/[id]/verify/route.ts`   | Verify a death record           |
-| `/api/matching/{id}`         | POST   | `app/api/matching/[id]/route.ts`          | Start asset matching            |
-| `/api/matches/{id}`          | GET    | `app/api/matches/[id]/route.ts`           | Retrieve matching results       |
-| `/api/claimants`             | POST   | `app/api/claimants/route.ts`              | Submit claimant information     |
-| `/api/claimants/{id}/verify` | PATCH  | `app/api/claimants/[id]/verify/route.ts`  | Update claimant verification    |
-| `/api/claims`                | POST   | `app/api/claims/route.ts`                 | Submit a claim                  |
-| `/api/claims/{id}`           | GET    | `app/api/claims/[id]/route.ts`            | View claim details              |
-| `/api/claims/{id}/status`    | PATCH  | `app/api/claims/[id]/status/route.ts`     | Update claim status             |
-| `/api/notifications`         | GET    | `app/api/notifications/route.ts`          | Retrieve user notifications     |
-| `/api/admin/records`         | GET    | `app/api/admin/records/route.ts`          | Retrieve administrative records |
+Recommended API endpoints:
+1. POST /api/deceased (Next.js File Path: app/api/deceased/route.ts): Submit a deceased person record.
+2. GET /api/deceased (Next.js File Path: app/api/deceased/route.ts): Retrieve authorised records.
+3. GET /api/deceased/{id} (Next.js File Path: app/api/deceased/[id]/route.ts): View an individual record.
+4. PATCH /api/deceased/{id}/verify (Next.js File Path: app/api/deceased/[id]/verify/route.ts): Verify a death record.
+5. POST /api/matching/{id} (Next.js File Path: app/api/matching/[id]/route.ts): Start asset matching.
+6. GET /api/matches/{id} (Next.js File Path: app/api/matches/[id]/route.ts): Retrieve matching results.
+7. POST /api/claimants (Next.js File Path: app/api/claimants/route.ts): Submit claimant information.
+8. PATCH /api/claimants/{id}/verify (Next.js File Path: app/api/claimants/[id]/verify/route.ts): Update claimant verification.
+9. POST /api/claims (Next.js File Path: app/api/claims/route.ts): Submit a claim.
+10. GET /api/claims/{id} (Next.js File Path: app/api/claims/[id]/route.ts): View claim details.
+11. PATCH /api/claims/{id}/status (Next.js File Path: app/api/claims/[id]/status/route.ts): Update claim status.
+12. GET /api/notifications (Next.js File Path: app/api/notifications/route.ts): Retrieve user notifications.
+13. GET /api/admin/records (Next.js File Path: app/api/admin/records/route.ts): Retrieve administrative records.
 
 These endpoints validate the user's Supabase authentication session and role before executing operations. The matching algorithm is implemented in TypeScript (using `string-similarity` for fuzzy name matching alongside strict equality for identifiers and dates) and executed securely inside the Route Handler.
 
@@ -582,7 +577,7 @@ The hosting arrangement is a unified full-stack deployment using **Vercel** for 
 
 `RESEND_API_KEY`
 
-6. Click **Deploy**. Vercel will build the frontend pages and serverless API route handlers, deploying them to a secure production domain (e.g., `https://virasat-setu.vercel.app`).
+6. Click **Deploy**. Vercel will build the frontend pages and serverless API route handlers, deploying them to a secure production domain like `https://virasat-setu.vercel.app`.
 
 ### **C. Key deployment advantages**
 
@@ -642,7 +637,7 @@ virasat-setu/
         page.tsx
         globals.css
     components/
-        ui/                     # Buttons, modals, badges (e.g. shadcn/ui)
+        ui/                     # Buttons, modals, badges like shadcn/ui
         forms/                  # Registration, deceased submission, claim forms
         dashboard/              # Stats cards, asset tables, notification panel
         shared/                 # Navbar, footer, breadcrumbs
@@ -677,20 +672,19 @@ Keep sensitive credentials in `.env.local` during development and configure them
 
 Develop the project in the following order so that every part can be tested before moving to the next stage.
 
-| Phase | Development work                               | Expected outcome             |
-| ----- | ---------------------------------------------- | ---------------------------- |
-| 1     | Finalise requirements and UI design            | Page structure and workflow  |
-| 2     | Create Supabase project and database           | Working database             |
-| 3     | Implement authentication and roles             | Registration and login       |
-| 4     | Develop home page and dashboards               | Functional frontend          |
-| 5     | Build deceased person registration             | Record submission            |
-| 6     | Create financial sample databases              | Three financial datasets     |
-| 7     | Develop matching algorithm                     | Automated asset discovery    |
-| 8     | Build claimant verification                    | Verification workflow        |
-| 9     | Develop notification system                    | Email and website alerts     |
-| 10    | Build claim tracking and institution dashboard | Complete claim workflow      |
-| 11    | Develop admin dashboard                        | Record and system management |
-| 12    | Testing and deployment                         | Complete hosted prototype    |
+Development Roadmap Phases:
+1. Phase 1: Finalise requirements and UI design (Expected outcome: Page structure and workflow).
+2. Phase 2: Create Supabase project and database (Expected outcome: Working database).
+3. Phase 3: Implement authentication and roles (Expected outcome: Registration and login).
+4. Phase 4: Develop home page and dashboards (Expected outcome: Functional frontend).
+5. Phase 5: Build deceased person registration (Expected outcome: Record submission).
+6. Phase 6: Create financial databases (Expected outcome: Three financial datasets).
+7. Phase 7: Develop matching algorithm (Expected outcome: Automated asset discovery).
+8. Phase 8: Build claimant verification (Expected outcome: Verification workflow).
+9. Phase 9: Develop notification system (Expected outcome: Email and website alerts).
+10. Phase 10: Build claim tracking and institution dashboard (Expected outcome: Complete claim workflow).
+11. Phase 11: Develop admin dashboard (Expected outcome: Record and system management).
+12. Phase 12: Testing and deployment (Expected outcome: Complete hosted prototype).
 
 A realistic target is approximately four to six weeks for a small student team, depending on development experience.
 
@@ -745,16 +739,15 @@ The evaluator should be able to see the entire process working through the deplo
 
 It is important to clearly distinguish prototype functionality from the proposed real world system.
 
-| Feature                 | College prototype                      | Real implementation                    |
-| ----------------------- | -------------------------------------- | -------------------------------------- |
-| User registration       | Fully functional                       | Fully functional                       |
-| Death record submission | Sample records                         | Authorised government integration      |
-| Financial databases     | Fictional datasets                     | Authorised institution integration     |
-| Asset matching          | Functional algorithm                   | Secure institutional matching          |
-| Claimant verification   | Manual sample verification             | Legally valid verification             |
-| Notifications           | Functional email and in website alerts | Approved notification integration      |
-| Claim tracking          | Simulated claim processing             | Institution connected claim processing |
-| Money transfer          | Not included                           | Handled by financial institutions      |
+Prototype Scope and Limitations Comparison:
+1. User registration: Fully functional in college prototype; fully functional in real implementation.
+2. Death record submission: Sample records in college prototype; authorised government integration in real implementation.
+3. Financial databases: Fictional datasets in college prototype; authorised institution integration in real implementation.
+4. Asset matching: Functional algorithm in college prototype; secure institutional matching in real implementation.
+5. Claimant verification: Manual sample verification in college prototype; legally valid verification in real implementation.
+6. Notifications: Functional email and in website alerts in college prototype; approved notification integration in real implementation.
+7. Claim tracking: Simulated claim processing in college prototype; institution connected claim processing in real implementation.
+8. Money transfer: Not included in college prototype; handled directly by financial institutions in real implementation.
 
 The prototype should demonstrate the technology and process without pretending to have access to restricted databases.
 

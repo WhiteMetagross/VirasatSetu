@@ -1,6 +1,4 @@
-// ==========================================
 // VIRASAT SETU CLIENT APPLICATION LOGIC
-// ==========================================
 
 const API_BASE = "";
 let currentUser = null;
@@ -74,9 +72,7 @@ async function apiFetch(endpoint, options = {}) {
   }
 }
 
-// ==========================================
 // AUTHENTICATION & DEMO LOGIN
-// ==========================================
 
 async function fetchCurrentUser() {
   try {
@@ -239,9 +235,7 @@ async function handleAuthSubmit(e) {
   }
 }
 
-// ==========================================
 // NAVIGATION TAB SWITCHER
-// ==========================================
 
 function switchTab(tabId) {
   document.querySelectorAll(".tab-content").forEach((el) => el.classList.add("hidden"));
@@ -262,9 +256,7 @@ function switchTab(tabId) {
   if (tabId === "institution") loadInstitutionData();
 }
 
-// ==========================================
 // FAMILY DASHBOARD & DECEASED (Modules 3 & 4)
-// ==========================================
 
 async function loadDashboardData() {
   if (!currentUser) return;
@@ -415,9 +407,7 @@ async function handleDeceasedSubmit(e) {
   }
 }
 
-// ==========================================
 // ASSET DISCOVERY & MATCHING (Module 6 & 7)
-// ==========================================
 
 let activeDeceasedId = null;
 
@@ -599,9 +589,7 @@ function createMatchCardHTML(m) {
   `;
 }
 
-// ==========================================
 // CLAIM TRACKING (Module 10)
-// ==========================================
 
 let activeClaimMatch = null;
 
@@ -715,9 +703,7 @@ function createClaimCardHTML(c) {
   `;
 }
 
-// ==========================================
 // FINANCIAL INSTITUTION DATABASES (Module 5)
-// ==========================================
 
 async function loadFinancialDB() {
   try {
@@ -839,9 +825,7 @@ async function handleAddAssetSubmit(e) {
   }
 }
 
-// ==========================================
 // ADMINISTRATOR PANEL (Module 11)
-// ==========================================
 
 async function loadAdminData() {
   try {
@@ -933,9 +917,7 @@ async function resetDemoData() {
   }
 }
 
-// ==========================================
 // INSTITUTION PORTAL (Module 12)
-// ==========================================
 
 async function loadInstitutionData() {
   try {
@@ -1016,9 +998,7 @@ async function instUpdateStatus(claimId) {
   }
 }
 
-// ==========================================
 // NOTIFICATIONS & SIMULATED EMAIL (Module 9)
-// ==========================================
 
 let userNotifications = [];
 
@@ -1106,9 +1086,7 @@ function closeEmailModal() {
   document.getElementById("modal-email-view").classList.add("hidden");
 }
 
-// ==========================================
 // RAJESH KUMAR TEST SCENARIO ONE-CLICK RUNNER
-// ==========================================
 
 async function loadRajeshScenario() {
   showToast("Loading Rajesh Kumar demonstration scenario...");

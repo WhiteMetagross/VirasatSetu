@@ -157,7 +157,7 @@ def seed_all():
         # Note: Must include the Rajesh Kumar test case (ID: ABCDE1234F, DOB: 1965-04-12)
         financial_records = []
 
-        # --- A. BANK RECORDS (42 records) ---
+        # A. BANK RECORDS (42 records)
         bank_data = [
             # Rajesh Kumar (The primary demonstration scenario!)
             ("SBI", "Rajesh Kumar", "1965-04-12", "ABCDE1234F", "SB-4019284102", "Fixed Deposit", "Ramesh Kumar (Son)", 345000.0, "Dormant Term Deposit > 10 Years", "CP Branch, New Delhi (IFSC: SBIN0000691)"),
@@ -222,7 +222,7 @@ def seed_all():
                 details_json=details
             ))
 
-        # --- B. INSURANCE RECORDS (26 records) ---
+        # B. INSURANCE RECORDS (26 records)
         insurance_data = [
             # Rajesh Kumar (The primary demonstration scenario!)
             ("LIC", "Rajesh Kumar", "1965-04-12", "ABCDE1234F", "POL-928172635", "Jeevan Anand Endowment Policy", "Ramesh Kumar (Son)", 850000.0, "Matured Unclaimed Payout", "Divisional Office 1, Jeevan Prakash, Kasturba Gandhi Marg, New Delhi"),
@@ -271,7 +271,7 @@ def seed_all():
                 details_json=details
             ))
 
-        # --- C. MUTUAL FUND RECORDS (26 records) ---
+        # C. MUTUAL FUND RECORDS (26 records)
         mf_data = [
             # Rajesh Kumar (The primary demonstration scenario!)
             ("HDFCMF", "Rajesh Kumar", "1965-04-12", "ABCDE1234F", "FOL-77281903", "HDFC Top 100 Equity Fund (Growth)", "Ramesh Kumar (Son)", 512740.0, "Unclaimed Redemption and Dividends", "Folio: 77281903/81, Units: 4,820.55, NAV: 106.36"),

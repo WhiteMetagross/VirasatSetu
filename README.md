@@ -2,23 +2,12 @@
 
 Virasat Setu is an enterprise digital inheritance and asset discovery portal created to solve the challenge of unclaimed wealth across India. Every year substantial savings, term deposits, matured insurance policies and mutual fund folios remain dormant because legal heirs and designated nominees remain unaware of their existence. Virasat Setu bridges citizen families with institutional repositories through automated identity matching, civil registration verification and transparent claim tracking.
 
-[==================================================================]
-[                    VIRASAT SETU DIGITAL PLATFORM                 ]
-[          Bridging Citizens with Unclaimed Financial Legacies     ]
-[==================================================================]
-                                 v
-   [ Citizen Portal ]            v         [ Government Oversight ]
-   Register Deceased Records     v         Verify Civil Certificates
-   Track Claim Progress          v         Execute Matching Engine
-                                 v
-                 [ Central Matching Engine ]
-                 100 Point Identity and Record Verification
-                                 v
-   [ Banking Desk ]              v         [ Insurance and Funds ]
-   State Bank of India           v         Life Insurance Corporation
-   Punjab National Bank          v         HDFC Mutual Fund
-   Bank of Baroda                v         SBI Funds Management
-[==================================================================]
+Virasat Setu Platform Flow:
+1. Citizen Portal: Register Deceased Records and Track Claim Progress.
+2. Government Oversight: Verify Civil Certificates and Execute Matching Engine.
+3. Central Matching Engine: One Hundred Point Identity and Record Verification.
+4. Banking Desk: State Bank of India, Punjab National Bank and Bank of Baroda.
+5. Insurance and Funds Desk: Life Insurance Corporation, HDFC Mutual Fund and SBI Funds Management.
 
 
 ## Executive Summary and Scope:
@@ -51,7 +40,7 @@ Financial dormancy in India exceeds one point five lakh crore rupees. This wealt
 
 The matching engine searches across institutional records without human bias. It computes a transparent composite score based on the following weighted criteria:
 
-1. Exact Identity Reference Match: Fifty points awarded when the sample identity reference such as Permanent Account Number matches exactly.
+1. Exact Identity Reference Match: Fifty points awarded when the sample identity reference like Permanent Account Number matches exactly.
 2. Full Name Token Similarity: Up to twenty five points awarded based on character sequences, phonetic similarity and token order.
 3. Exact Date of Birth Match: Fifteen points awarded when birth dates match completely, or eight points if birth years match.
 4. Family Nominee and Branch City Connection: Ten points awarded when the declared nominee matches claimant surnames or branch cities align.
@@ -81,3 +70,4 @@ Detailed operational and technical manuals are organized across the following do
 3. Architecture md: Detailed architectural specification, data flow diagrams and scoring algorithms.
 4. InstallationAndSetup md: Step by step local setup, automated testing and cloud deployment procedures.
 5. Tech md: In depth technical specifications, database schema definitions and API endpoint references.
+6. DTI md: Complete Digital Transformation and Innovation specification and Business Model Canvas.

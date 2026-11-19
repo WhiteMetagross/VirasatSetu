@@ -21,13 +21,13 @@ def send_notification(
     # Build formatted simulated email
     email_subject = f"[Virasat Setu Notification] {title}"
     email_body = f"""
-========================================================
+
 VIRASAT SETU : DIGITAL INHERITANCE AND ASSET DISCOVERY
-========================================================
+
 To: {recipient_name} <{recipient_email}>
 Subject: {email_subject}
 Date: {datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S UTC')}
---------------------------------------------------------
+
 Dear {recipient_name},
 
 {message}
@@ -41,7 +41,7 @@ Portal Link: {link or 'https://virasatsetu.gov.in/dashboard'}
 Warm regards,
 Virasat Setu Asset Discovery Cell
 Government Prototype Portal
-========================================================
+
 """
     email_sent = False
     log_info = f"[Simulated Email Dispatched to {recipient_email} at {datetime.utcnow().isoformat()}]\n{email_body.strip()}"

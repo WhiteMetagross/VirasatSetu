@@ -3,9 +3,7 @@ import json
 import uuid
 
 def test_system():
-    print("==================================================")
     print("VIRASAT SETU: COMPREHENSIVE END TO END TEST SUITE")
-    print("==================================================")
 
     # 1. Family Login
     req = urllib.request.Request(
@@ -159,9 +157,7 @@ def test_system():
         assert "Virasat Setu" in html
         print(f"10. Web Frontend UI Serving: {len(html)} bytes delivered successfully")
 
-    print("\n==================================================")
-    print("ALL 10 VERIFICATION MODULES PASSED WITH 100% SUCCESS")
-    print("==================================================")
+    print("\nALL 10 VERIFICATION MODULES PASSED WITH 100% SUCCESS")
 
 if __name__ == "__main__":
     test_system()

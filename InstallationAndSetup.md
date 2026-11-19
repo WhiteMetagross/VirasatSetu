@@ -2,22 +2,10 @@
 
 This document provides clear technical instructions for setting up, configuring, testing and deploying the Virasat Setu platform in both local development and cloud production environments.
 
-[==================================================================]
-[                   DEPLOYMENT PIPELINE OVERVIEW                   ]
-[==================================================================]
-                                 v
-                     [ 1. Local Development ]
-                     Python 3.10+ Environment and FastAPI
-                     Automated Verification Suite
-                                 v
-                     [ 2. Cloud Database Setup ]
-                     Supabase PostgreSQL Project
-                     Execute Schema and Seed Migrations
-                                 v
-                     [ 3. Serverless Production ]
-                     Deploy to Vercel via Git Repository
-                     Configure Cloud Environment Variables
-[==================================================================]
+Deployment Pipeline Overview:
+1. Local Development: Python 3.10+ Environment, FastAPI and Automated Verification Suite.
+2. Cloud Database Setup: Supabase PostgreSQL Project with Schema and Seed Migrations.
+3. Serverless Production: Deploy to Vercel via Git Repository and Configure Cloud Environment Variables.
 
 
 ## System Requirements and Prerequisites:

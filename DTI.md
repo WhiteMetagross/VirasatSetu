@@ -2,24 +2,12 @@
 
 Virasat Setu is an enterprise digital public infrastructure platform designed to bridge citizen families with unclaimed financial assets belonging to deceased relatives. Across India more than one point five lakh crore rupees remain dormant in savings accounts, matured life insurance policies, provident funds and mutual fund folios. Virasat Setu establishes an automated, secure and transparent asset discovery ecosystem connecting civil registration offices, financial institutions and citizens without requiring the platform to hold or transfer funds directly.
 
-[==================================================================]
-[             VIRASAT SETU DIGITAL INFRASTRUCTURE OVERVIEW         ]
-[==================================================================]
-                                 v
-   [ Civil Registration ]        v        [ Financial Regulators ]
-   Municipal Death Records       v        Reserve Bank of India
-   State Registration Systems    v        SEBI and IRDAI
-                                 v
-                 [ Virasat Setu Core Engine ]
-                 Civil Certificate Verification Desk
-                 100 Point Identity and Record Matching
-                 Automated Event Notification Pipeline
-                                 v
-   [ Citizen Beneficiaries ]     v        [ Institutional Desks ]
-   Nominees and Legal Heirs      v        Public and Private Banks
-   Bereaved Family Members       v        Life Insurance Companies
-   Civil Society Organizations   v        Mutual Fund Houses
-[==================================================================]
+Virasat Setu Digital Infrastructure Overview:
+1. Civil Registration: Municipal Death Records and State Registration Systems.
+2. Financial Regulators: Reserve Bank of India, SEBI and IRDAI.
+3. Virasat Setu Core Engine: Civil Certificate Verification Desk, 100 Point Identity and Record Matching, Automated Event Notification Pipeline.
+4. Citizen Beneficiaries: Nominees and Legal Heirs, Bereaved Family Members, Civil Society Organizations.
+5. Institutional Desks: Public and Private Banks, Life Insurance Companies, Mutual Fund Houses.
 
 
 ## Project Overview and National Problem Statement:
@@ -206,18 +194,12 @@ Provides isolated institutional processing desks where nodal officers from speci
 
 The matching engine evaluates verified deceased records against central financial repositories using a weighted scoring matrix designed to minimize false positives:
 
-[==================================================================]
-[             ONE HUNDRED POINT MATCHING ALGORITHM MATRIX          ]
-[==================================================================]
-  Evaluation Criteria                    Weight      Methodology
-[==================================================================]
-  Exact Sample Identity Reference         50 Pts     Strict Match
-  Full Name Token Similarity              25 Pts     Jaro Winkler
-  Exact Date of Birth Match               15 Pts     ISO Date
-  Nominee or Branch City Association      10 Pts     Context Link
-[==================================================================]
-  Maximum Composite Score                100 Pts     Candidate
-[==================================================================]
+One Hundred Point Matching Algorithm Matrix:
+1. Exact Sample Identity Reference: 50 Points (Strict Match).
+2. Full Name Token Similarity: 25 Points (Jaro Winkler).
+3. Exact Date of Birth Match: 15 Points (ISO Date).
+4. Nominee or Branch City Association: 10 Points (Context Link).
+5. Maximum Composite Score: 100 Points (Candidate).
 
 
 The algorithm assigns records into three operational qualification tiers:

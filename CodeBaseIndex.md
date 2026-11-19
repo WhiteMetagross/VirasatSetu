@@ -2,45 +2,13 @@
 
 This document provides a comprehensive structural guide to the Virasat Setu codebase. It outlines the directory hierarchy, functional responsibilities of every file, data flow linkages and cross component dependencies.
 
-[==================================================================]
-[                VIRASAT SETU COMPLETE CODEBASE VISUAL MAP         ]
-[==================================================================]
-                                 v
-        [ Client Interface Layer (app/static) ]
-        index html  ................ Responsive Single Page UI
-        app js      ................ State Machine and Fetch Logic
-                                 v
-                                 v (HTTP REST Requests)
-                                 v
-     [ Application Gateway (api/index py and app/main py) ]
-     Vercel Serverless Entrypoint and FastAPI Application
-                                 v
-                                 v (Modular Route Handlers)
-                                 v
-     [ API Routers Layer (app/routers) ]
-     auth py         deceased py      matching py      claimants py
-     claims py       institutions py  notifications py documents py
-     dashboard py    admin py
-                                 v
-                                 v (Core Services and Rules)
-                                 v
-     [ Business Logic Services (app/services) ]
-     matching service py      ....... 100 Point Matching Engine
-     notification service py  ....... Notification and Email Dispatch
-     supabase service py      ....... Supabase PostgREST Client
-                                 v
-                                 v (Object Relational Mapping)
-                                 v
-     [ Data Models and Schemas (app/models and app/schemas) ]
-     models py       ................ Eleven Relational Entities
-     schemas py      ................ Pydantic Validation Schemas
-                                 v
-                                 v (Database Connections)
-                                 v
-     [ Dual Persistence Layer (app/database py and supabase) ]
-     Local Storage: SQLite Database (virasat setu db)
-     Cloud Storage: Supabase Hosted PostgreSQL with Row Level Security
-[==================================================================]
+Virasat Setu Codebase Visual Architecture:
+1. Client Interface Layer (app/static): index html (Responsive Single Page UI) and app js (State Machine and Fetch Logic).
+2. Application Gateway (api/index py and app/main py): Vercel Serverless Entrypoint and FastAPI Application.
+3. API Routers Layer (app/routers): auth py, deceased py, matching py, claimants py, claims py, institutions py, notifications py, documents py, dashboard py, admin py.
+4. Business Logic Services (app/services): matching service py (100 Point Matching Engine), notification service py (Notification and Email Dispatch), supabase service py (Supabase PostgREST Client).
+5. Data Models and Schemas (app/models and app/schemas): models py (Eleven Relational Entities), schemas py (Pydantic Validation Schemas).
+6. Dual Persistence Layer (app/database py and supabase): Local Storage (SQLite Database) and Cloud Storage (Supabase Hosted PostgreSQL with Row Level Security).
 
 
 ## Detailed Directory Tree Structure:
@@ -48,7 +16,6 @@ This document provides a comprehensive structural guide to the Virasat Setu code
 The project follows a human interpretable modular layout separating concerns cleanly across routes, services, schemas, models and static assets:
 
 [Root Directory: DTIProject]
-====================================================================
 /api
   index py .................. Vercel Serverless Function Entrypoint
 /app
@@ -94,7 +61,7 @@ CodeBaseIndex md ............ Detailed Codebase Index
 Architecture md ............. Deep Technical Architecture
 InstallationAndSetup md ..... Local Setup and Deployment Guide
 Tech md ..................... Full Technical Specifications
-====================================================================
+DTI md ...................... Digital Transformation and Innovation Specification
 
 
 ## Detailed File Inventory and Responsibilities:

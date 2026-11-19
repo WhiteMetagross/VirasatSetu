@@ -2,37 +2,11 @@
 
 This document details the architectural design, layer boundaries, data flow sequences and algorithm specifications powering the Virasat Setu digital inheritance platform.
 
-[==================================================================]
-[                MULTI TIER FULL STACK ARCHITECTURE                ]
-[==================================================================]
-                                 v
-   [ 1. Presentation Tier ]
-   HTML5 Semantic Web Interface
-   Tailwind Styling System
-   Native JavaScript Single Page Application Controller
-                                 v
-                                 v (HTTP REST API with JSON)
-                                 v
-   [ 2. API Gateway and Routing Tier ]
-   Vercel Serverless Function Handler (api/index py)
-   FastAPI ASGI Core Engine (app/main py)
-   Ten Modular Route Controllers (app/routers)
-                                 v
-                                 v (Business Domain Logic)
-                                 v
-   [ 3. Application Services Tier ]
-   Automated One Hundred Point Asset Matching Engine
-   Real Time Notification and Email Dispatch Pipeline
-   JWT Role Based Access Control and Security Guards
-                                 v
-                                 v (Data Persistence and ORM)
-                                 v
-   [ 4. Data and Security Tier ]
-   SQLAlchemy Declarative Relational Models (11 Tables)
-   Dual Persistence Engine:
-     Primary: Hosted Supabase PostgreSQL with Row Level Security
-     Fallback: Local Embedded SQLite for Zero Setup Presentations
-[==================================================================]
+Multi Tier Full Stack Architecture:
+1. Presentation Tier: HTML5 Semantic Web Interface, Tailwind Styling System, Native JavaScript Single Page Application Controller.
+2. API Gateway and Routing Tier: Vercel Serverless Function Handler (api/index py), FastAPI ASGI Core Engine (app/main py), Ten Modular Route Controllers (app/routers).
+3. Application Services Tier: Automated One Hundred Point Asset Matching Engine, Real Time Notification and Email Dispatch Pipeline, JWT Role Based Access Control and Security Guards.
+4. Data and Security Tier: SQLAlchemy Declarative Relational Models (11 Tables), Dual Persistence Engine with Hosted Supabase PostgreSQL and Local Embedded SQLite.
 
 
 ## Architectural Principles:
@@ -69,20 +43,14 @@ FastAPI provides an asynchronous foundation capable of handling concurrent reque
 
 ### Services and Algorithm Layer:
 
-The core intellectual property of the platform resides in the matching and notification services:
+The core intellectual property of the platform resides in the matching and notification services.
 
-[==================================================================]
-[             ONE HUNDRED POINT MATCHING ALGORITHM MATRIX          ]
-[==================================================================]
-  Criterion                              Points      Verification
-[==================================================================]
-  Exact Sample Identity Reference         50         Strict String
-  Holder Full Name Similarity             25         Token Distance
-  Exact Date of Birth Alignment           15         ISO Date Compare
-  Nominee or Branch Location Connection   10         Relation Check
-[==================================================================]
-  Total Maximum Possible Score           100         Candidate Score
-[==================================================================]
+One Hundred Point Matching Algorithm Matrix:
+1. Exact Sample Identity Reference: 50 Points (Strict String).
+2. Holder Full Name Similarity: 25 Points (Token Distance).
+3. Exact Date of Birth Alignment: 15 Points (ISO Date Compare).
+4. Nominee or Branch Location Connection: 10 Points (Relation Check).
+5. Total Maximum Possible Score: 100 Points (Candidate Score).
 
 
 The score evaluation determines one of three outcomes:
@@ -96,7 +64,7 @@ The score evaluation determines one of three outcomes:
 
 Name comparison uses a combined token sort and Jaro Winkler similarity metric. Let string S1 represent the deceased full name and string S2 represent the asset holder name.
 
-1. Text Normalization: Names are converted to lowercase, stripped of honorifics such as Shri, Late or Smt, and sorted alphabetically by token.
+1. Text Normalization: Names are converted to lowercase, stripped of honorifics like Shri, Late or Smt, and sorted alphabetically by token.
 2. Jaro Distance Calculation: Computes the number of matching characters within half the maximum string length and measures character transpositions.
 3. Winkler Prefix Scaling: Boosts similarity scores when names share identical initial characters up to four characters.
 4. Score Attribution: High similarity exceeding zero point nine yields the full twenty five points, while similarity between zero point seven and zero point nine awards fifteen points.
@@ -104,32 +72,10 @@ Name comparison uses a combined token sort and Jaro Winkler similarity metric. L
 
 ## End to End Data Flow Lifecycle:
 
-[==================================================================]
-[                    LIFECYCLE DATA FLOW SEQUENCE                  ]
-[==================================================================]
-  Citizen          Admin          Matching Service      Institution
-     v               v                   v                   v
-     v Submit Death  v                   v                   v
-     v==============>v                   v                   v
-     v               v Civil Review      v                   v
-     v               v Approve Record    v                   v
-     v               v==================>v                   v
-     v               v                   v Run 100 Pt Engine v
-     v               v                   v Cross Match DB    v
-     v Real Time Notification Arrives    v Store Matches     v
-     v<==================================v                   v
-     v View Discovered Assets            v                   v
-     v Submit Claim Application          v                   v
-     v======================================================>v
-     v                                   v                   v Review Proofs
-     v                                   v                   v Issue Approval
-     v Status Stepper Updates to Approved<===================v
-[==================================================================]
-
-
-1. Submission Step: Citizen provides civil death certificate details and attaches supporting documents.
-2. Validation Step: Government administrator inspects municipal validity and approves the death certificate.
-3. Discovery Step: The system automatically invokes the one hundred point engine across all banking, insurance and fund records.
-4. Notification Step: In portal alerts and simulated transactional emails notify the citizen of discovered wealth.
-5. Verification Step: The claimant submits succession details establishing their authority as legal heir or nominee.
-6. Determination Step: The financial institution evaluates the application and marks the claim Approved for settlement.
+Lifecycle Data Flow Sequence:
+1. Citizen Submits Death Record: Citizen enters civil death certificate details and attaches supporting documents.
+2. Admin Civil Review: Government administrator inspects municipal validity and approves the death certificate.
+3. Automated Discovery: The system automatically invokes the one hundred point engine across all banking, insurance and fund records.
+4. Real Time Notification: In portal alerts and simulated transactional emails notify the citizen of discovered wealth.
+5. Claimant Verification: The claimant submits succession details establishing their authority as legal heir or nominee.
+6. Institutional Determination: The financial institution evaluates the application and marks the claim Approved for settlement.

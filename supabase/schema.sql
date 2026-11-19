@@ -1,7 +1,5 @@
--- ==============================================================================
 -- VIRASAT SETU: POSTGRESQL SCHEMA FOR SUPABASE
 -- Digital Inheritance and Unclaimed Financial Asset Discovery Platform
--- ==============================================================================
 
 -- Enable UUID extension
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";

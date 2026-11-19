@@ -1,6 +1,4 @@
--- ==============================================================================
 -- VIRASAT SETU: REALISTIC INDIAN PROTOTYPE SEED DATA
--- ==============================================================================
 
 -- 1. Financial Institutions
 INSERT INTO public.institutions (id, name, code, category, contact_email, phone, address) VALUES ('a60d6366-878a-4698-ac38-081e041fd572', 'State Bank of India', 'SBI', 'bank', 'unclaimed@sbi.co.in', '1800-425-3800', 'State Bank Bhavan, Madame Cama Road, Nariman Point, Mumbai') ON CONFLICT (code) DO NOTHING;
