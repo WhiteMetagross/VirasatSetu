@@ -292,23 +292,36 @@ def run_e2e_tests():
 
         # 19. Test AI Claim Health Predictor in Initiate Claim modal
         print("\n[Step 19] Testing AI Claim Health Predictor in Claim modal...")
-        # Load Rajesh Kumar demo scenario to test claim modal
-        page.click(".tab-btn[data-tab='matches']")
+        # Authenticate as Priya Sharma who has unclaimed matching assets
+        page.evaluate("""async () => {
+            const resp = await apiFetch('/api/auth/login', {
+                method: 'POST',
+                body: JSON.stringify({ email: 'priya.sharma@example.com', password: 'family123' })
+            });
+            currentUser = resp.user;
+            currentToken = resp.access_token;
+            localStorage.setItem('token', currentToken);
+            updateUIForUser();
+            switchTab('matches');
+            await populateMatchesDropdown();
+            await loadMatchesForSelected();
+        }""")
         time.sleep(1)
+
         # Select first available match and click Initiate Claim
         claim_btn = page.locator("button:has-text('Initiate Claim')").first
-        if claim_btn.is_visible():
-            claim_btn.click()
-            time.sleep(1)
-            claim_modal = page.locator("#modal-claim")
-            assert claim_modal.is_visible(), "Error: Claim modal should open."
-            prediction_box = page.locator("#claim-ai-prediction-box")
-            assert prediction_box.is_visible(), "Error: AI Claim Prediction box must be visible in Claim modal."
-            prob_badge = page.locator("#claim-ai-prob-badge").text_content()
-            assert "%" in prob_badge, f"Expected probability percentage, got {prob_badge}"
-            print(f"  Passed: AI Claim Health Predictor operational in modal: {prob_badge}.")
-            page.click("#modal-claim button:has-text('Cancel')")
-            time.sleep(0.5)
+        assert claim_btn.is_visible(), "Error: Initiate Claim button should be visible for Priya Sharma matches."
+        claim_btn.click()
+        time.sleep(1.5)
+        claim_modal = page.locator("#modal-claim")
+        assert claim_modal.is_visible(), "Error: Claim modal should open."
+        prediction_box = page.locator("#claim-ai-prediction-box")
+        assert prediction_box.is_visible(), "Error: AI Claim Prediction box must be visible in Claim modal."
+        prob_badge = page.locator("#claim-ai-prob-badge").text_content()
+        assert "%" in prob_badge, f"Expected probability percentage, got {prob_badge}"
+        print(f"  Passed: AI Claim Health Predictor operational in modal: {prob_badge}.")
+        page.click("#modal-claim button:has-text('Cancel')")
+        time.sleep(0.5)
 
         # 20. Test AI Fraud and Anomaly Detection in Admin Dashboard
         print("\n[Step 20] Testing AI Fraud and Anomaly Intelligence Center in Admin Panel...")
