@@ -4,8 +4,8 @@ This document details the architectural design, layer boundaries, data flow sequ
 
 Multi Tier Full Stack Architecture:
 1. Presentation Tier: HTML5 Semantic Web Interface, Tailwind Styling System, Native JavaScript Single Page Application Controller.
-2. API Gateway and Routing Tier: Vercel Serverless Function Handler (api/index py), FastAPI ASGI Core Engine (app/main py), Ten Modular Route Controllers (app/routers).
-3. Application Services Tier: Automated One Hundred Point Asset Matching Engine, Real Time Notification and Email Dispatch Pipeline, JWT Role Based Access Control and Security Guards.
+2. API Gateway and Routing Tier: Vercel Serverless Function Handler (api/index py), FastAPI ASGI Core Engine (app/main py), Eleven Modular Route Controllers (app/routers).
+3. Application Services Tier: Automated One Hundred Point Asset Matching Engine, ML Transliteration Normalizer, Dual Engine AI Legal Copilot, Claim Health Predictor, AI Fraud Intelligence Center, Real Time Notification and Email Dispatch Pipeline, JWT Role Based Access Control and Security Guards.
 4. Data and Security Tier: SQLAlchemy Declarative Relational Models (11 Tables), Dual Persistence Engine with Hosted Supabase PostgreSQL and Local Embedded SQLite.
 
 
@@ -39,6 +39,7 @@ FastAPI provides an asynchronous foundation capable of handling concurrent reque
 3. Matching Router: Exposes the automated matching engine for verified deceased profiles.
 4. Claims Router: Manages claim creation, validation and status updates across five lifecycle stages.
 5. Administration Router: Provides system stats, pending verification queues and audit logs.
+6. Artificial Intelligence Router: Exposes the Virasat AI Legal Copilot, citizen claim health predictor, and administrative fraud anomaly intelligence endpoints.
 
 
 ### Services and Algorithm Layer:
@@ -68,6 +69,34 @@ Name comparison uses a combined token sort and Jaro Winkler similarity metric. L
 2. Jaro Distance Calculation: Computes the number of matching characters within half the maximum string length and measures character transpositions.
 3. Winkler Prefix Scaling: Boosts similarity scores when names share identical initial characters up to four characters.
 4. Score Attribution: High similarity exceeding zero point nine yields the full twenty five points, while similarity between zero point seven and zero point nine awards fifteen points.
+
+
+### Machine Learning Indian Name Transliteration Integration:
+
+To resolve cross regional transliteration discrepancies across Indian civil archives, the matching engine applies machine learning transformations:
+
+1. Indian Phonetic Normalization: Maps regional character variants (like ksh to x, ee to i, oo to o, ch to c, and collapsing repeated consonants) to standard phonetic tokens.
+2. Character Bigram Jaccard Similarity: Calculates set intersection over set union of sliding two character sub strings between applicant names and ledger records.
+3. Scoring Attribution: Phonetic transform matches and high Jaccard coefficients award twenty one to twenty three points with clear attribution logged in the candidate record.
+
+
+### Virasat AI Legal Copilot Dual Engine Architecture:
+
+1. Generative Intelligence Tier: Routes natural language inquiries to Google Gemini 3.8 Flash via secure backend APIs for conversational explanation of inheritance statutes.
+2. Two Second Timeout Interceptor: Enforces a strict two second ceiling to protect citizen responsiveness.
+3. Offline Indian Succession Knowledge Engine: Fallback rule engine encoding statutes including the Hindu Succession Act 1956, Indian Succession Act 1925, banking claim procedures, and Supreme Court nominee rulings.
+
+
+### Citizen Claim Health and Approval Probability Predictor:
+
+1. Predictive Evaluation: Evaluates claimant relationship standing, heir succession rights, matching confidence, document completeness, and dormancy tenure.
+2. Probability Scoring: Outputs a readiness rating between twenty five and ninety eight percent with dynamic prescriptive checklists prior to filing.
+
+
+### Administrative AI Fraud and Anomaly Intelligence Center:
+
+1. Strictly Gated Access: Isolated from citizen views and accessible exclusively to administrators and institutional desk officers with HTTP 403 Forbidden enforcement.
+2. Conflict and Anomaly Detection: Detects duplicate claims filed on the identical financial folio, flags high value dormancy exceeding five lakh rupees for enhanced verification, and detects nominee hierarchy discrepancies.
 
 
 ## Complete Data Flow Lifecycle:

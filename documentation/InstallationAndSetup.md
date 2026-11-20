@@ -44,13 +44,12 @@ Virasat Setu includes convenient runners for quick local execution:
 
 ## Executing the Verification Test Suite:
 
-Virasat Setu includes a comprehensive automated test script verifying all ten operational modules:
+Virasat Setu includes comprehensive automated test suites verifying all core services, artificial intelligence features, cybersecurity defenses and browser user interactions:
 
-1. Keep Local Server Running: Ensure the application server is active on port 8000.
-2. Open New Terminal: Open a second terminal window in the project root directory.
-3. Execute Test Script: Run python test system py in your terminal.
-4. Review Test Output: The script verifies citizen login, deceased record retrieval, one hundred point matching calculations, claimant registration, claim initiation, administrative oversight, institutional reviews, notification logging and frontend delivery.
-5. Confirm Success: Ensure the test concludes with all ten verification modules passed with one hundred percent success.
+1. System Workflow Test Suite: Run python test system py to verify citizen login, deceased record retrieval, one hundred point matching calculations, claimant registration, claim initiation, administrative oversight, institutional reviews, notification logging and frontend delivery.
+2. AI and Google OAuth Test Suite: Run python test ai features py to verify Google OAuth configuration, AI Legal Copilot queries, machine learning transliteration variants, claim health probability scoring, and administrative fraud anomaly access control.
+3. Cybersecurity Penetration Test Suite: Run python test security py to verify SQL injection defense, script injection rejection, CSRF custom header verification, arbitrary file upload defense, and HTTP defensive security headers.
+4. Agentic Browser UI Automation Suite: Run python agentic ui tester py to execute a complete twenty one step automated Playwright browser session testing all buttons, inputs, tabs, modals and confirming zero console errors.
 
 
 ## Supabase Cloud Database Configuration:
@@ -72,9 +71,10 @@ To deploy the unified full stack application to Vercel:
 1. Connect Repository: Log into your Vercel dashboard and click Add New Project.
 2. Import Git Repository: Select the VirasatSetu repository from your GitHub account.
 3. Framework Detection: Vercel detects the configuration automatically via vercel json and api index py without requiring custom build scripts.
-4. Configure Environment Variables: In the Project Settings Environment Variables section add SUPABASE URL, SUPABASE ANON KEY and SUPABASE SERVICE ROLE KEY.
+4. Configure Environment Variables: In the Project Settings Environment Variables section add SUPABASE URL, SUPABASE ANON KEY, SUPABASE SERVICE ROLE KEY, GEMINI API KEY, and GOOGLE CLIENT SECRET.
 5. Deploy Application: Click Deploy to trigger serverless compilation and distribution.
-6. Production Verification: Open your deployed Vercel domain to verify that frontend pages and API endpoints communicate seamlessly under a single domain origin.
+6. Production Verification: Open your deployed Vercel domain to verify that frontend pages, AI endpoints and API controllers communicate seamlessly under a single domain origin.
+
 
 
 ## Operational Troubleshooting:

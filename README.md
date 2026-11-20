@@ -47,14 +47,18 @@ Financial dormancy in India exceeds one point five lakh crore rupees. This wealt
 
 ## Core Capabilities and Functional Modules:
 
-1. Citizen and Family Registration: Allows family members to create authenticated profiles and submit deceased person records.
-2. Civil Certificate Registration: Captures official municipal death certificate numbers, dates of registration and issuing authorities.
-3. Automated Discovery Engine: Evaluates identity parameters against banking, insurance and fund records using a weighted one hundred point scoring algorithm.
-4. Browse Database Interface: Provides transparent search capabilities across ninety four institutional financial records.
-5. Claimant Verification Workflow: Supports legal heir and nominee submissions with civil documentation proofs.
-6. Institutional Claim Desk: Equips authorized representatives from banks and insurers with verification consoles to review claims and issue formal updates.
-7. Event Notification Pipeline: Dispatches instant in portal alerts and logs simulated official email communications.
-8. Complete Administrative Audit Trail: Records every status transition, matching execution and verification action in immutable system logs.
+1. Citizen and Family Registration: Allows family members to create authenticated profiles and submit deceased person records with Google OAuth 2.0 single sign on.
+2. Civil Certificate Registration: Captures official municipal death certificate numbers, dates of registration and issuing authorities, supporting submission with or without certificate upload.
+3. Automated Discovery Engine: Evaluates identity parameters against banking, insurance and fund records using a weighted one hundred point scoring algorithm enhanced by machine learning Indian name transliteration.
+4. Virasat AI Legal Copilot: Dual engine legal intelligence assistant combining Google Gemini 3.8 Flash generative AI with an embedded offline Indian Succession Legal Knowledge Engine.
+5. Citizen Claim Health Predictor: Five dimension readiness evaluator providing real time approval probability scoring (25% to 98%) and prescriptive documentation checklists.
+6. Administrative AI Fraud and Anomaly Intelligence Center: Role gated security engine detecting duplicate claim conflicts, high value dormancy and relationship discrepancies.
+7. Browse Database Interface: Provides transparent search capabilities across ninety four institutional financial records strictly restricted to platform administrators.
+8. Claimant Verification Workflow: Supports legal heir and nominee submissions with civil documentation proofs.
+9. Institutional Claim Desk: Equips authorized representatives from banks and insurers with verification consoles to review claims and issue formal updates.
+10. Event Notification Pipeline: Dispatches instant in portal alerts and logs simulated official email communications.
+11. Multi Tier Cybersecurity Defenses: Implements defense in depth against SQL injection, cross site scripting, cross site request forgery, path traversal and credential brute forcing.
+12. Complete Administrative Audit Trail: Records every status transition, matching execution and verification action in immutable system logs.
 
 
 ## Technology Stack Summary:
@@ -104,11 +108,14 @@ The complete platform is hosted live on Vercel with serverless Python and Supaba
 
 Detailed operational and technical manuals are organized in the documentation folder:
 
-1. documentation/Usage md: Comprehensive user guide explaining citizen, administrator and institution workflows.
-2. documentation/CodeBaseIndex md: Complete file directory map, structural charts and module descriptions.
-3. documentation/Architecture md: Detailed architectural specification, data flow diagrams and scoring algorithms.
-4. documentation/InstallationAndSetup md: Step by step local setup, automated testing and cloud deployment procedures.
-5. documentation/Tech md: In depth technical specifications, database schema definitions and API endpoint references.
-6. documentation/DTI md: Complete Digital Transformation and Innovation specification and Business Model Canvas.
-7. documentation/LogoDesign md: Official brand identity, color palette and geometric construction rules.
-8. documentation/DTIProjectPlan md: Project planning specifications and phase by phase milestones.
+1. documentation/Usage md: Comprehensive user guide explaining citizen, administrator, institution, AI copilot and fraud center workflows.
+2. documentation/AIMLIntegrations md: Artificial intelligence, machine learning transliteration, AI Legal Copilot, claim predictor and fraud intelligence specifications.
+3. documentation/WebCyberSecurity md: Web cybersecurity architecture, OWASP defenses, SQL injection, XSS, CSRF mitigations, rate limiting and HTTP security headers.
+4. documentation/Visuals md: Visual architecture, screen inventory, interface component gallery, color palette and design specifications.
+5. documentation/CodeBaseIndex md: Complete file directory map, structural charts and module descriptions.
+6. documentation/Architecture md: Detailed architectural specification, data flow diagrams and scoring algorithms.
+7. documentation/InstallationAndSetup md: Step by step local setup, automated testing and cloud deployment procedures.
+8. documentation/Tech md: In depth technical specifications, database schema definitions and API endpoint references.
+9. documentation/DTI md: Complete Digital Transformation and Innovation specification and Business Model Canvas.
+10. documentation/LogoDesign md: Official brand identity, color palette and geometric construction rules.
+11. documentation/DTIProjectPlan md: Project planning specifications and phase by phase milestones.

@@ -37,8 +37,11 @@ The project follows a human interpretable modular layout separating concerns cle
     documents py ............ Civil Document Uploads and Storage
     dashboard py ............ Family Metrics and Activity Stream
     admin py ................ Administrator Dashboards and Audits
+    ai py ................... Artificial Intelligence and Fraud Endpoints
   /services
-    matching service py ..... Weighted One Hundred Point Algorithm
+    matching service py ..... Weighted One Hundred Point Algorithm and ML Transliteration
+    ai copilot service py ... Virasat AI Legal Copilot and Knowledge Engine
+    fraud prediction service py Claim Health Predictor and Fraud Anomaly Intelligence
     notification service py . Alert Generation and Dispatch Logs
     supabase service py ..... Supabase Cloud REST Helper
   /static
@@ -54,6 +57,7 @@ The project follows a human interpretable modular layout separating concerns cle
   browse_database png ....... Financial Institution Database Browser Screenshot
   admin_console png ......... Central Administrative Oversight Console Screenshot
 /documentation
+  AIMLIntegrations md ......... Artificial Intelligence and Machine Learning Architecture
   Architecture md ............. Deep Technical Architecture
   CodeBaseIndex md ............ Detailed Codebase Index
   DTI md ...................... Digital Transformation and Innovation Specification
@@ -62,6 +66,8 @@ The project follows a human interpretable modular layout separating concerns cle
   LogoDesign md ............... Official Brand Identity Design Specification
   Tech md ..................... Full Technical Specifications
   Usage md .................... Comprehensive Operational Manual
+  Visuals md .................. Visual Architecture and Screen Inventory Specification
+  WebCyberSecurity md ......... Web Cybersecurity and Threat Mitigation Architecture
 /supabase
   schema sql ................ PostgreSQL DDL and Security Policies
   seed sql .................. Ninety Four Central Financial Records
@@ -70,6 +76,9 @@ vercel json ................. Serverless Routing Rules
 run server py ............... Local Server Runner
 run server bat .............. Windows One Click Execution File
 test system py .............. Ten Step Verification Test Suite
+test ai features py ......... AI and Google OAuth Verification Test Suite
+test security py ............ Cybersecurity and Threat Mitigation Verification Suite
+agentic ui tester py ........ Playwright Agentic Browser End to End UI Automation Suite
 ReadMe md ................... Primary Project Overview
 
 ## Detailed File Inventory and Responsibilities:
@@ -98,21 +107,27 @@ ReadMe md ................... Primary Project Overview
 8. app routers documents py: Handles asynchronous civil document uploads with file validation, unique naming and secure downloads.
 9. app routers dashboard py: Aggregates family statistics including total deceased records, discovered assets, active claims and recent events.
 10. app routers admin py: Delivers platform statistics, pending verification queues, audit logs and central financial asset management.
+11. app routers ai py: Exposes the Virasat AI Legal Copilot, citizen claim health predictor, and administrative fraud anomaly intelligence endpoints.
 
 ### Core Business Logic and Services:
 
-1. app services matching service py: Implements the one hundred point weighted matching engine calculating identity equality, token name similarity, birth date matches and nominee relationships.
-2. app services notification service py: Creates persistent notification records, updates unread counters and records formatted government email dispatches.
-3. app services supabase service py: Provides direct PostgREST client integrations communicating with hosted Supabase tables.
-4. app utils auth py: Provides cryptographic password hashing using passlib bcrypt and JWT token encoding and decoding using pyjwt.
+1. app services matching service py: Implements the one hundred point weighted matching engine calculating identity equality, token name similarity, birth date matches, nominee relationships, and machine learning Indian phonetic transliteration variants.
+2. app services ai copilot service py: Implements the dual engine Virasat AI Legal Copilot coordinating Google Gemini 3.8 Flash with the offline Indian Succession Legal Knowledge Engine.
+3. app services fraud prediction service py: Calculates citizen claim health readiness scores (25% to 98%) and detects duplicate claim conflicts, high value dormancy and relationship anomalies.
+4. app services notification service py: Creates persistent notification records, updates unread counters and records formatted government email dispatches.
+5. app services supabase service py: Provides direct PostgREST client integrations communicating with hosted Supabase tables.
+6. app utils auth py: Provides cryptographic password hashing using passlib bcrypt and JWT token encoding and decoding using pyjwt.
 
 ### Presentation Interface Layer:
 
-1. app static index html: Single Page Application markup featuring the tricolor banner, hero discovery section, family dashboard, deceased registration form, discovered assets console, claim progress tracker, browse database explorer, administrative dashboard and institution desks.
-2. app static app js: Client side state controller managing user sessions, asynchronous API communications, dynamic DOM rendering, role switching and toast alerts.
+1. app static index html: Single Page Application markup featuring the tricolor banner, hero discovery section, family dashboard, deceased registration form, discovered assets console, claim progress tracker, browse database explorer, administrative dashboard, institution desks, AI Legal Copilot modal, floating AI launcher, claim health meter and fraud anomaly center.
+2. app static app js: Client side state controller managing user sessions, asynchronous API communications, dynamic DOM rendering, role switching, Google OAuth sign in, AI Copilot dialogues, claim health calculations and toast alerts.
 
 ### Cloud Migrations and Testing:
 
 1. supabase schema sql: Complete PostgreSQL schema script defining all eleven tables, primary UUID keys, foreign key constraints, indexes and Row Level Security policies.
 2. supabase seed sql: SQL seed script pre populating ninety four realistic Indian financial records across public sector banks, private insurers and mutual funds.
 3. test system py: Automated complete testing script verifying logins, deceased submissions, matching scores, claim lifecycles, administrative stats and frontend delivery.
+4. test ai features py: Comprehensive verification test suite confirming Google OAuth 2.0 configuration, AI Legal Copilot knowledge queries, machine learning transliteration variants, claim health scoring and fraud anomaly role based access controls.
+5. test security py: Automated penetration testing suite verifying SQL injection defense, XSS payload rejection, CSRF custom header enforcement, secure document uploads and security headers.
+6. agentic ui tester py: Full twenty one step Playwright browser end to end automation suite executing all UI interactions, modals, tabs, form inputs and verifying zero console errors.
