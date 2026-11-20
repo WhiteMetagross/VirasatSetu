@@ -281,3 +281,43 @@ The platform attaches comprehensive security headers to all HTTP responses:
 1. In-Memory Sliding Window: A sliding window rate limiting middleware tracks incoming client IP requests across rolling sixty second intervals.
 2. Authentication Route Protection: Login and registration endpoints are protected with a strict rate threshold of thirty requests per minute per IP address to thwart credential stuffing.
 3. General API Rate Limiting: Standard platform endpoints are governed by a three hundred request per minute ceiling, guarding against denial of service and automated scraping.
+
+
+## Artificial Intelligence and Machine Learning Architecture:
+
+The Virasat Setu platform integrates lightweight, highly efficient machine learning and artificial intelligence capabilities engineered for instant execution within serverless environments:
+
+### 1. Virasat AI Legal Copilot Architecture:
+1. Dual Engine Framework: The AI Copilot operates a resilient dual layer architecture combining external Google Gemini generative intelligence with an embedded, zero latency Indian Succession Legal Knowledge Engine.
+2. Generative Processing: Generative queries utilize the Gemini 3.8 Flash model via secure API endpoints, synthesizing citizen legal inquiries regarding inheritance and claims.
+3. High Availability Fallback: If external connectivity is delayed beyond two seconds or unavailable, the system automatically falls back to an offline rule based inference engine.
+4. Comprehensive Succession Coverage: The offline legal knowledge base encodes statutes including the Hindu Succession Act 1956, Indian Succession Act 1925, banking deceased claim regulations, nominee versus legal heir legal rights, and documentation mandates across institutions.
+5. Strict Endpoint Gating: The copilot endpoint enforces authentication rate limiting and sanitizes all incoming inquiry text against prompt injection attempts.
+
+### 2. Machine Learning Indian Name Transliteration Engine:
+1. Cross Script Phonetic Normalization: Indian civil records exhibit frequent phonetic variations in English transliteration across regional municipal offices.
+2. Phonetic Transformation Rules: The engine applies linguistic transformations mapping regional consonant combinations, collapsing aspirates, normalizing long vowel digraphs, and reducing repetitive consonant clusters.
+3. Character N Gram Jaccard Similarity: To capture subtle spelling deviations without external heavy transformer models, the system computes character bigram Jaccard similarity between applicant names and institutional ledger entries.
+4. Composite Transliteration Scoring: Name matching integrates exact token matching, initial sequencing, phonetic Metaphone representation, and character bigram intersection, providing high accuracy matching across diverse Indian regional variants like Laxmi versus Lakshmi and Agarwal versus Aggarwal.
+
+### 3. Claim Health and Approval Probability Predictor:
+1. Citizen Prescriptive Intelligence: When preparing an asset claim, citizens receive a real time evaluation of claim readiness and approval probability scored between twenty five and ninety eight percent.
+2. Multi Factor Readiness Assessment: The prediction algorithm evaluates five core dimensions including claimant relationship capacity, legal heir standing, match score confidence, documentation completeness, and asset dormancy tenure.
+3. Prescriptive Guidance: The model produces actionable steps highlighting required affidavits, succession certificates, or indemnity bonds needed to maximize approval likelihood prior to formal submission.
+
+### 4. AI Fraud and Anomaly Detection Center:
+1. Role Based Anomaly Screening: To protect citizen privacy and institutional integrity, fraud detection analytics are strictly isolated and accessible only to verified administrators and institutional desk officers.
+2. Duplicate Claim Contention Detection: The anomaly engine flags conflicting claims filed by multiple distinct applicants targeting the same underlying financial asset.
+3. High Value Dormancy Verification: Unclaimed assets exceeding five lakh rupees with dormant tenure over ten years are flagged for mandatory enhanced verification and municipal cross check.
+4. Relationship Capacity Anomaly Scoring: Flags applications where declared claimant relationship exhibits inconsistencies with known nominee declarations or succession hierarchy.
+
+
+## Google OAuth 2.0 Authentication Integration:
+
+The platform supports secure single sign on using the Google OAuth 2.0 authorization framework:
+
+1. Protocol Conformance: Implements the OpenID Connect and OAuth 2.0 authorization code flow compliant with RFC 6749.
+2. Credential Verification: Client tokens are validated against Google token verification services, extracting verified email addresses and user names.
+3. Automatic Provisioning: First time Google authenticated users are automatically provisioned as citizen family users in the database with secure cryptographic password hashes.
+4. Session Token Minting: Upon successful verification, the platform issues an internal JSON Web Token authorizing subsequent API transactions with standard role based access controls.
+

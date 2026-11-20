@@ -23,7 +23,8 @@ from app.routers import (
     admin,
     institutions,
     documents,
-    dashboard
+    dashboard,
+    ai
 )
 
 # Initialize tables and verify seed data
@@ -65,6 +66,7 @@ app.include_router(admin.router)
 app.include_router(institutions.router)
 app.include_router(documents.router)
 app.include_router(dashboard.router)
+app.include_router(ai.router)
 
 # Mount static folder
 static_dir = os.path.join(os.path.dirname(__file__), "static")

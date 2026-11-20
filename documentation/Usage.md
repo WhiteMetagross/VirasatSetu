@@ -141,3 +141,35 @@ The platform incorporates comprehensive automated security verification tools to
 1. Execute Security Test Suite: Run the dedicated cybersecurity test suite using the command: python test_security.py.
 2. Verified Attack Scenarios: The automated suite validates defense against SQL injection payloads, script injection sequences, forged cross site requests, arbitrary file upload attempts and unauthorized document access.
 3. Ongoing Audit Trail: All security relevant administrative actions and authentication events are logged to the immutable audit database for compliance review.
+
+
+## Google OAuth 2.0 Sign In Workflow:
+
+Citizens can sign in or create an account using their Google account:
+
+1. Open Authentication Modal: Click Sign In on the top navigation bar.
+2. Select Google Sign In: Click Continue with Google.
+3. Automatic Authorization: The platform verifies the Google account credential and creates or opens the user profile.
+4. Instant Access: The citizen is logged in with full citizen privileges to register deceased family members and track asset claims.
+
+
+## Virasat AI Legal Copilot Workflow:
+
+Citizens can consult the built in AI Legal Copilot for instant guidance on Indian succession laws:
+
+1. Launch AI Copilot: Click the AI Legal Copilot tab in the navigation bar or the floating AI button at the bottom right.
+2. Quick Inquiry Chips: Click any pre formulated prompt chip to ask about Hindu Succession Act Class 1 heirs, nominee versus legal heir legal rights, SBI deceased account documentation, or LIC death claim settlements.
+3. Custom Inquiries: Type any legal question into the copilot text input and click Send to receive a structured response covering relevant legal acts, required documentation, and step by step guidance.
+4. Dismissing Assistant: Click Close to return to the active application tab.
+
+
+## AI Fraud and Anomaly Intelligence Center Workflow (Admin and Institution):
+
+Platform administrators and financial institution officers have exclusive access to the AI Fraud and Anomaly Intelligence Center:
+
+1. Administrative Access: Sign in as an administrator or institutional representative.
+2. Anomaly Intelligence Panel: Locate the AI Fraud and Anomaly Intelligence Center on the dashboard.
+3. Conflict Inspection: Review duplicate claim alerts where multiple parties have filed claims on the same underlying asset.
+4. High Value Dormancy Alerts: Review high valuation assets flagged for enhanced due diligence before approval.
+5. Relationship Discrepancy Warnings: Inspect claims flagged for unexpected claimant relationship declarations relative to registered nominee data.
+

@@ -62,7 +62,7 @@ class CSRFProtectionMiddleware(BaseHTTPMiddleware):
     Requires custom verified headers that cross-origin HTML forms and elements cannot forge.
     """
     SAFE_METHODS = {"GET", "HEAD", "OPTIONS"}
-    EXEMPT_PATHS = {"/api/auth/login", "/api/auth/register"}
+    EXEMPT_PATHS = {"/api/auth/login", "/api/auth/register", "/api/auth/google/login", "/api/ai/copilot"}
 
     async def dispatch(self, request: Request, call_next):
         path = request.url.path

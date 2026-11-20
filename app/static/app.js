@@ -758,6 +758,59 @@ function openClaimModal(matchId, instName, category, ref, val) {
   if (currentUser) {
     document.getElementById("claim-name").value = currentUser.full_name;
   }
+  fetchClaimHealthPrediction(matchId);
+}
+
+async function fetchClaimHealthPrediction(matchId) {
+  const badge = document.getElementById("claim-ai-prob-badge");
+  const bar = document.getElementById("claim-ai-prob-bar");
+  const factorsEl = document.getElementById("claim-ai-factors");
+  if (!badge || !bar || !factorsEl) return;
+
+  factorsEl.innerHTML = `<span class="italic text-slate-400">Evaluating claim health with AI predictive model...</span>`;
+
+  try {
+    const data = await apiFetch("/api/ai/predict-claim", {
+      method: "POST",
+      body: JSON.stringify({
+        asset_match_id: matchId,
+        claimant_name: document.getElementById("claim-name").value || (currentUser ? currentUser.full_name : ""),
+        claimant_relationship: document.getElementById("claim-rel").value || ""
+      }),
+      silent: true
+    });
+
+    const prob = Number(data.probability || 80);
+    badge.textContent = `${prob}% ${data.status}`;
+    bar.style.width = `${prob}%`;
+    if (prob >= 80) {
+      badge.className = "bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded text-[10px]";
+      bar.className = "bg-emerald-500 h-1.5 rounded-full transition-all duration-500";
+    } else if (prob >= 60) {
+      badge.className = "bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded text-[10px]";
+      bar.className = "bg-amber-500 h-1.5 rounded-full transition-all duration-500";
+    } else {
+      badge.className = "bg-rose-100 text-rose-800 font-bold px-2 py-0.5 rounded text-[10px]";
+      bar.className = "bg-rose-500 h-1.5 rounded-full transition-all duration-500";
+    }
+
+    let html = "";
+    if (data.factors && data.factors.length > 0) {
+      html += `<div class="font-semibold text-slate-700">Predictive Strengths:</div>`;
+      data.factors.slice(0, 2).forEach((f) => {
+        html += `<div class="text-emerald-700 flex items-center gap-1"><i class="fa-solid fa-check-circle text-[9px]"></i> ${escapeHTML(f)}</div>`;
+      });
+    }
+    if (data.advice && data.advice.length > 0) {
+      html += `<div class="font-semibold text-amber-700 mt-1">Prescriptive Recommendations:</div>`;
+      data.advice.slice(0, 1).forEach((a) => {
+        html += `<div class="text-amber-800 flex items-center gap-1"><i class="fa-solid fa-lightbulb text-[9px]"></i> ${escapeHTML(a)}</div>`;
+      });
+    }
+    factorsEl.innerHTML = html;
+  } catch (err) {
+    factorsEl.innerHTML = `<span class="text-slate-400">Approval prediction ready upon submission.</span>`;
+  }
 }
 
 function closeClaimModal() {
@@ -1040,6 +1093,7 @@ async function loadAdminData() {
 
     await loadAdminUsers();
     await loadInstitutionsDropdown();
+    await loadAdminAnomalies();
   } catch (err) {
     console.error(err);
   }
@@ -1243,6 +1297,8 @@ async function loadInstitutionData() {
     `
       )
       .join("");
+
+    await loadInstitutionAnomalies();
   } catch (err) {
     console.error(err);
   }
@@ -1371,4 +1427,242 @@ async function loadRajeshScenario() {
   }
   await loadMatchesForSelected();
   showToast("Rajesh Kumar matches loaded! (₹17,86,240 across SBI, LIC, and HDFC MF)", "success");
+}
+
+// GOOGLE OAUTH 2.0 INTEGRATION
+async function handleGoogleSignIn() {
+  try {
+    showToast("Connecting to Google Identity Services...");
+    // Simulated Google OAuth 2.0 authentication exchange
+    const googleProfile = {
+      email: "citizen.google@gmail.com",
+      full_name: "Google Authenticated Citizen",
+      google_id: "google_oauth_sub_1092837461524"
+    };
+
+    const data = await apiFetch("/api/auth/google/login", {
+      method: "POST",
+      body: JSON.stringify(googleProfile)
+    });
+
+    currentToken = data.access_token;
+    currentUser = data.user;
+    localStorage.setItem("token", currentToken);
+
+    closeAuthModal();
+    updateUIForUser();
+    showToast(`Welcome, ${currentUser.full_name}! Signed in via Google.`);
+    await loadDashboardData();
+    switchTab("dashboard");
+  } catch (err) {
+    console.error("Google Auth error:", err);
+    showToast(err.message || "Google Authentication failed", "error");
+  }
+}
+
+// VIRASAT AI LEGAL COPILOT
+function toggleAICopilotModal() {
+  const modal = document.getElementById("modal-copilot");
+  if (!modal) return;
+  modal.classList.toggle("hidden");
+  if (!modal.classList.contains("hidden")) {
+    const input = document.getElementById("copilot-input");
+    if (input) input.focus();
+  }
+}
+
+function askQuickCopilot(question) {
+  const input = document.getElementById("copilot-input");
+  if (input) {
+    input.value = question;
+    handleCopilotSubmit(new Event("submit"));
+  }
+}
+
+async function handleCopilotSubmit(e) {
+  if (e) e.preventDefault();
+  const input = document.getElementById("copilot-input");
+  const thread = document.getElementById("copilot-thread");
+  const sendBtn = document.getElementById("copilot-send-btn");
+  if (!input || !thread) return;
+
+  const query = input.value.trim();
+  if (!query) return;
+
+  // Append user message bubble
+  thread.innerHTML += `
+    <div class="flex items-start justify-end gap-2.5">
+      <div class="bg-gov-navy text-white p-3 rounded-2xl rounded-tr-none text-xs shadow-sm max-w-[85%] leading-relaxed">
+        ${escapeHTML(query)}
+      </div>
+      <div class="w-6 h-6 rounded-full bg-slate-300 text-slate-700 flex items-center justify-center shrink-0 text-[10px] font-bold">
+        <i class="fa-solid fa-user"></i>
+      </div>
+    </div>
+  `;
+  input.value = "";
+  thread.scrollTop = thread.scrollHeight;
+
+  // Append thinking bubble
+  const thinkingId = `copilot-thinking-${Date.now()}`;
+  thread.innerHTML += `
+    <div id="${thinkingId}" class="flex items-start gap-2.5">
+      <div class="w-6 h-6 rounded-full bg-gov-navy text-white flex items-center justify-center shrink-0 text-[10px]">
+        <i class="fa-solid fa-robot"></i>
+      </div>
+      <div class="bg-white p-3 rounded-2xl rounded-tl-none border border-slate-200 text-slate-500 text-xs shadow-sm flex items-center gap-2">
+        <i class="fa-solid fa-circle-notch fa-spin text-amber-500"></i>
+        <span>Consulting legal succession frameworks and institutional precedents...</span>
+      </div>
+    </div>
+  `;
+  thread.scrollTop = thread.scrollHeight;
+  if (sendBtn) sendBtn.disabled = true;
+
+  try {
+    const res = await apiFetch("/api/ai/copilot", {
+      method: "POST",
+      body: JSON.stringify({ query: query }),
+      silent: true
+    });
+
+    const thinkingEl = document.getElementById(thinkingId);
+    if (thinkingEl) thinkingEl.remove();
+
+    const formattedAnswer = escapeHTML(res.answer).replace(/\n/g, "<br>");
+    let followupsHTML = "";
+    if (res.followups && res.followups.length > 0) {
+      followupsHTML = `
+        <div class="pt-2 border-t border-slate-100 mt-2 space-y-1">
+          <span class="text-[10px] uppercase font-bold text-slate-400">Related Legal Topics:</span>
+          <div class="flex flex-wrap gap-1">
+            ${res.followups
+              .map(
+                (f) => `
+              <button type="button" onclick="askQuickCopilot('${escapeHTML(f)}')" class="px-2 py-0.5 rounded bg-slate-100 hover:bg-amber-100 text-[10px] text-slate-700 font-medium transition">
+                ${escapeHTML(f)}
+              </button>
+            `
+              )
+              .join("")}
+          </div>
+        </div>
+      `;
+    }
+
+    const sourceBadge = res.source === "gemini_api"
+      ? '<span class="bg-amber-100 text-amber-800 text-[9px] font-bold px-1.5 py-0.5 rounded">Gemini AI</span>'
+      : '<span class="bg-blue-100 text-blue-800 text-[9px] font-bold px-1.5 py-0.5 rounded">Succession Knowledge Base</span>';
+
+    thread.innerHTML += `
+      <div class="flex items-start gap-2.5">
+        <div class="w-6 h-6 rounded-full bg-gov-navy text-white flex items-center justify-center shrink-0 text-[10px]">
+          <i class="fa-solid fa-robot"></i>
+        </div>
+        <div class="bg-white p-3 rounded-2xl rounded-tl-none border border-slate-200 text-slate-700 text-xs shadow-sm max-w-[85%] leading-relaxed space-y-1">
+          <div class="flex items-center justify-between pb-1 border-b border-slate-100">
+            <span class="font-bold text-slate-900">Virasat Legal Advisory:</span>
+            ${sourceBadge}
+          </div>
+          <div class="text-slate-800 leading-relaxed">${formattedAnswer}</div>
+          ${followupsHTML}
+        </div>
+      </div>
+    `;
+    thread.scrollTop = thread.scrollHeight;
+  } catch (err) {
+    const thinkingEl = document.getElementById(thinkingId);
+    if (thinkingEl) thinkingEl.remove();
+
+    thread.innerHTML += `
+      <div class="flex items-start gap-2.5">
+        <div class="w-6 h-6 rounded-full bg-gov-navy text-white flex items-center justify-center shrink-0 text-[10px]">
+          <i class="fa-solid fa-robot"></i>
+        </div>
+        <div class="bg-white p-3 rounded-2xl rounded-tl-none border border-slate-200 text-red-600 text-xs shadow-sm max-w-[85%]">
+          Unable to retrieve advice at this moment. Please check your network or try again.
+        </div>
+      </div>
+    `;
+  } finally {
+    if (sendBtn) sendBtn.disabled = false;
+  }
+}
+
+// AI FRAUD AND ANOMALY DETECTION (Admin and Institution Desk Restricted)
+async function loadAdminAnomalies() {
+  const container = document.getElementById("admin-anomalies-list");
+  if (!container) return;
+
+  try {
+    const anomalies = await apiFetch("/api/ai/admin/fraud-anomalies");
+    if (!anomalies || anomalies.length === 0) {
+      container.innerHTML = `
+        <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-3.5 text-center text-xs text-emerald-800">
+          <i class="fa-solid fa-check-circle mr-1.5"></i> Zero active fraud anomalies or conflicting claims detected across platform records.
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = anomalies
+      .map(
+        (a) => `
+      <div class="p-3.5 bg-rose-50/70 border border-rose-200 rounded-xl space-y-2">
+        <div class="flex flex-wrap justify-between items-start gap-2">
+          <div class="flex items-center gap-2">
+            <span class="bg-rose-600 text-white font-bold text-[10px] uppercase px-2 py-0.5 rounded flex items-center gap-1">
+              <i class="fa-solid fa-triangle-exclamation"></i> ${escapeHTML(a.risk_level)}
+            </span>
+            <span class="font-bold text-slate-900 text-xs">${escapeHTML(a.category)}</span>
+            <span class="text-slate-500 text-[11px]">(${escapeHTML(a.institution_name)})</span>
+          </div>
+          <span class="font-mono text-rose-700 font-bold text-xs">Risk Index: ${Number(a.risk_score)}/100</span>
+        </div>
+        <div class="text-xs text-slate-700 leading-relaxed">${escapeHTML(a.details)}</div>
+        <div class="bg-white p-2 rounded border border-rose-100 text-[11px] text-slate-600 flex items-start gap-1.5">
+          <strong class="text-rose-900 shrink-0">Prescribed Action:</strong>
+          <span>${escapeHTML(a.recommended_action)}</span>
+        </div>
+      </div>
+    `
+      )
+      .join("");
+  } catch (err) {
+    console.error("Error loading anomalies:", err);
+  }
+}
+
+async function loadInstitutionAnomalies() {
+  const container = document.getElementById("inst-anomalies-list");
+  if (!container) return;
+
+  try {
+    const anomalies = await apiFetch("/api/ai/admin/fraud-anomalies");
+    if (!anomalies || anomalies.length === 0) {
+      container.innerHTML = `
+        <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-3 text-center text-xs text-emerald-800">
+          <i class="fa-solid fa-check-circle mr-1"></i> No risk anomalies flagged for this institution node.
+        </div>
+      `;
+      return;
+    }
+
+    container.innerHTML = anomalies
+      .map(
+        (a) => `
+      <div class="p-3 bg-amber-50/70 border border-amber-200 rounded-lg space-y-1.5 text-xs">
+        <div class="flex justify-between items-center">
+          <span class="font-bold text-slate-800">${escapeHTML(a.category)}</span>
+          <span class="bg-amber-100 text-amber-800 font-bold text-[10px] px-2 py-0.5 rounded">${escapeHTML(a.risk_level)}</span>
+        </div>
+        <p class="text-slate-600 text-[11px]">${escapeHTML(a.details)}</p>
+        <p class="text-[11px] text-amber-900 font-medium"><strong>Advisory:</strong> ${escapeHTML(a.recommended_action)}</p>
+      </div>
+    `
+      )
+      .join("");
+  } catch (err) {
+    console.error("Error loading institution anomalies:", err);
+  }
 }

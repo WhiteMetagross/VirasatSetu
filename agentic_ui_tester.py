@@ -242,15 +242,97 @@ def run_e2e_tests():
         assert selector_val != "", "Error: Deceased selector should select the verified record"
         print(f"  Passed: Deceased record ({selector_val}) selected in matching tab.")
 
-        # 17. Check console errors
-        print("\n[Step 17] Inspecting console error logs...")
+        # 17. Test Google OAuth 2.0 Sign In Flow
+        print("\n[Step 17] Testing Google OAuth 2.0 Sign In feature...")
+        page.click("button[title='Logout']")
+        time.sleep(0.5)
+
+        page.click("#auth-buttons button:has-text('Login')")
+        time.sleep(0.5)
+        google_btn = page.locator("button:has-text('Continue with Google')")
+        assert google_btn.is_visible(), "Error: Google Sign In button must be visible in Auth modal."
+        google_btn.click()
+        time.sleep(1)
+
+        user_display = page.locator("#user-display-name").text_content()
+        assert "Google" in user_display, f"Expected Google user, got {user_display}"
+        print(f"  Passed: Google OAuth authentication succeeded for user: {user_display}.")
+
+        # 18. Test Virasat AI Legal Copilot
+        print("\n[Step 18] Testing Virasat AI Legal Copilot interactive assistant...")
+        copilot_btn = page.locator("#btn-open-copilot")
+        assert copilot_btn.is_visible(), "Error: Floating AI Copilot button must be visible."
+        copilot_btn.click()
+        time.sleep(0.5)
+
+        copilot_modal = page.locator("#modal-copilot")
+        assert copilot_modal.is_visible(), "Error: AI Copilot modal should open upon clicking launcher."
+
+        # Click quick legal inquiry button
+        page.click("#modal-copilot button:has-text('Nominee vs Legal Heir Rights')")
+        time.sleep(3)
+
+        thread_text = page.locator("#copilot-thread").text_content()
+        assert "Nominee" in thread_text and "Legal Heir" in thread_text, "Error: AI Copilot should answer nominee inquiry."
+        print("  Passed: AI Copilot resolved quick legal inquiry with structured response.")
+
+        # Test custom prompt input
+        page.fill("#copilot-input", "How to claim deceased bank account at State Bank of India?")
+        page.click("#copilot-send-btn")
+        time.sleep(3)
+        updated_thread = page.locator("#copilot-thread").text_content()
+        assert "Bank" in updated_thread or "SBI" in updated_thread, "Error: AI Copilot should answer bank claim question."
+        print("  Passed: AI Copilot handled custom prompt submission.")
+
+        # Close copilot modal
+        page.click("#modal-copilot button:has(.fa-xmark)")
+        time.sleep(0.5)
+        assert not copilot_modal.is_visible(), "Error: AI Copilot modal should close."
+        print("  Passed: AI Copilot modal closed successfully.")
+
+        # 19. Test AI Claim Health Predictor in Initiate Claim modal
+        print("\n[Step 19] Testing AI Claim Health Predictor in Claim modal...")
+        # Load Rajesh Kumar demo scenario to test claim modal
+        page.click(".tab-btn[data-tab='matches']")
+        time.sleep(1)
+        # Select first available match and click Initiate Claim
+        claim_btn = page.locator("button:has-text('Initiate Claim')").first
+        if claim_btn.is_visible():
+            claim_btn.click()
+            time.sleep(1)
+            claim_modal = page.locator("#modal-claim")
+            assert claim_modal.is_visible(), "Error: Claim modal should open."
+            prediction_box = page.locator("#claim-ai-prediction-box")
+            assert prediction_box.is_visible(), "Error: AI Claim Prediction box must be visible in Claim modal."
+            prob_badge = page.locator("#claim-ai-prob-badge").text_content()
+            assert "%" in prob_badge, f"Expected probability percentage, got {prob_badge}"
+            print(f"  Passed: AI Claim Health Predictor operational in modal: {prob_badge}.")
+            page.click("#modal-claim button:has-text('Cancel')")
+            time.sleep(0.5)
+
+        # 20. Test AI Fraud and Anomaly Detection in Admin Dashboard
+        print("\n[Step 20] Testing AI Fraud and Anomaly Intelligence Center in Admin Panel...")
+        page.click("button[title='Logout']")
+        time.sleep(0.5)
+
+        page.click("button:has-text('Admin')")
+        time.sleep(1)
+        page.click(".tab-btn[data-tab='admin']")
+        time.sleep(1)
+
+        anomalies_box = page.locator("#admin-anomalies-list")
+        assert anomalies_box.is_visible(), "Error: Admin Fraud Anomalies list must be visible in Admin panel."
+        print("  Passed: AI Fraud and Anomaly Intelligence Center active and restricted to Admin.")
+
+        # 21. Check console errors
+        print("\n[Step 21] Inspecting console error logs...")
         if console_errors:
             print(f"  WARNING: {len(console_errors)} console errors caught:")
             for err in console_errors:
-                print(f"    - {err}")
-            assert False, "Console errors found during testing!"
+                print(f"    * {err}")
+            assert False, "Console errors found during testing."
         else:
-            print("  Passed: ZERO console errors detected during entire test session!")
+            print("  Passed: ZERO console errors detected during entire test session.")
 
         browser.close()
 
