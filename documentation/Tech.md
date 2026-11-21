@@ -257,18 +257,18 @@ The Virasat Setu platform incorporates multi tiered defensive cybersecurity cont
 
 ### 3. Cross Site Request Forgery (CSRF) Protection:
 1. Bearer Token Isolation: The platform stores session JSON Web Tokens in browser local storage and transmits them via Authorization headers. Browsers never attach Authorization headers to cross origin requests automatically.
-2. Custom Verification Headers: The CSRF Protection Middleware requires state modifying requests (POST, PUT, PATCH, DELETE) to present custom client headers like X-Requested-With or X-CSRF-Token, which cross site forms cannot forge.
+2. Custom Verification Headers: The CSRF Protection Middleware requires state modifying requests (POST, PUT, PATCH, DELETE) to present custom client headers like X Requested With or X CSRF Token, which cross site forms cannot forge.
 3. Preflight Enforcement: Custom headers force modern browsers to execute Cross Origin Resource Sharing preflight OPTIONS requests, blocking unauthorized cross origin submission attempts.
 
 ### 4. HTTP Defensive Security Headers:
 The platform attaches comprehensive security headers to all HTTP responses:
-1. Content-Security-Policy: Enforces default self origin restrictions while whitelisting designated trustworthy content delivery networks.
-2. X-Frame-Options: Set to DENY to prevent Clickjacking attacks and disallow embedding the application inside foreign iframes.
-3. X-Content-Type-Options: Set to nosniff to prevent browsers from executing files with mismatched MIME types.
-4. X-XSS-Protection: Set to 1; mode=block for defense on legacy browser agents.
-5. Referrer-Policy: Configured as strict-origin-when-cross-origin to eliminate sensitive query leakage.
-6. Permissions-Policy: Restricts unneeded hardware APIs including camera, microphone and geolocation.
-7. Cross-Origin-Opener-Policy: Set to same-origin to isolate the browsing context.
+1. Content Security Policy: Enforces default self origin restrictions while whitelisting designated trustworthy content delivery networks.
+2. X Frame Options: Set to DENY to prevent Clickjacking attacks and disallow embedding the application inside foreign iframes.
+3. X Content Type Options: Set to nosniff to prevent browsers from executing files with mismatched MIME types.
+4. X XSS Protection: Set to 1 mode=block for defense on legacy browser agents.
+5. Referrer Policy: Configured as strict origin when cross origin to eliminate sensitive query leakage.
+6. Permissions Policy: Restricts unneeded hardware APIs including camera, microphone and geolocation.
+7. Cross Origin Opener Policy: Set to same origin to isolate the browsing context.
 
 ### 5. Document Storage and Path Traversal Hardening:
 1. Extension Whitelisting: Document upload endpoints strictly accept only verified extensions including .pdf, .png, .jpg, .jpeg and .webp.
@@ -278,7 +278,7 @@ The platform attaches comprehensive security headers to all HTTP responses:
 5. Insecure Direct Object Reference (IDOR) Protection: Document download endpoints authenticate the requesting user and verify ownership, restricting downloads strictly to the document owner, authorized administrators or assigned institutional representatives.
 
 ### 6. Brute Force and Abuse Rate Limiting:
-1. In-Memory Sliding Window: A sliding window rate limiting middleware tracks incoming client IP requests across rolling sixty second intervals.
+1. In Memory Sliding Window: A sliding window rate limiting middleware tracks incoming client IP requests across rolling sixty second intervals.
 2. Authentication Route Protection: Login and registration endpoints are protected with a strict rate threshold of thirty requests per minute per IP address to thwart credential stuffing.
 3. General API Rate Limiting: Standard platform endpoints are governed by a three hundred request per minute ceiling, guarding against denial of service and automated scraping.
 

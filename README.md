@@ -109,13 +109,15 @@ The complete platform is hosted live on Vercel with serverless Python and Supaba
 Detailed operational and technical manuals are organized in the documentation folder:
 
 1. documentation/Usage md: Comprehensive user guide explaining citizen, administrator, institution, AI copilot and fraud center workflows.
-2. documentation/AIMLIntegrations md: Artificial intelligence, machine learning transliteration, AI Legal Copilot, claim predictor and fraud intelligence specifications.
-3. documentation/WebCyberSecurity md: Web cybersecurity architecture, OWASP defenses, SQL injection, XSS, CSRF mitigations, rate limiting and HTTP security headers.
-4. documentation/Visuals md: Visual architecture, screen inventory, interface component gallery, color palette and design specifications.
-5. documentation/CodeBaseIndex md: Complete file directory map, structural charts and module descriptions.
-6. documentation/Architecture md: Detailed architectural specification, data flow diagrams and scoring algorithms.
-7. documentation/InstallationAndSetup md: Step by step local setup, automated testing and cloud deployment procedures.
-8. documentation/Tech md: In depth technical specifications, database schema definitions and API endpoint references.
-9. documentation/DTI md: Complete Digital Transformation and Innovation specification and Business Model Canvas.
-10. documentation/LogoDesign md: Official brand identity, color palette and geometric construction rules.
-11. documentation/DTIProjectPlan md: Project planning specifications and phase by phase milestones.
+2. documentation/Frontend md: Frontend architecture, Single Page Application DOM tree, client state controller, dynamic view rendering, modal systems and responsive styling.
+3. documentation/Backend md: Backend architecture, FastAPI ASGI application, eleven domain API routers, business service layers, database persistence engines and security pipelines.
+4. documentation/AIMLIntegrations md: Artificial intelligence, machine learning transliteration, AI Legal Copilot, claim predictor and fraud intelligence specifications.
+5. documentation/WebCyberSecurity md: Web cybersecurity architecture, OWASP defenses, SQL injection, XSS, CSRF mitigations, rate limiting and HTTP security headers.
+6. documentation/Visuals md: Visual architecture, screen inventory, interface component gallery, color palette and design specifications.
+7. documentation/CodeBaseIndex md: Complete file directory map, structural charts and module descriptions.
+8. documentation/Architecture md: Detailed architectural specification, data flow diagrams and scoring algorithms.
+9. documentation/InstallationAndSetup md: Step by step local setup, automated testing and cloud deployment procedures.
+10. documentation/Tech md: In depth technical specifications, database schema definitions and API endpoint references.
+11. documentation/DTI md: Complete Digital Transformation and Innovation specification and Business Model Canvas.
+12. documentation/LogoDesign md: Official brand identity, color palette and geometric construction rules.
+13. documentation/DTIProjectPlan md: Project planning specifications and phase by phase milestones.

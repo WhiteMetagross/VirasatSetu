@@ -9,6 +9,10 @@ Virasat Setu Visual Asset Directory:
 4. Discovered Assets and Matching Console: [discovered_matches.png](file:///c:/Users/Xeron/Desktop/IIIT-ACourseWork/DTIProject/Visuals/discovered_matches.png).
 5. Central Financial Database Browser: [browse_database.png](file:///c:/Users/Xeron/Desktop/IIIT-ACourseWork/DTIProject/Visuals/browse_database.png).
 6. Central Administrative Oversight Console: [admin_console.png](file:///c:/Users/Xeron/Desktop/IIIT-ACourseWork/DTIProject/Visuals/admin_console.png).
+7. Viru (Virasat AI Legal Copilot) Interface: [viru_copilot.png](file:///c:/Users/Xeron/Desktop/IIIT-ACourseWork/DTIProject/Visuals/viru_copilot.png).
+8. Citizen AI Claim Health and Readiness Meter: [claim_health.png](file:///c:/Users/Xeron/Desktop/IIIT-ACourseWork/DTIProject/Visuals/claim_health.png).
+9. Administrative AI Fraud and Anomaly Center: [fraud_anomaly.png](file:///c:/Users/Xeron/Desktop/IIIT-ACourseWork/DTIProject/Visuals/fraud_anomaly.png).
+10. Google Identity OAuth Two Point Zero Authentication: [google_oauth.png](file:///c:/Users/Xeron/Desktop/IIIT-ACourseWork/DTIProject/Visuals/google_oauth.png).
 
 
 ## Interface Design Philosophy:
@@ -79,6 +83,10 @@ The command center for government administrators and civil registrars:
 
 ### 1. Viru: Virasat AI Legal Copilot Interface:
 
+![Viru Virasat AI Legal Copilot Interface](file:///c:/Users/Xeron/Desktop/IIIT-ACourseWork/DTIProject/Visuals/viru_copilot.png)
+
+Caption: Viru conversational legal intelligence interface rendering real time statutory guidance and clickable prompt chips.
+
 1. Floating Action Launcher: An unobtrusive, modern circular floating button anchored at the bottom right of the screen featuring an artificial intelligence spark emblem and labeled Ask Viru.
 2. Dedicated Navigation Tab: An accessible top navigation tab titled Viru (AI Copilot) providing direct modal access.
 3. Interactive Knowledge Dialog: A sleek modal window titled Viru: Virasat AI Legal Copilot presenting conversational legal intelligence regarding the Hindu Succession Act, Indian Succession Act, Supreme Court nominee rulings and institutional procedures.
@@ -91,12 +99,20 @@ The command center for government administrators and civil registrars:
 
 ### 2. AI Claim Health and Approval Probability Meter:
 
+![Citizen AI Claim Health and Readiness Meter](file:///c:/Users/Xeron/Desktop/IIIT-ACourseWork/DTIProject/Visuals/claim_health.png)
+
+Caption: Claim readiness meter displaying calculated approval probability percentage, readiness status badge and prescriptive documentation checklist.
+
 1. Embedded Claim Modal Placement: Positioned directly within the formal claim preparation modal above the claimant details form.
 2. Circular Readiness Gauge: A visual percentage score ring color coded from amber (low readiness) to emerald (high readiness) indicating calculated approval odds between twenty five and ninety eight percent.
 3. Dynamic Status Badge: Labels claims as High Approval Likelihood, Moderate Approval Likelihood, or Enhanced Diligence Required.
 4. Prescriptive Action Cards: Bulleted recommendation boxes detailing exact affidavits, indemnity bonds, no objection certificates, or succession certificates needed to maximize approval odds prior to submission.
 
 ### 3. AI Fraud and Anomaly Intelligence Center:
+
+![Administrative AI Fraud and Anomaly Center](file:///c:/Users/Xeron/Desktop/IIIT-ACourseWork/DTIProject/Visuals/fraud_anomaly.png)
+
+Caption: Central administrative fraud detection console displaying real time duplicate claim warnings, high value dormancy alerts and relationship discrepancy cards.
 
 1. Segregated Administrative Placement: Positioned exclusively within the Administrator Dashboard and Financial Institution Desks.
 2. High Priority Anomaly Cards: Styled with high visibility crimson and amber alert borders highlighting potential risks:
@@ -106,6 +122,10 @@ The command center for government administrators and civil registrars:
 3. Direct Action Buttons: Enables officers to place conflicting claims on administrative hold, request court succession certificates, or clear verified claims.
 
 ### 4. Google OAuth 2.0 Branded Identity Button:
+
+![Google Identity OAuth Two Point Zero Authentication Dialog](file:///c:/Users/Xeron/Desktop/IIIT-ACourseWork/DTIProject/Visuals/google_oauth.png)
+
+Caption: Authentication dialog with official branded Continue with Google button and traditional credential sign in.
 
 1. Prominent Modal Placement: Embedded at the top of the authentication dialog above the traditional credential inputs.
 2. Standard Google Identity Styling: White button with official Google multicolored emblem, clean typography reading Continue with Google, and smooth hover elevation.

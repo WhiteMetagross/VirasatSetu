@@ -56,12 +56,18 @@ The project follows a human interpretable modular layout separating concerns cle
   discovered_matches png .... Discovered Assets and Matching Results Screenshot
   browse_database png ....... Financial Institution Database Browser Screenshot
   admin_console png ......... Central Administrative Oversight Console Screenshot
+  viru_copilot png .......... Viru AI Legal Copilot Knowledge Dialog Screenshot
+  claim_health png .......... AI Claim Health Predictor and Readiness Meter Screenshot
+  fraud_anomaly png ......... Administrative AI Fraud and Anomaly Center Screenshot
+  google_oauth png .......... Google Identity OAuth Two Point Zero Authentication Screenshot
 /documentation
   AIMLIntegrations md ......... Artificial Intelligence and Machine Learning Architecture
   Architecture md ............. Deep Technical Architecture
+  Backend md .................. Backend Architecture and API Services Specification
   CodeBaseIndex md ............ Detailed Codebase Index
   DTI md ...................... Digital Transformation and Innovation Specification
   DTIProjectPlan md ........... Project Planning Specifications
+  Frontend md ................. Frontend Architecture and User Interface Specification
   InstallationAndSetup md ..... Local Setup and Deployment Guide
   LogoDesign md ............... Official Brand Identity Design Specification
   Tech md ..................... Full Technical Specifications
@@ -79,6 +85,7 @@ test system py .............. Ten Step Verification Test Suite
 test ai features py ......... AI and Google OAuth Verification Test Suite
 test security py ............ Cybersecurity and Threat Mitigation Verification Suite
 agentic ui tester py ........ Playwright Agentic Browser End to End UI Automation Suite
+test vercel live ui py ...... Live Vercel Production Playwright End to End UI Verification Suite
 ReadMe md ................... Primary Project Overview
 
 ## Detailed File Inventory and Responsibilities:
@@ -131,3 +138,15 @@ ReadMe md ................... Primary Project Overview
 4. test ai features py: Comprehensive verification test suite confirming Google OAuth 2.0 configuration, AI Legal Copilot knowledge queries, machine learning transliteration variants, claim health scoring and fraud anomaly role based access controls.
 5. test security py: Automated penetration testing suite verifying SQL injection defense, XSS payload rejection, CSRF custom header enforcement, secure document uploads and security headers.
 6. agentic ui tester py: Full twenty one step Playwright browser end to end automation suite executing all UI interactions, modals, tabs, form inputs and verifying zero console errors.
+7. test vercel live ui py: Automated fifteen step Playwright end to end verification suite validating the live Vercel cloud deployment across authentication, matching, claims, Viru AI dialogue, and administrative interfaces.
+
+### Technical Documentation Specifications:
+
+1. documentation Frontend md: Comprehensive frontend architectural specification detailing the Single Page Application DOM tree, client state controller, dynamic view rendering, modal systems, Viru AI chat dialog and responsive styling.
+2. documentation Backend md: Comprehensive backend architectural specification detailing the FastAPI ASGI application, eleven domain API routers, service layer abstractions, database persistence engines, security pipelines and verification suites.
+3. documentation AIMLIntegrations md: Architectural specification covering the Google Gemini 3.8 Flash Viru legal copilot, offline Indian succession rule engine, ML transliteration and fraud anomaly detection.
+4. documentation WebCyberSecurity md: Web cybersecurity defense architecture specifying SQL injection elimination, XSS sanitization, CSRF token protections, rate limiting, and HTTP security headers.
+5. documentation Visuals md: Complete visual design specification detailing color palettes, typography, UI components, brand emblems, and interface gallery screenshots.
+6. documentation CodeBaseIndex md: Complete architectural index mapping directory trees, module responsibilities, database schemas, and inter component dependencies.
+7. documentation Architecture md: Deep system architecture documenting multi tier application flows, database relationships, and algorithmic scoring engines.
+8. documentation Usage md: Comprehensive operational manual guiding citizens, administrators, and financial officers through platform workflows.
