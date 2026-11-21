@@ -65,6 +65,7 @@ The project follows a human interpretable modular layout separating concerns cle
   google_oauth png .......... Google Identity OAuth Two Point Zero Authentication Screenshot
   notifications_modal png ... System Notifications and Alerts Modal Screenshot
   GroupNumber_14 jpeg ....... Coursework Project Reference Visual
+  VirasatSetu_Figma_Master_UIUX svg ... Master Vector UI and UX Storyboard Board for Figma Import
 /documentation
   AIMLIntegrations md ......... Artificial Intelligence and Machine Learning Architecture
   Architecture md ............. Deep Technical Architecture

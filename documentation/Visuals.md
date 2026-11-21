@@ -18,6 +18,7 @@ Virasat Setu Visual Asset Directory:
 13. Google Identity OAuth Two Point Zero Authentication: [google_oauth.png](../Visuals/google_oauth.png).
 14. System Notifications Center Modal: [notifications_modal.png](../Visuals/notifications_modal.png).
 15. Project Coursework Reference Visual: [GroupNumber_14.jpeg](../Visuals/GroupNumber_14.jpeg).
+16. Master Figma UI and UX Design Board: [VirasatSetu_Figma_Master_UIUX.svg](../Visuals/VirasatSetu_Figma_Master_UIUX.svg).
 
 
 ## Interface Design Philosophy:
@@ -209,3 +210,9 @@ Caption: Notifications center modal displaying real time system alerts, asset di
 2. Categorized Notification Cards: Lists recent events including new asset discoveries, civil certificate approvals, and institutional claim transitions.
 3. Simulated Email Dispatch Inspector: Displays complete email subject lines, timestamps, sender routing and official body text simulating government communications.
 4. Global Read State Trigger: Single click Mark all read button clearing pending alerts across the portal.
+
+
+### 14. Master Figma UI and UX Design Board (VirasatSetu_Figma_Master_UIUX.svg):
+
+1. Single File Design Import: Self contained vector artboard combining all fifteen screens in a three column layout with titles, subtitles, national tricolor banner, and full high resolution visual interface captures.
+2. Zero Setup Figma Opening: Dragging this SVG file into an empty Figma canvas instantly lays out the entire platform architecture for presentation and client reviews with zero manual arrangement needed.
