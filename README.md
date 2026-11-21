@@ -4,6 +4,10 @@ DTI Project: Group 14.
 
 Live Public Portal: https://virasat-setu-eight.vercel.app
 
+Complete Documentation Directory: [documentation/](documentation/)
+
+Master Figma UI and UX Board: [VirasatSetu_Figma_Master_UIUX.svg](Visuals/VirasatSetu_Figma_Master_UIUX.svg)
+
 ![Virasat Setu Official Emblem](Visuals/logo.jpg)
 
 Caption: Virasat Setu official visual identity emblem featuring the sovereign arch, Kalpavriksha seedling and national wealth nodes.
@@ -134,18 +138,19 @@ The complete platform is hosted live on Vercel with serverless Python and Supaba
 
 ## Documentation Index:
 
-Detailed operational and technical manuals are organized in the documentation folder:
+Detailed operational and technical manuals are organized in the documentation directory:
 
-1. documentation/Usage md: Comprehensive user guide explaining citizen, administrator, institution, AI copilot and fraud center workflows.
-2. documentation/Frontend md: Frontend architecture, Single Page Application DOM tree, client state controller, dynamic view rendering, modal systems and responsive styling.
-3. documentation/Backend md: Backend architecture, FastAPI ASGI application, eleven domain API routers, business service layers, database persistence engines and security pipelines.
-4. documentation/AIMLIntegrations md: Artificial intelligence, machine learning transliteration, AI Legal Copilot, claim predictor and fraud intelligence specifications.
-5. documentation/WebCyberSecurity md: Web cybersecurity architecture, OWASP defenses, SQL injection, XSS, CSRF mitigations, rate limiting and HTTP security headers.
-6. documentation/Visuals md: Visual architecture, screen inventory, interface component gallery, color palette and design specifications.
-7. documentation/CodeBaseIndex md: Complete file directory map, structural charts and module descriptions.
-8. documentation/Architecture md: Detailed architectural specification, data flow diagrams and scoring algorithms.
-9. documentation/InstallationAndSetup md: Step by step local setup, automated testing and cloud deployment procedures.
-10. documentation/Tech md: In depth technical specifications, database schema definitions and API endpoint references.
-11. documentation/DTI md: Complete Digital Transformation and Innovation specification and Business Model Canvas.
-12. documentation/LogoDesign md: Official brand identity, color palette and geometric construction rules.
-13. documentation/DTIProjectPlan md: Project planning specifications and phase by phase milestones.
+1. [User Operations and Manual (Usage.md)](documentation/Usage.md): Comprehensive user guide explaining citizen, administrator, institution, AI copilot and fraud center workflows.
+2. [Frontend Architecture Specification (Frontend.md)](documentation/Frontend.md): Frontend architecture, Single Page Application DOM tree, client state controller, dynamic view rendering, modal systems and responsive styling.
+3. [Backend API and Services Manual (Backend.md)](documentation/Backend.md): Backend architecture, FastAPI ASGI application, eleven domain API routers, business service layers, database persistence engines and security pipelines.
+4. [Artificial Intelligence and ML Architecture (AIMLIntegrations.md)](documentation/AIMLIntegrations.md): Artificial intelligence, machine learning transliteration, AI Legal Copilot, claim predictor and fraud intelligence specifications.
+5. [Web Application Cybersecurity Guide (WebCyberSecurity.md)](documentation/WebCyberSecurity.md): Web cybersecurity architecture, OWASP defenses, SQL injection, XSS, CSRF mitigations, rate limiting and HTTP security headers.
+6. [Visual Architecture and Master Design Specification (Visuals.md)](documentation/Visuals.md): Visual architecture, screen inventory, interface component gallery, color palette, design specifications, and master Figma UI and UX board.
+7. [Codebase Structural Index (CodeBaseIndex.md)](documentation/CodeBaseIndex.md): Complete file directory map, structural charts and module descriptions.
+8. [System Architecture and Data Flow Specification (Architecture.md)](documentation/Architecture.md): Detailed architectural specification, data flow diagrams and scoring algorithms.
+9. [Installation, Setup, and Cloud Deployment Guide (InstallationAndSetup.md)](documentation/InstallationAndSetup.md): Step by step local setup, automated testing and cloud deployment procedures.
+10. [Technical Specifications and Data Dictionary (Tech.md)](documentation/Tech.md): In depth technical specifications, database schema definitions and API endpoint references.
+11. [Digital Transformation and Innovation Specification (DTI.md)](documentation/DTI.md): Complete Digital Transformation and Innovation specification and Business Model Canvas.
+12. [Brand Identity and Visual Design Guide (LogoDesign.md)](documentation/LogoDesign.md): Official brand identity, color palette and geometric construction rules.
+13. [Project Planning and Roadmap Specification (DTIProjectPlan.md)](documentation/DTIProjectPlan.md): Project planning specifications and phase by phase milestones.
+14. [Master Figma UI and UX Storyboard Vector (VirasatSetu_Figma_Master_UIUX.svg)](Visuals/VirasatSetu_Figma_Master_UIUX.svg): Complete sixteen screen platform user journey map with input and button connections ready for drag and drop import into Figma.
