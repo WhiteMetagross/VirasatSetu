@@ -1,4 +1,5 @@
 import sys
+import os
 import time
 import uuid
 from playwright.sync_api import sync_playwright
@@ -17,9 +18,14 @@ def run_vercel_e2e_tests():
     print("=" * 70)
     print(f"STARTING LIVE AGENTIC BROWSER UI TEST ON VERCEL: {TARGET_URL}")
     print("=" * 70)
+
+    proxy_url = os.environ.get("HTTPS_PROXY") or os.environ.get("HTTP_PROXY")
+    launch_kwargs = {"headless": True}
+    if proxy_url:
+        launch_kwargs["proxy"] = {"server": proxy_url}
     
     with sync_playwright() as p:
-        browser = p.chromium.launch(headless=True)
+        browser = p.chromium.launch(**launch_kwargs)
         context = browser.new_context(viewport={"width": 1280, "height": 800})
         page = context.new_page()
 
@@ -36,8 +42,7 @@ def run_vercel_e2e_tests():
 
         # 1. Navigate to live Vercel URL
         print(f"\n[Step 1] Navigating to live Vercel portal: {TARGET_URL}...")
-        page.goto(TARGET_URL)
-        page.wait_for_load_state("networkidle")
+        page.goto(TARGET_URL, wait_until="domcontentloaded")
         time.sleep(2)
         print("  Passed: Vercel production page loaded successfully.")
 
@@ -103,12 +108,11 @@ def run_vercel_e2e_tests():
         page.select_option("#dec-claimant-type", "Legal Heir")
 
         # Submit deceased record without certificate upload
-        page.click("button:has-text('Submit for Civil Verification')")
-        time.sleep(2)
-
-        dashboard_text = page.locator("#dashboard-recent-records").text_content()
-        assert "Gopal Krishna Murthy" in dashboard_text, "Error: Registered deceased should appear in dashboard."
-        print("  Passed: Deceased civil record submitted without certificate and listed on dashboard.")
+        page.click("button:has-text('Submit Record for Admin Verification')")
+        page.wait_for_selector("#deceased-table-body tr:has-text('Gopal Krishna Murthy')", timeout=10000)
+        dec_table = page.locator("#deceased-table-body").text_content()
+        assert "Pending Verification" in dec_table, "Error: Record should be Pending Verification"
+        print("  Passed: Deceased civil record submitted without certificate and listed as Pending Verification.")
 
         # 8. Test Viru (AI Legal Copilot) on live Vercel
         print("\n[Step 8] Testing Viru (Virasat AI Legal Copilot) on live Vercel...")
@@ -160,27 +164,27 @@ def run_vercel_e2e_tests():
         time.sleep(1.5)
 
         # Test category filter buttons
-        page.click("#db-filter-bank")
+        page.click(".fdb-cat-btn[data-cat='bank']")
         time.sleep(0.5)
         print("  Passed: Filtered central database by Bank Accounts.")
 
-        page.click("#db-filter-insurance")
+        page.click(".fdb-cat-btn[data-cat='insurance']")
         time.sleep(0.5)
         print("  Passed: Filtered central database by Insurance Policies.")
 
-        page.click("#db-filter-mutual_fund")
+        page.click(".fdb-cat-btn[data-cat='mutual_fund']")
         time.sleep(0.5)
         print("  Passed: Filtered central database by Mutual Funds.")
 
-        page.click("#db-filter-all")
+        page.click(".fdb-cat-btn[data-cat='all']")
         time.sleep(0.5)
         print("  Passed: Reset category filter to All Assets.")
 
         # Test search filter input
-        search_input = page.locator("#db-search-input")
+        search_input = page.locator("#fdb-search")
         search_input.fill("Rajesh")
         time.sleep(1)
-        table_text = page.locator("#database-records-table").text_content()
+        table_text = page.locator("#fdb-table-body").text_content()
         assert "Rajesh" in table_text, "Error: Table should show records matching search."
         print("  Passed: Real time search filter operational in Browse Database.")
         search_input.fill("")
@@ -188,13 +192,13 @@ def run_vercel_e2e_tests():
 
         # 11. Test Notification Center
         print("\n[Step 11] Testing Notification Center modal on Vercel...")
-        page.click("button[title='Notifications']")
+        page.click("#notif-btn")
         time.sleep(1)
-        notif_modal = page.locator("#modal-notifications")
+        notif_modal = page.locator("#modal-notif")
         assert notif_modal.is_visible(), "Error: Notifications modal should open."
-        page.click("button:has-text('Mark All Read')")
+        page.click("button:has-text('Mark all read')")
         time.sleep(0.5)
-        page.click("#modal-notifications button:has(.fa-xmark)")
+        page.click("#modal-notif button:has(.fa-xmark)")
         time.sleep(0.5)
         print("  Passed: Notification Center opened, marked read, and closed cleanly.")
 
@@ -203,13 +207,13 @@ def run_vercel_e2e_tests():
         page.click(".tab-btn[data-tab='admin']")
         time.sleep(1)
 
-        page.fill("#admin-new-user-name", "Vercel Created Officer")
-        page.fill("#admin-new-user-mobile", "9876501234")
-        page.fill("#admin-new-user-email", admin_created_email)
-        page.fill("#admin-new-user-password", "officer123")
-        page.select_option("#admin-new-user-role", "admin")
-        page.click("button:has-text('Provision System Account')")
-        time.sleep(2)
+        page.select_option("#admin-user-role", "admin")
+        page.fill("#admin-user-fullname", "Vercel Created Officer")
+        page.fill("#admin-user-mobile", "9876501234")
+        page.fill("#admin-user-email", admin_created_email)
+        page.fill("#admin-user-password", "officer123")
+        page.click("button:has-text('Create User Account')")
+        page.wait_for_selector(f"#admin-users-table-body tr:has-text('{admin_created_email}')", timeout=10000)
         print("  Passed: Admin successfully provisioned new account on live Vercel.")
 
         # 13. Test AI Fraud and Anomaly Intelligence Center
