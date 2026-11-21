@@ -11,6 +11,7 @@ from app.models.models import User
 from app.schemas.schemas import TokenData
 
 security = HTTPBearer()
+optional_security = HTTPBearer(auto_error=False)
 
 def hash_password(password: str) -> str:
     salt = bcrypt.gensalt()
@@ -56,6 +57,22 @@ def get_current_user(
     if user is None:
         raise credentials_exception
     return user
+
+def get_optional_current_user(
+    credentials: Optional[HTTPAuthorizationCredentials] = Depends(optional_security),
+    db: Session = Depends(get_db)
+) -> Optional[User]:
+    if not credentials:
+        return None
+    try:
+        payload = jwt.decode(credentials.credentials, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
+        user_id: str = payload.get("sub")
+        if user_id:
+            return db.query(User).filter(User.id == user_id).first()
+    except Exception:
+        return None
+    return None
+
 
 def require_admin(current_user: User = Depends(get_current_user)) -> User:
     if current_user.role != "admin":

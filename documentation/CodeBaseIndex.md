@@ -44,6 +44,9 @@ The project follows a human interpretable modular layout separating concerns cle
     fraud prediction service py Claim Health Predictor and Fraud Anomaly Intelligence
     notification service py . Alert Generation and Dispatch Logs
     supabase service py ..... Supabase Cloud REST Helper
+  /seed
+    sample_data py ............ Database Baseline Sample Records
+    populate_realistic_assets py Expanded Realistic Asset Seeder Across Ten Sectors
   /static
     index html .............. National Portal User Interface
     app js .................. Client Single Page Controller
@@ -64,6 +67,7 @@ The project follows a human interpretable modular layout separating concerns cle
   viru_copilot png .......... Viru AI Legal Copilot Knowledge Dialog Screenshot
   google_oauth png .......... Google Identity OAuth Two Point Zero Authentication Screenshot
   notifications_modal png ... System Notifications and Alerts Modal Screenshot
+  notification_email_center png Real Time Email Dispatcher and Notification Modal Screenshot
   GroupNumber_14 jpeg ....... Coursework Project Reference Visual
   VirasatSetu_Figma_Master_UIUX svg ... Master Vector UI and UX Storyboard Board for Figma Import
 /documentation

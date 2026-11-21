@@ -649,11 +649,14 @@
       </div>
 
       <!-- Category Filter Tabs -->
-      <div class="flex space-x-2 border-b border-slate-200 pb-2 text-xs font-semibold">
-        <button onclick="filterFdbCategory('all')" class="fdb-cat-btn px-4 py-1.5 rounded-full bg-gov-navy text-white" data-cat="all">All (94)</button>
-        <button onclick="filterFdbCategory('bank')" class="fdb-cat-btn px-4 py-1.5 rounded-full bg-slate-100 text-slate-700 hover:bg-slate-200" data-cat="bank"><i class="fa-solid fa-building-columns mr-1 text-blue-600"></i> Bank Accounts (42)</button>
-        <button onclick="filterFdbCategory('insurance')" class="fdb-cat-btn px-4 py-1.5 rounded-full bg-slate-100 text-slate-700 hover:bg-slate-200" data-cat="insurance"><i class="fa-solid fa-shield-halved mr-1 text-emerald-600"></i> Insurance Policies (26)</button>
-        <button onclick="filterFdbCategory('mutual_fund')" class="fdb-cat-btn px-4 py-1.5 rounded-full bg-slate-100 text-slate-700 hover:bg-slate-200" data-cat="mutual_fund"><i class="fa-solid fa-chart-line mr-1 text-purple-600"></i> Mutual Funds (26)</button>
+      <div class="flex space-x-2 border-b border-slate-200 pb-2 text-xs font-semibold overflow-x-auto">
+        <button onclick="filterFdbCategory('all')" class="fdb-cat-btn px-4 py-1.5 rounded-full bg-gov-navy text-white shrink-0" data-cat="all">All Records</button>
+        <button onclick="filterFdbCategory('bank')" class="fdb-cat-btn px-4 py-1.5 rounded-full bg-slate-100 text-slate-700 hover:bg-slate-200 shrink-0" data-cat="bank"><i class="fa-solid fa-building-columns mr-1 text-blue-600"></i> Banking</button>
+        <button onclick="filterFdbCategory('insurance')" class="fdb-cat-btn px-4 py-1.5 rounded-full bg-slate-100 text-slate-700 hover:bg-slate-200 shrink-0" data-cat="insurance"><i class="fa-solid fa-shield-halved mr-1 text-emerald-600"></i> Insurance</button>
+        <button onclick="filterFdbCategory('mutual_fund')" class="fdb-cat-btn px-4 py-1.5 rounded-full bg-slate-100 text-slate-700 hover:bg-slate-200 shrink-0" data-cat="mutual_fund"><i class="fa-solid fa-chart-line mr-1 text-purple-600"></i> Mutual Funds</button>
+        <button onclick="filterFdbCategory('pension')" class="fdb-cat-btn px-4 py-1.5 rounded-full bg-slate-100 text-slate-700 hover:bg-slate-200 shrink-0" data-cat="pension"><i class="fa-solid fa-hand-holding-dollar mr-1 text-amber-600"></i> NPS and Pensions</button>
+        <button onclick="filterFdbCategory('postal_savings')" class="fdb-cat-btn px-4 py-1.5 rounded-full bg-slate-100 text-slate-700 hover:bg-slate-200 shrink-0" data-cat="postal_savings"><i class="fa-solid fa-envelope-open-text mr-1 text-rose-600"></i> Post Office (PPF and NSC)</button>
+        <button onclick="filterFdbCategory('demat')" class="fdb-cat-btn px-4 py-1.5 rounded-full bg-slate-100 text-slate-700 hover:bg-slate-200 shrink-0" data-cat="demat"><i class="fa-solid fa-arrow-trend-up mr-1 text-indigo-600"></i> Demat Shares</button>
       </div>
 
       <!-- Financial Assets Table -->
@@ -1173,6 +1176,27 @@
         <button onclick="markAllNotifsRead()" class="text-gov-blue hover:underline">Mark all read</button>
       </div>
 
+      <!-- Direct Email Notification Dispatcher Card -->
+      <div class="bg-slate-50 border border-slate-200 rounded-xl p-3.5 space-y-2">
+        <div class="flex justify-between items-center">
+          <span class="font-bold text-slate-800 text-xs flex items-center gap-1.5">
+            <i class="fa-solid fa-paper-plane text-amber-500"></i> Dispatch Email Notification
+          </span>
+          <span class="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded">Real-time SMTP Engine</span>
+        </div>
+        <div class="flex gap-2 items-center">
+          <input type="email" id="input-dispatch-email" value="xerontitan99@gmail.com" placeholder="Enter recipient email address..." class="flex-1 p-2 border border-slate-300 rounded-lg text-xs focus:outline-none focus:ring-1 focus:ring-amber-500" />
+          <button type="button" id="btn-dispatch-email" onclick="handleSendEmailNotification()" class="bg-gov-navy hover:bg-slate-800 text-white font-bold px-3 py-2 rounded-lg text-xs transition flex items-center gap-1.5 shrink-0">
+            <i class="fa-solid fa-envelope"></i>
+            <span>Send Email</span>
+          </button>
+        </div>
+        <div id="email-dispatch-status" class="hidden text-[11px] p-2 rounded bg-emerald-50 border border-emerald-200 text-emerald-800 flex items-center justify-between">
+          <span id="email-dispatch-msg"></span>
+          <button type="button" onclick="document.getElementById('email-dispatch-status').classList.add('hidden')" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+      </div>
+
       <div id="notif-modal-list" class="flex-1 overflow-y-auto space-y-3 pr-1">
         <p class="text-center text-slate-400 py-6">No notifications found.</p>
       </div>
@@ -1273,16 +1297,25 @@
 
       <!-- Quick Question Chips -->
       <div class="space-y-1.5">
-        <span class="text-[10px] uppercase font-bold text-slate-400">Popular Legal Inquiries:</span>
+        <span class="text-[10px] uppercase font-bold text-slate-400">Popular Inquiries:</span>
         <div class="flex flex-wrap gap-1.5">
+          <button type="button" onclick="askQuickCopilot('How do legal heirs claim NPS pension corpus after subscriber demise?')" class="px-2.5 py-1 rounded-full bg-slate-100 hover:bg-amber-100 hover:text-amber-900 text-slate-700 font-medium transition text-[11px]">
+            NPS and Pension Claims
+          </button>
+          <button type="button" onclick="askQuickCopilot('What happens to a PPF account on death of account holder?')" class="px-2.5 py-1 rounded-full bg-slate-100 hover:bg-amber-100 hover:text-amber-900 text-slate-700 font-medium transition text-[11px]">
+            PPF and NSC Claims
+          </button>
+          <button type="button" onclick="askQuickCopilot('What are the rules for joint fixed deposits with either or survivor?')" class="px-2.5 py-1 rounded-full bg-slate-100 hover:bg-amber-100 hover:text-amber-900 text-slate-700 font-medium transition text-[11px]">
+            Fixed Deposits (FDs)
+          </button>
           <button type="button" onclick="askQuickCopilot('Nominee versus Legal Heir Rights Under Indian Law')" class="px-2.5 py-1 rounded-full bg-slate-100 hover:bg-amber-100 hover:text-amber-900 text-slate-700 font-medium transition text-[11px]">
-            Nominee vs Legal Heir Rights
+            Nominee vs Heir Rights
           </button>
           <button type="button" onclick="askQuickCopilot('Procedure for Claiming Deceased Bank Accounts at SBI')" class="px-2.5 py-1 rounded-full bg-slate-100 hover:bg-amber-100 hover:text-amber-900 text-slate-700 font-medium transition text-[11px]">
             SBI Bank Claim Steps
           </button>
           <button type="button" onclick="askQuickCopilot('Claiming Unclaimed Life Insurance Policies at LIC')" class="px-2.5 py-1 rounded-full bg-slate-100 hover:bg-amber-100 hover:text-amber-900 text-slate-700 font-medium transition text-[11px]">
-            LIC Policy Claim Checklist
+            LIC Policy Checklist
           </button>
           <button type="button" onclick="askQuickCopilot('Succession Certificate versus Legal Heir Certificate')" class="px-2.5 py-1 rounded-full bg-slate-100 hover:bg-amber-100 hover:text-amber-900 text-slate-700 font-medium transition text-[11px]">
             Succession Certificate Guide
@@ -1297,15 +1330,15 @@
             <i class="fa-solid fa-robot"></i>
           </div>
           <div class="bg-white p-3 rounded-2xl rounded-tl-none border border-slate-200 text-slate-700 text-xs shadow-sm max-w-[85%] leading-relaxed space-y-1">
-            <p class="font-bold text-slate-900">Namaste! I am Viru, your Virasat AI Legal Copilot.</p>
-            <p>I can assist you with Indian succession laws, differences between nominee and legal heir entitlements, bank claim documents, and court succession certificates. How can I help your family today?</p>
+            <p class="font-bold text-slate-900">Namaste! I am Viru, your Virasat AI Legal and Succession Copilot.</p>
+            <p>I can assist you with Indian succession laws, nominee rights, NPS and pensions, PPF and NSC claims, fixed deposits, bank lockers, and court succession certificates. How can I help your family today?</p>
           </div>
         </div>
       </div>
 
       <!-- Question Input Form -->
       <form id="copilot-form" onsubmit="handleCopilotSubmit(event)" class="flex gap-2 items-center">
-        <input type="text" id="copilot-input" required placeholder="Ask Viru about succession laws, nominee rights, or claim documents..." class="flex-1 p-2.5 border border-slate-300 rounded-lg text-xs focus:outline-none focus:ring-1 focus:ring-amber-500" />
+        <input type="text" id="copilot-input" required placeholder="Ask Viru about succession laws, nominee rights, NPS, pensions, PPF, FDs, or court certificates..." class="flex-1 p-2.5 border border-slate-300 rounded-lg text-xs focus:outline-none focus:ring-1 focus:ring-amber-500" />
         <button type="submit" id="copilot-send-btn" class="bg-gov-navy hover:bg-slate-800 text-white font-bold px-4 py-2.5 rounded-lg shadow transition flex items-center gap-1.5 shrink-0 text-xs">
           <span>Send</span>
           <i class="fa-solid fa-paper-plane text-[10px]"></i>

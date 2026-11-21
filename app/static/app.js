@@ -638,6 +638,8 @@ function renderMatchesList(matches) {
   const bankMatches = matches.filter((m) => m.financial_asset && m.financial_asset.asset_type === "bank");
   const insMatches = matches.filter((m) => m.financial_asset && m.financial_asset.asset_type === "insurance");
   const mfMatches = matches.filter((m) => m.financial_asset && m.financial_asset.asset_type === "mutual_fund");
+  const pensionMatches = matches.filter((m) => m.financial_asset && (m.financial_asset.asset_type === "pension" || m.financial_asset.asset_type === "postal_savings"));
+  const dematMatches = matches.filter((m) => m.financial_asset && m.financial_asset.asset_type === "demat");
 
   const totalValue = matches.reduce((sum, m) => sum + (m.financial_asset ? m.financial_asset.approximate_value : 0), 0);
 
@@ -647,12 +649,14 @@ function renderMatchesList(matches) {
       <div>
         <div class="text-xs uppercase font-bold text-emerald-200">Discovered Financial Assets Total</div>
         <div class="text-3xl font-extrabold mt-1">₹${totalValue.toLocaleString()}</div>
-        <div class="text-xs text-emerald-100 mt-1">${matches.length} Potential Asset(s) across Banks, Insurance and Mutual Funds</div>
+        <div class="text-xs text-emerald-100 mt-1">${matches.length} Potential Asset(s) across Banks, Insurance, Mutual Funds, NPS, and Post Office</div>
       </div>
-      <div class="flex gap-2">
+      <div class="flex flex-wrap gap-2">
         <span class="bg-white/20 backdrop-blur px-3 py-1 rounded text-xs font-semibold"><i class="fa-solid fa-building-columns mr-1"></i> ${bankMatches.length} Bank</span>
         <span class="bg-white/20 backdrop-blur px-3 py-1 rounded text-xs font-semibold"><i class="fa-solid fa-file-contract mr-1"></i> ${insMatches.length} Insurance</span>
         <span class="bg-white/20 backdrop-blur px-3 py-1 rounded text-xs font-semibold"><i class="fa-solid fa-chart-line mr-1"></i> ${mfMatches.length} Mutual Fund</span>
+        ${pensionMatches.length > 0 ? `<span class="bg-white/20 backdrop-blur px-3 py-1 rounded text-xs font-semibold"><i class="fa-solid fa-hand-holding-dollar mr-1"></i> ${pensionMatches.length} Pension and PPF</span>` : ""}
+        ${dematMatches.length > 0 ? `<span class="bg-white/20 backdrop-blur px-3 py-1 rounded text-xs font-semibold"><i class="fa-solid fa-arrow-trend-up mr-1"></i> ${dematMatches.length} Demat</span>` : ""}
       </div>
     </div>
 
@@ -677,6 +681,15 @@ function createMatchCardHTML(m) {
   } else if (asset.asset_type === "mutual_fund") {
     typeIcon = "fa-chart-pie";
     typeBadge = "Mutual Fund";
+  } else if (asset.asset_type === "pension") {
+    typeIcon = "fa-hand-holding-dollar";
+    typeBadge = "Pension and NPS";
+  } else if (asset.asset_type === "postal_savings") {
+    typeIcon = "fa-envelope-open-text";
+    typeBadge = "Post Office (PPF and NSC)";
+  } else if (asset.asset_type === "demat") {
+    typeIcon = "fa-arrow-trend-up";
+    typeBadge = "Demat and Shares";
   }
 
   // Masked Account Ref (like SB-XXXX-4102)
@@ -1603,9 +1616,12 @@ async function handleCopilotSubmit(e) {
       `;
     }
 
-    const sourceBadge = res.source === "gemini_api"
-      ? '<span class="bg-amber-100 text-amber-800 text-[9px] font-bold px-1.5 py-0.5 rounded">Gemini AI</span>'
-      : '<span class="bg-blue-100 text-blue-800 text-[9px] font-bold px-1.5 py-0.5 rounded">Succession Knowledge Base</span>';
+    let sourceBadge = '<span class="bg-blue-100 text-blue-800 text-[9px] font-bold px-1.5 py-0.5 rounded">Succession Knowledge Base</span>';
+    if (res.source === "gemini_api") {
+      sourceBadge = '<span class="bg-amber-100 text-amber-800 text-[9px] font-bold px-1.5 py-0.5 rounded">Gemini AI</span>';
+    } else if (res.source === "groq_api") {
+      sourceBadge = '<span class="bg-orange-100 text-orange-800 text-[9px] font-bold px-1.5 py-0.5 rounded">Groq Cloud AI</span>';
+    }
 
     thread.innerHTML += `
       <div class="flex items-start gap-2.5">
@@ -1717,5 +1733,51 @@ async function loadInstitutionAnomalies() {
       .join("");
   } catch (err) {
     console.error("Error loading institution anomalies:", err);
+  }
+}
+
+// EMAIL NOTIFICATION DISPATCHER (Real-time and Test verification)
+async function handleSendEmailNotification() {
+  const emailInput = document.getElementById("input-dispatch-email");
+  const btn = document.getElementById("btn-dispatch-email");
+  const statusBox = document.getElementById("email-dispatch-status");
+  const statusMsg = document.getElementById("email-dispatch-msg");
+
+  const email = (emailInput ? emailInput.value : "").trim();
+  if (!email || !email.includes("@") || !email.includes(".")) {
+    showToast("Please enter a valid recipient email address.", "error");
+    return;
+  }
+
+  if (btn) btn.disabled = true;
+  const originalBtnHTML = btn.innerHTML;
+  btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Sending...';
+
+  try {
+    const res = await apiFetch("/api/notifications/test-email", {
+      method: "POST",
+      body: JSON.stringify({ email: email }),
+      silent: true
+    });
+
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = originalBtnHTML;
+    }
+
+    if (statusBox && statusMsg) {
+      statusBox.classList.remove("hidden");
+      statusMsg.innerHTML = `<strong>Dispatched:</strong> Official asset notification sent to <strong>${escapeHTML(res.recipient || email)}</strong> (${res.status}).`;
+    }
+
+    showToast(`Notification email successfully dispatched to ${email}`, "success");
+    await pollNotifications();
+    renderNotificationsModal();
+  } catch (err) {
+    if (btn) {
+      btn.disabled = false;
+      btn.innerHTML = originalBtnHTML;
+    }
+    showToast(err.message || "Failed to dispatch email notification", "error");
   }
 }

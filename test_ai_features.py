@@ -72,7 +72,11 @@ def test_ai_copilot_service():
     test_queries = [
         "What is the difference between nominee rights and legal heir rights in Indian banking?",
         "How to claim a deceased bank account at State Bank of India without a succession certificate?",
-        "What documents are needed for LIC life insurance death claim settlement?"
+        "What documents are needed for LIC life insurance death claim settlement?",
+        "How do legal heirs claim NPS pension corpus after subscriber demise?",
+        "What happens to a PPF account on death of the account holder?",
+        "How to claim National Savings Certificates NSC from the post office?",
+        "What are the rules for claiming Fixed Deposits FD with Either or Survivor mandate?"
     ]
 
     for q in test_queries:

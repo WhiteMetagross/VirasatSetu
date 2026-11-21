@@ -124,10 +124,11 @@ The registration console organizes civil record submission into four structured 
 ### 2. Viru: Virasat AI Legal Copilot Dialog (modal copilot):
 
 1. Floating Action Launcher: High visibility circular floating button anchored at the bottom right labeled Ask Viru.
-2. Modal Header: Displays Viru: Virasat AI Legal Copilot with Gemini AI Powered indicator badge.
-3. Quick Question Chips: Clickable prompt pills for Nominee vs Legal Heir Rights, SBI Bank Claim Steps, LIC Policy Claim Checklist, and Succession Certificate Guide.
+2. Modal Header: Displays Viru: Virasat AI Legal Copilot with multi model intelligence badges (Gemini AI and Groq Cloud AI).
+3. Quick Question Chips: Clickable prompt pills for NPS and Pension Claims, PPF and NSC Claims, Fixed Deposits (FDs), Nominee vs Legal Heir Rights, SBI Bank Claim Steps, LIC Policy Checklist, and Succession Certificate Guide.
 4. Conversational History: Renders user questions and AI legal responses formatted with statute citations, documentation checklists and related legal follow ups.
-5. Input Field and Send Button: Clean text input allowing citizens to submit tailored inquiries regarding succession laws and claim procedures.
+5. Dynamic Source Indicator: Accurately identifies whether each advisory was generated via Gemini AI, Groq Cloud AI, or the Succession Knowledge Base.
+6. Input Field and Send Button: Clean text input allowing citizens to submit tailored inquiries regarding succession laws and claim procedures.
 
 ### 3. Claim Preparation Dialog (modal claim):
 
@@ -136,11 +137,13 @@ The registration console organizes civil record submission into four structured 
 3. Claimant Declaration Form: Fields for claimant name, contact details, relationship with deceased, and succession capacity.
 4. Supporting Remarks Input: Textarea allowing claimants to provide supplementary background information.
 
-### 4. Notification Center Dialog (modal notif):
+### 4. Notification Center and Email Dispatcher Dialog (modal notif):
 
 1. Alert List: Chronological list of citizen alerts regarding matching discoveries, claim status transitions and administrative updates.
-2. Mark All Read Button: Dismisses unread counters across all alerts.
-3. Simulated Email Dispatch Inspector: Interactive viewer rendering official government transactional notification emails formatted with official headers.
+2. Direct Email Notification Dispatcher: Real time email testing and dispatch card allowing citizens to send test notifications directly to any email address (like xerontitan99@gmail.com).
+3. Live Dispatch Feedback: Displays real time delivery confirmation pills with exact timestamps and recipient confirmation.
+4. Mark All Read Button: Dismisses unread counters across all alerts.
+5. Simulated Email Dispatch Inspector: Interactive viewer rendering official government transactional notification emails formatted with official headers.
 
 
 ## Client State Controller Architecture (app js):

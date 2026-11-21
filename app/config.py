@@ -23,8 +23,9 @@ class Settings(BaseSettings):
     SUPABASE_ANON_KEY: str = ""
     SUPABASE_SERVICE_ROLE_KEY: str = ""
 
-    # Google Gemini AI and Google OAuth Configuration
+    # Google Gemini AI, Groq AI, and Google OAuth Configuration
     GEMINI_API_KEY: str = ""
+    GROQ_API_KEY: str = ""
     GOOGLE_CLIENT_ID: str = ""
     GOOGLE_CLIENT_SECRET: str = ""
 

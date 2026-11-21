@@ -17,8 +17,8 @@ Virasat Setu Platform Flow:
 1. Citizen Portal: Register Deceased Records and Track Claim Progress.
 2. Government Oversight: Verify Civil Certificates and Execute Matching Engine.
 3. Central Matching Engine: One Hundred Point Identity and Record Verification.
-4. Banking Desk: State Bank of India, Punjab National Bank and Bank of Baroda.
-5. Insurance and Funds Desk: Life Insurance Corporation, HDFC Mutual Fund and SBI Funds Management.
+4. Banking and Pension Desk: State Bank of India, Punjab National Bank, Bank of Baroda, National Pension System (PFRDA), EPFO, and Department of Posts.
+5. Insurance, Funds, and Demat Desk: Life Insurance Corporation, HDFC Mutual Fund, SBI Funds Management, and CDSL Demat.
 
 
 ## Platform Visual Interface Gallery:
@@ -63,6 +63,10 @@ Caption: Dedicated verification desk for banking and insurance officers with pen
 
 Caption: Authentication modal featuring the official Continue with Google identity button and traditional credentials.
 
+![System Notifications and Email Dispatcher](Visuals/notification_email_center.png)
+
+Caption: System notifications and real time email dispatcher modal tested with live citizen verification.
+
 
 ## Executive Summary and Scope:
 
@@ -74,13 +78,13 @@ Financial dormancy in India exceeds one point five lakh crore rupees. This wealt
 1. Citizen and Family Registration: Allows family members to create authenticated profiles and submit deceased person records with Google OAuth 2.0 single sign on.
 2. Civil Certificate Registration: Captures official municipal death certificate numbers, dates of registration and issuing authorities, supporting submission with or without certificate upload.
 3. Automated Discovery Engine: Evaluates identity parameters against banking, insurance and fund records using a weighted one hundred point scoring algorithm enhanced by machine learning Indian name transliteration.
-4. Viru (Virasat AI Legal Copilot): Dual engine legal intelligence assistant combining Google Gemini 3.8 Flash generative AI with an embedded offline Indian Succession Legal Knowledge Engine.
+4. Viru (Virasat AI Legal Copilot): Three tier legal and succession intelligence assistant combining Google Gemini Flash API as primary generative cloud intelligence, high speed Groq Cloud API as rapid secondary failover, and an embedded offline Indian Succession Legal Knowledge Engine.
 5. Citizen Claim Health Predictor: Five dimension readiness evaluator providing real time approval probability scoring (25% to 98%) and prescriptive documentation checklists.
 6. Administrative AI Fraud and Anomaly Intelligence Center: Role gated security engine detecting duplicate claim conflicts, high value dormancy and relationship discrepancies.
 7. Browse Database Interface: Provides transparent search capabilities across ninety four institutional financial records strictly restricted to platform administrators.
 8. Claimant Verification Workflow: Supports legal heir and nominee submissions with civil documentation proofs.
 9. Institutional Claim Desk: Equips authorized representatives from banks and insurers with verification consoles to review claims and issue formal updates.
-10. Event Notification Pipeline: Dispatches instant in portal alerts and logs simulated official email communications.
+10. Event Notification and Real Time Email Pipeline: Dispatches instant in portal alerts, transactional email communications, and direct test notifications to citizen addresses like xerontitan99@gmail.com.
 11. Multi Tier Cybersecurity Defenses: Implements defense in depth against SQL injection, cross site scripting, cross site request forgery, path traversal and credential brute forcing.
 12. Complete Administrative Audit Trail: Records every status transition, matching execution and verification action in immutable system logs.
 

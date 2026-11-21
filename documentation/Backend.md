@@ -68,7 +68,9 @@ The backend codebase is organized into five decoupled architectural layers:
 
 1. GET /api/notifications: Delivers personalized alerts regarding asset discoveries, administrative verifications and claim updates.
 2. PATCH /api/notifications/{id}/read: Marks a single notification as read.
-3. POST /api/notifications/mark all read: Clears unread indicators across all alerts for the current user.
+3. POST /api/notifications/read all: Clears unread indicators across all alerts for the current user.
+4. POST /api/notifications/send email: Dispatches customized transactional and discovery notifications directly to any citizen email address.
+5. POST /api/notifications/test email: Triggers automated asset discovery notification dispatch with live verification testing (tested with xerontitan99@gmail.com).
 
 ### 8. Documents Storage Router (app/routers/documents py):
 
@@ -104,8 +106,8 @@ The backend codebase is organized into five decoupled architectural layers:
 
 ### 2. Viru AI Legal Copilot Service (ai copilot service py):
 
-1. Dual Engine Architecture: Coordinates Google Gemini 3.8 Flash generative cloud inference with an embedded offline Indian Succession Legal Knowledge Engine.
-2. Resilient Fallback: Protects user responsiveness with a strict two second network timeout, seamlessly falling back to verified statutory rules if cloud connectivity times out.
+1. Three Tier Resilient Inference Architecture: Coordinates Google Gemini Flash API as primary generative cloud intelligence, ultra fast Groq Cloud API (openai/gpt oss 120b and qwen/qwen3.8 27b) as high speed secondary fallback, and an expanded Offline Indian Succession Knowledge Engine as tertiary failover.
+2. Broad Succession and Financial Scope: Answers citizen inquiries on National Pension System (NPS), PRAN exit rules under PFRDA, Employees Provident Fund (EPFO), EPS 95 family pensions, Public Provident Fund (PPF Scheme 2019), National Savings Certificates (NSC), Senior Citizen Savings Scheme (SCSS), Kisan Vikas Patra (KVP), Fixed Deposits (FDs), joint accounts with Either or Survivor mandates, bank safe deposit lockers, and property mutation.
 3. Statutory Knowledge Base: Encodes rules from the Hindu Succession Act 1956, Indian Succession Act 1925, Supreme Court nominee rulings, RBI deceased account guidelines, and AMFI mutual fund transmission procedures.
 
 ### 3. Fraud and Anomaly Prediction Service (fraud prediction service py):
@@ -118,7 +120,9 @@ The backend codebase is organized into five decoupled architectural layers:
 ### 4. Notification and Dispatch Service (notification service py):
 
 1. Persistent Alerts: Generates database notification entries linked to recipient user accounts with unread tracking flags.
-2. Transactional Email Dispatch: Simulates and logs official government transactional emails formatted with official headers, notification titles, and action deep links.
+2. Multi Channel Email Dispatch: Delivers HTML and plain text notification emails with official government headers, asset discovery summaries, and action deep links.
+3. Live SMTP and Simulated Fallback: Supports real time authenticated SMTP delivery when configured, or records complete RFC 5322 delivery logs into notification audit trails.
+4. Tested Citizen Delivery: Verified end to end with live verification dispatches to citizen address xerontitan99@gmail.com.
 
 ### 5. Supabase Cloud Integration Service (supabase service py):
 
