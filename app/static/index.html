@@ -141,7 +141,7 @@
           <i class="fa-solid fa-clipboard-check mr-1 text-slate-500"></i> Claim Tracking
         </button>
         <button onclick="toggleAICopilotModal()" class="tab-btn py-3 px-2 border-b-2 border-transparent text-indigo-700 hover:text-indigo-900 font-bold flex items-center gap-1.5 transition">
-          <i class="fa-solid fa-robot text-amber-500"></i> AI Legal Copilot
+          <i class="fa-solid fa-robot text-amber-500"></i> Viru (AI Copilot)
         </button>
         <button id="nav-db-tab" onclick="switchTab('financial-db')" class="tab-btn py-3 px-1 border-b-2 border-transparent hover:text-gov-navy hidden" data-tab="financial-db">
           <i class="fa-solid fa-database mr-1 text-slate-500"></i> Browse Database
@@ -1186,7 +1186,7 @@
           </div>
           <div>
             <div class="flex items-center gap-2">
-              <h3 class="text-base font-bold text-slate-900">Virasat AI Legal Copilot</h3>
+              <h3 class="text-base font-bold text-slate-900">Viru: Virasat AI Legal Copilot</h3>
               <span class="bg-amber-100 text-amber-800 text-[9px] font-bold px-1.5 py-0.5 rounded uppercase tracking-wider">Gemini AI Powered</span>
             </div>
             <p class="text-[11px] text-slate-500 mt-0.5">Indian Succession Law, Statutory Nominee Guidelines, and Bank Claim Advisor</p>
@@ -1221,7 +1221,7 @@
             <i class="fa-solid fa-robot"></i>
           </div>
           <div class="bg-white p-3 rounded-2xl rounded-tl-none border border-slate-200 text-slate-700 text-xs shadow-sm max-w-[85%] leading-relaxed space-y-1">
-            <p class="font-bold text-slate-900">Namaste! I am your Virasat AI Copilot.</p>
+            <p class="font-bold text-slate-900">Namaste! I am Viru, your Virasat AI Legal Copilot.</p>
             <p>I can assist you with Indian succession laws, differences between nominee and legal heir entitlements, bank claim documents, and court succession certificates. How can I help your family today?</p>
           </div>
         </div>
@@ -1229,7 +1229,7 @@
 
       <!-- Question Input Form -->
       <form id="copilot-form" onsubmit="handleCopilotSubmit(event)" class="flex gap-2 items-center">
-        <input type="text" id="copilot-input" required placeholder="Ask about succession laws, nominee rights, or claim documents..." class="flex-1 p-2.5 border border-slate-300 rounded-lg text-xs focus:outline-none focus:ring-1 focus:ring-amber-500" />
+        <input type="text" id="copilot-input" required placeholder="Ask Viru about succession laws, nominee rights, or claim documents..." class="flex-1 p-2.5 border border-slate-300 rounded-lg text-xs focus:outline-none focus:ring-1 focus:ring-amber-500" />
         <button type="submit" id="copilot-send-btn" class="bg-gov-navy hover:bg-slate-800 text-white font-bold px-4 py-2.5 rounded-lg shadow transition flex items-center gap-1.5 shrink-0 text-xs">
           <span>Send</span>
           <i class="fa-solid fa-paper-plane text-[10px]"></i>
@@ -1239,9 +1239,9 @@
   </div>
 
   <!-- FLOATING AI COPILOT LAUNCHER BUTTON -->
-  <button id="btn-open-copilot" onclick="toggleAICopilotModal()" class="fixed bottom-6 right-6 z-40 bg-gov-navy hover:bg-slate-800 text-white px-4 py-3 rounded-full shadow-2xl flex items-center gap-2.5 border-2 border-amber-400 transition transform hover:scale-105" title="Ask Virasat AI Copilot">
+  <button id="btn-open-copilot" onclick="toggleAICopilotModal()" class="fixed bottom-6 right-6 z-40 bg-gov-navy hover:bg-slate-800 text-white px-4 py-3 rounded-full shadow-2xl flex items-center gap-2.5 border-2 border-amber-400 transition transform hover:scale-105" title="Ask Viru: Virasat AI Legal Copilot">
     <i class="fa-solid fa-robot text-amber-400 text-base"></i>
-    <span class="font-bold text-xs tracking-wide">Virasat AI Copilot</span>
+    <span class="font-bold text-xs tracking-wide">Ask Viru</span>
   </button>
 
   <!-- TOAST NOTIFICATION CONTAINER -->

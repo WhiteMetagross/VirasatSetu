@@ -77,11 +77,11 @@ The command center for government administrators and civil registrars:
 
 ## Newly Integrated Visual Interfaces:
 
-### 1. Virasat AI Legal Copilot Interface:
+### 1. Viru: Virasat AI Legal Copilot Interface:
 
-1. Floating Action Launcher: An unobtrusive, modern circular floating button anchored at the bottom right of the screen featuring an artificial intelligence spark emblem and quick launch tooltip.
-2. Dedicated Navigation Tab: An accessible top navigation tab titled AI Legal Copilot providing direct modal access.
-3. Interactive Knowledge Dialog: A sleek modal window presenting conversational legal intelligence regarding the Hindu Succession Act, Indian Succession Act, Supreme Court nominee rulings and institutional procedures.
+1. Floating Action Launcher: An unobtrusive, modern circular floating button anchored at the bottom right of the screen featuring an artificial intelligence spark emblem and labeled Ask Viru.
+2. Dedicated Navigation Tab: An accessible top navigation tab titled Viru (AI Copilot) providing direct modal access.
+3. Interactive Knowledge Dialog: A sleek modal window titled Viru: Virasat AI Legal Copilot presenting conversational legal intelligence regarding the Hindu Succession Act, Indian Succession Act, Supreme Court nominee rulings and institutional procedures.
 4. Quick Inquiry Chips: Four clickable pre formulated prompt pills allowing instant one click exploration of common succession questions:
    * Class 1 Legal Heirs under Hindu Succession Act.
    * Difference between nominee rights and legal heir rights.

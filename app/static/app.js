@@ -1512,7 +1512,7 @@ async function handleCopilotSubmit(e) {
       </div>
       <div class="bg-white p-3 rounded-2xl rounded-tl-none border border-slate-200 text-slate-500 text-xs shadow-sm flex items-center gap-2">
         <i class="fa-solid fa-circle-notch fa-spin text-amber-500"></i>
-        <span>Consulting legal succession frameworks and institutional precedents...</span>
+        <span>Viru is consulting legal succession frameworks and institutional precedents...</span>
       </div>
     </div>
   `;
@@ -1561,7 +1561,7 @@ async function handleCopilotSubmit(e) {
         </div>
         <div class="bg-white p-3 rounded-2xl rounded-tl-none border border-slate-200 text-slate-700 text-xs shadow-sm max-w-[85%] leading-relaxed space-y-1">
           <div class="flex items-center justify-between pb-1 border-b border-slate-100">
-            <span class="font-bold text-slate-900">Virasat Legal Advisory:</span>
+            <span class="font-bold text-slate-900">Viru Legal Advisory:</span>
             ${sourceBadge}
           </div>
           <div class="text-slate-800 leading-relaxed">${formattedAnswer}</div>

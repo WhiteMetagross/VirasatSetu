@@ -3,7 +3,7 @@
 This document details the architectural design, algorithmic models, data structures and operational workflows for the artificial intelligence and machine learning capabilities integrated into the Virasat Setu platform.
 
 Virasat Setu Artificial Intelligence Stack:
-1. Virasat AI Legal Copilot: Dual Engine Architecture with Google Gemini Generative Intelligence and Embedded Indian Succession Legal Knowledge Engine.
+1. Viru (Virasat AI Legal Copilot): Dual Engine Architecture with Google Gemini Generative Intelligence and Embedded Indian Succession Legal Knowledge Engine.
 2. Machine Learning Indian Name Transliteration Engine: Pure Python Character Bigram Jaccard and Double Metaphone Phonetic Distance Normalizer.
 3. Citizen Claim Health and Approval Probability Predictor: Five Factor Multi Dimension Readiness Evaluator with Prescriptive Action Recommendations.
 4. Administrative AI Fraud and Anomaly Intelligence Center: Role Gated Risk Engine Detecting Duplicate Claim Conflicts, High Value Dormancy and Relationship Discrepancies.
@@ -21,9 +21,9 @@ The artificial intelligence systems powering Virasat Setu are engineered under s
 5. Absolute Explainability: Every score, recommendation and anomaly flag is accompanied by human interpretable rule breakdowns, ensuring full legal auditability for judicial review.
 
 
-## 1. Virasat AI Legal Copilot:
+## 1. Viru: Virasat AI Legal Copilot:
 
-The Virasat AI Legal Copilot serves as an interactive legal knowledge assistant for citizens navigating the complexities of Indian succession jurisprudence, banking claim procedures and insurance settlements.
+The Virasat AI Legal Copilot named Viru serves as an interactive legal knowledge assistant for citizens navigating the complexities of Indian succession jurisprudence, banking claim procedures and insurance settlements.
 
 ### Dual Engine Architecture:
 

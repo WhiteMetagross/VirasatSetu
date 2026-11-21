@@ -50,7 +50,7 @@ Financial dormancy in India exceeds one point five lakh crore rupees. This wealt
 1. Citizen and Family Registration: Allows family members to create authenticated profiles and submit deceased person records with Google OAuth 2.0 single sign on.
 2. Civil Certificate Registration: Captures official municipal death certificate numbers, dates of registration and issuing authorities, supporting submission with or without certificate upload.
 3. Automated Discovery Engine: Evaluates identity parameters against banking, insurance and fund records using a weighted one hundred point scoring algorithm enhanced by machine learning Indian name transliteration.
-4. Virasat AI Legal Copilot: Dual engine legal intelligence assistant combining Google Gemini 3.8 Flash generative AI with an embedded offline Indian Succession Legal Knowledge Engine.
+4. Viru (Virasat AI Legal Copilot): Dual engine legal intelligence assistant combining Google Gemini 3.8 Flash generative AI with an embedded offline Indian Succession Legal Knowledge Engine.
 5. Citizen Claim Health Predictor: Five dimension readiness evaluator providing real time approval probability scoring (25% to 98%) and prescriptive documentation checklists.
 6. Administrative AI Fraud and Anomaly Intelligence Center: Role gated security engine detecting duplicate claim conflicts, high value dormancy and relationship discrepancies.
 7. Browse Database Interface: Provides transparent search capabilities across ninety four institutional financial records strictly restricted to platform administrators.
