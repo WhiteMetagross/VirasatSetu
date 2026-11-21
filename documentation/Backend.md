@@ -106,7 +106,7 @@ The backend codebase is organized into five decoupled architectural layers:
 
 ### 2. Viru AI Legal Copilot Service (ai copilot service py):
 
-1. Three Tier Resilient Inference Architecture: Coordinates Google Gemini Flash API as primary generative cloud intelligence, ultra fast Groq Cloud API (openai/gpt oss 120b and qwen/qwen3.8 27b) as high speed secondary fallback, and an expanded Offline Indian Succession Knowledge Engine as tertiary failover.
+1. Three Tier Resilient Inference Architecture: Coordinates ultra fast Groq Cloud API (openai/gpt oss 120b and qwen/qwen3.8 27b) as primary generative cloud intelligence with zero rate limit interruptions, Google Gemini Flash API as high speed secondary fallback, and an expanded Offline Indian Succession Knowledge Engine as tertiary failover.
 2. Broad Succession and Financial Scope: Answers citizen inquiries on National Pension System (NPS), PRAN exit rules under PFRDA, Employees Provident Fund (EPFO), EPS 95 family pensions, Public Provident Fund (PPF Scheme 2019), National Savings Certificates (NSC), Senior Citizen Savings Scheme (SCSS), Kisan Vikas Patra (KVP), Fixed Deposits (FDs), joint accounts with Either or Survivor mandates, bank safe deposit lockers, and property mutation.
 3. Statutory Knowledge Base: Encodes rules from the Hindu Succession Act 1956, Indian Succession Act 1925, Supreme Court nominee rulings, RBI deceased account guidelines, and AMFI mutual fund transmission procedures.
 

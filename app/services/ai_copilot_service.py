@@ -5,6 +5,7 @@ statutory nominee rules, banking deceased claims, pensions, small savings, and s
 """
 
 import json
+import re
 import urllib.request
 import urllib.error
 from typing import Dict, Any, List
@@ -13,10 +14,15 @@ from app.config import settings
 SYSTEM_INSTRUCTION = (
     "You are Viru, the official AI Legal and Financial Succession Copilot for Virasat Setu, "
     "Indias national deceased asset discovery and inheritance platform. "
-    "Your mission is to provide warm, practical, comprehensive, and actionable guidance to citizens, "
+    "Your mission is to provide concise, practical, and actionable guidance to citizens, "
     "legal heirs, claimants, and families on all matters of financial succession, asset claims, "
     "statutory entitlements, pensions, banking claims, and legal documentation across India.\n\n"
-    "You have deep legal and practical expertise across all asset classes and institutions:\n"
+    "Crucial Guidelines and Formatting Rules:\n"
+    "1. Never use emojis anywhere in your response.\n"
+    "2. Never use long em dashes (like —) or en dashes (like –). Use commas, colons, or standard punctuation instead.\n"
+    "3. Be concise and use simple, clear English in all answers. Keep explanations direct, practical, and easy to understand for everyday citizens.\n"
+    "4. Format your output in clean Markdown with bold headers, concise bullet points, and numbered steps so it renders clearly.\n\n"
+    "Scope of Knowledge:\n"
     "1. Banking and Fixed Deposits: Savings accounts, Fixed Deposits, Recurring Deposits, "
     "joint accounts with Either or Survivor or Former or Survivor mandates, Reserve Bank of India UDGAM portal, "
     "deceased claim settlement with or without nomination, indemnity bonds, and surety requirements.\n"
@@ -36,14 +42,29 @@ SYSTEM_INSTRUCTION = (
     "bank locker operations after demise of holder, and physical gold inheritance.\n"
     "7. Statutory Succession and Court Instruments: Intestate succession under the Hindu Succession Act 1956, "
     "Indian Succession Act 1925, Muslim personal law, Special Marriage Act, registered Wills, codicils, "
-    "probate, letters of administration, Revenue Legal Heir Certificates, and Civil Court Succession Certificates.\n\n"
-    "Tone and Guidelines:\n"
-    "Be conversational, empathetic, practical, and legally precise.\n"
-    "Never refuse questions regarding personal finance, pensions, succession planning, taxation of inheritance, "
-    "or government small savings schemes.\n"
-    "Structure answers with clear numbered steps, document checklists, and practical guidance.\n"
-    "Avoid generic robotic refusals."
+    "probate, letters of administration, Revenue Legal Heir Certificates, and Civil Court Succession Certificates."
 )
+
+def sanitize_copilot_text(text: str) -> str:
+    """Removes emojis and replaces em dashes and en dashes with standard punctuation."""
+    if not text:
+        return ""
+    text = text.replace("\u2014", ", ").replace("\u2015", ", ").replace("\u2013", ", ")
+    emoji_pattern = re.compile(
+        "["
+        "\U0001F600-\U0001F64F"
+        "\U0001F300-\U0001F5FF"
+        "\U0001F680-\U0001F6FF"
+        "\U0001F1E0-\U0001F1FF"
+        "\U00002702-\U000027B0"
+        "\U000024C2-\U0001F251"
+        "\U0001F900-\U0001F9FF"
+        "\U0001FA70-\U0001FAFF"
+        "]+",
+        flags=re.UNICODE
+    )
+    text = emoji_pattern.sub("", text)
+    return text.strip()
 
 CANDIDATE_GEMINI_MODELS = [
     "gemini-3.5-flash-lite",
@@ -446,8 +467,9 @@ def query_groq_api(prompt: str) -> str:
 def get_ai_copilot_response(user_query: str, user_context: Dict[str, Any] = None) -> Dict[str, Any]:
     """
     Main entrypoint for Virasat AI Copilot.
-    Attempts Gemini Cloud API first; falls back to Groq Cloud API;
-    gracefully falls back to intelligent knowledge engine.
+    Attempts Groq Cloud API first as primary high speed AI;
+    falls back to Google Gemini Cloud API if Groq fails or encounters errors;
+    gracefully falls back to intelligent domain knowledge engine.
     """
     cleaned_query = (user_query or "").strip()
     if not cleaned_query:
@@ -462,26 +484,28 @@ def get_ai_copilot_response(user_query: str, user_context: Dict[str, Any] = None
             ]
         }
 
-    # Tier 1: Attempt Gemini Cloud API first if configured
+    # Tier 1: Attempt Groq Cloud API first as Primary AI
     try:
-        gemini_text = query_gemini_api(cleaned_query)
-        if gemini_text:
+        groq_text = query_groq_api(cleaned_query)
+        if groq_text:
+            cleaned = sanitize_copilot_text(groq_text)
             return {
-                "answer": gemini_text,
-                "source": "gemini_api",
-                "followups": generate_contextual_followups(cleaned_query, gemini_text)
+                "answer": cleaned,
+                "source": "groq_api",
+                "followups": generate_contextual_followups(cleaned_query, cleaned)
             }
     except Exception:
         pass
 
-    # Tier 2: Attempt Groq Cloud API as rapid fallback
+    # Tier 2: Attempt Google Gemini Cloud API as secondary fallback
     try:
-        groq_text = query_groq_api(cleaned_query)
-        if groq_text:
+        gemini_text = query_gemini_api(cleaned_query)
+        if gemini_text:
+            cleaned = sanitize_copilot_text(gemini_text)
             return {
-                "answer": groq_text,
-                "source": "groq_api",
-                "followups": generate_contextual_followups(cleaned_query, groq_text)
+                "answer": cleaned,
+                "source": "gemini_api",
+                "followups": generate_contextual_followups(cleaned_query, cleaned)
             }
     except Exception:
         pass

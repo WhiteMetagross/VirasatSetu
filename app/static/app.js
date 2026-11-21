@@ -1527,6 +1527,40 @@ async function submitGoogleAuth(e) {
 }
 
 // VIRASAT AI LEGAL COPILOT
+function renderMarkdown(text) {
+  if (!text) return "";
+
+  // Clean any stray em dashes or en dashes
+  let cleaned = text.replace(/[\u2014\u2015]/g, ", ").replace(/[\u2013]/g, ", ");
+
+  if (typeof marked !== "undefined" && marked.parse) {
+    try {
+      marked.setOptions({
+        gfm: true,
+        breaks: true,
+        sanitize: false
+      });
+      return marked.parse(cleaned);
+    } catch (e) {
+      console.warn("marked.js parse fallback:", e);
+    }
+  }
+
+  // Fallback regex markdown parser
+  let html = escapeHTML(cleaned);
+  html = html.replace(/^### (.*$)/gim, '<h5 class="font-bold text-slate-800 text-xs mt-2 mb-1">$1</h5>');
+  html = html.replace(/^## (.*$)/gim, '<h4 class="font-bold text-slate-900 text-xs mt-2.5 mb-1 text-gov-navy">$1</h4>');
+  html = html.replace(/^# (.*$)/gim, '<h3 class="font-bold text-slate-900 text-sm mt-3 mb-1 text-gov-navy">$1</h3>');
+  html = html.replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-slate-900">$1</strong>');
+  html = html.replace(/\*(.*?)\*/g, '<em class="italic text-slate-700">$1</em>');
+  html = html.replace(/^> (.*$)/gim, '<blockquote class="border-l-2 border-amber-500 pl-2.5 my-1.5 text-slate-600 italic text-[11px] bg-amber-50/50 py-1 rounded-r">$1</blockquote>');
+  html = html.replace(/^\s*[-*]\s+(.*$)/gim, '<li class="ml-3 list-disc my-0.5 text-slate-700">$1</li>');
+  html = html.replace(/^\s*(\d+)\.\s+(.*$)/gim, '<li class="ml-3 list-decimal my-0.5 text-slate-700">$1</li>');
+  html = html.replace(/\n\n+/g, '<div class="h-2"></div>');
+  html = html.replace(/\n/g, '<br>');
+  return html;
+}
+
 function toggleAICopilotModal() {
   const modal = document.getElementById("modal-copilot");
   if (!modal) return;
@@ -1595,7 +1629,7 @@ async function handleCopilotSubmit(e) {
     const thinkingEl = document.getElementById(thinkingId);
     if (thinkingEl) thinkingEl.remove();
 
-    const formattedAnswer = escapeHTML(res.answer).replace(/\n/g, "<br>");
+    const formattedAnswer = renderMarkdown(res.answer);
     let followupsHTML = "";
     if (res.followups && res.followups.length > 0) {
       followupsHTML = `
@@ -1617,10 +1651,10 @@ async function handleCopilotSubmit(e) {
     }
 
     let sourceBadge = '<span class="bg-blue-100 text-blue-800 text-[9px] font-bold px-1.5 py-0.5 rounded">Succession Knowledge Base</span>';
-    if (res.source === "gemini_api") {
-      sourceBadge = '<span class="bg-amber-100 text-amber-800 text-[9px] font-bold px-1.5 py-0.5 rounded">Gemini AI</span>';
-    } else if (res.source === "groq_api") {
-      sourceBadge = '<span class="bg-orange-100 text-orange-800 text-[9px] font-bold px-1.5 py-0.5 rounded">Groq Cloud AI</span>';
+    if (res.source === "groq_api") {
+      sourceBadge = '<span class="bg-orange-100 text-orange-800 text-[9px] font-bold px-1.5 py-0.5 rounded">Groq Cloud AI (Primary)</span>';
+    } else if (res.source === "gemini_api") {
+      sourceBadge = '<span class="bg-amber-100 text-amber-800 text-[9px] font-bold px-1.5 py-0.5 rounded">Gemini AI (Fallback)</span>';
     }
 
     thread.innerHTML += `
@@ -1628,12 +1662,12 @@ async function handleCopilotSubmit(e) {
         <div class="w-6 h-6 rounded-full bg-gov-navy text-white flex items-center justify-center shrink-0 text-[10px]">
           <i class="fa-solid fa-robot"></i>
         </div>
-        <div class="bg-white p-3 rounded-2xl rounded-tl-none border border-slate-200 text-slate-700 text-xs shadow-sm max-w-[85%] leading-relaxed space-y-1">
+        <div class="bg-white p-3.5 rounded-2xl rounded-tl-none border border-slate-200 text-slate-700 text-xs shadow-sm max-w-[85%] leading-relaxed space-y-1">
           <div class="flex items-center justify-between pb-1 border-b border-slate-100">
             <span class="font-bold text-slate-900">Viru Legal Advisory:</span>
             ${sourceBadge}
           </div>
-          <div class="text-slate-800 leading-relaxed">${formattedAnswer}</div>
+          <div class="copilot-markdown-content text-slate-800 leading-relaxed">${formattedAnswer}</div>
           ${followupsHTML}
         </div>
       </div>

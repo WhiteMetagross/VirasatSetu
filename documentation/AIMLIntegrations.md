@@ -3,7 +3,7 @@
 This document details the architectural design, algorithmic models, data structures and operational workflows for the artificial intelligence and machine learning capabilities integrated into the Virasat Setu platform.
 
 Virasat Setu Artificial Intelligence Stack:
-1. Viru (Virasat AI Legal Copilot): Dual Engine Architecture with Google Gemini Generative Intelligence and Embedded Indian Succession Legal Knowledge Engine.
+1. Viru (Virasat AI Legal Copilot): Three Tier Inference Architecture with Groq Cloud Generative Intelligence (Primary), Google Gemini Flash API (Secondary Fallback), and Embedded Indian Succession Legal Knowledge Engine (Tertiary Failover).
 2. Machine Learning Indian Name Transliteration Engine: Pure Python Character Bigram Jaccard and Double Metaphone Phonetic Distance Normalizer.
 3. Citizen Claim Health and Approval Probability Predictor: Five Factor Multi Dimension Readiness Evaluator with Prescriptive Action Recommendations.
 4. Administrative AI Fraud and Anomaly Intelligence Center: Role Gated Risk Engine Detecting Duplicate Claim Conflicts, High Value Dormancy and Relationship Discrepancies.
@@ -25,14 +25,14 @@ The artificial intelligence systems powering Virasat Setu are engineered under s
 
 The Virasat AI Legal Copilot named Viru serves as an interactive legal knowledge assistant for citizens navigating the complexities of Indian succession jurisprudence, banking claim procedures and insurance settlements.
 
-### Dual Engine Architecture:
+### Three Tier Resilient Inference Architecture:
 
-The Copilot employs a tiered resolution strategy:
+The Copilot employs a prioritized resolution strategy to ensure high performance with zero rate limit disruptions:
 
-1. Primary Generative Layer: Incoming citizen legal questions are routed to Google Gemini 3.8 Flash via secure backend HTTPS endpoints. The generative model provides natural language synthesis, contextual awareness and tailored conversational explanations.
-2. Two Second Timeout Guard: The backend dispatches requests to Gemini with a strict two second network timeout to protect the citizen user experience against cloud connectivity delays.
-3. Offline Indian Succession Knowledge Engine: If the external Gemini endpoint times out, encounters rate limiting or loses network connectivity, the request is intercepted by the embedded offline knowledge engine.
-4. Deterministic Rule Matching: The offline engine tokenizes incoming queries, matches conceptual keywords against curated Indian legal statutes, and returns verified, legally sound guidance with zero external network dependency.
+1. Primary Generative Layer (Groq Cloud API): Incoming citizen legal inquiries are routed to Groq Cloud API utilizing high speed open weights models (openai/gpt oss 120b and qwen/qwen3.8 27b). Groq delivers sub second inference without rate limiting interruptions, formatted in clean Markdown with simple English, zero emojis, and zero em dashes.
+2. Secondary Fallback Layer (Google Gemini API): If Groq encounters unexpected connectivity limits or network timeouts, the platform automatically fails over to Google Gemini Flash API endpoints.
+3. Tertiary Failover Layer (Embedded Knowledge Engine): If both cloud AI providers are unavailable, the embedded deterministic offline knowledge engine resolves the query using statutory pattern matching.
+4. Client Side Markdown Rendering: The web interface uses the marked library and custom CSS to cleanly render structured headers, bulleted lists, numbered steps, and comparison tables with no raw markdown artifacts.
 
 ### Embedded Legal Knowledge Corpus:
 
