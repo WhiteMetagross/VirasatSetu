@@ -17,8 +17,9 @@ Virasat Setu Visual Asset Directory:
 12. Viru (Virasat AI Legal Copilot) Interface: [viru_copilot.png](../Visuals/viru_copilot.png).
 13. Google Identity OAuth Two Point Zero Authentication: [google_oauth.png](../Visuals/google_oauth.png).
 14. System Notifications Center Modal: [notifications_modal.png](../Visuals/notifications_modal.png).
-15. Project Coursework Reference Visual: [GroupNumber_14.jpeg](../Visuals/GroupNumber_14.jpeg).
-16. Master Figma UI and UX Design Board: [VirasatSetu_Figma_Master_UIUX.svg](../Visuals/VirasatSetu_Figma_Master_UIUX.svg).
+15. Real Time Email Notification Engine and Verification: [notification_email_center.png](../Visuals/notification_email_center.png).
+16. Project Coursework Reference Visual: [GroupNumber_14.jpeg](../Visuals/GroupNumber_14.jpeg).
+17. Master Figma UI and UX Design Board: [VirasatSetu_Figma_Master_UIUX.svg](../Visuals/VirasatSetu_Figma_Master_UIUX.svg).
 
 
 ## Interface Design Philosophy:
@@ -212,10 +213,22 @@ Caption: Notifications center modal displaying real time system alerts, asset di
 4. Global Read State Trigger: Single click Mark all read button clearing pending alerts across the portal.
 
 
-### 14. Master Figma UI and UX Design Board (VirasatSetu_Figma_Master_UIUX.svg):
+### 14. Real Time Email Notification Engine and Verification:
 
-1. Single File Design Import: Self contained vector artboard combining all fifteen screens in a four column progressive journey lane layout with titles, subtitles, national tricolor banner, and full high resolution visual interface captures.
-2. Complete UX Interaction Connectors: Features vector flow paths and directional arrowheads mapping transitions between buttons, form inputs, modals, and administrative review consoles.
-3. Action and Trigger Badges: Includes explicit callout pills pinpointing critical interactive components including Login button, Google OAuth button, Deceased Registration inputs, Verify and Match trigger, Ask Viru floating launcher, and Initiate Claim button.
-4. Color Coded Journey Flows: Visually organizes five distinct user paths with dedicated chromatic markers (Saffron for Citizen Onboarding, Navy for Administrative Verification, Indigo for AI Legal Copilot, Emerald for Claim Lifecycle, and Crimson for Fraud Anomaly Detection).
-5. Zero Setup Figma Opening: Dragging this SVG file into an empty Figma canvas instantly lays out the entire platform architecture for presentation and client reviews with zero manual arrangement needed.
+![Real Time Email Notification Engine](../Visuals/notification_email_center.png)
+
+Caption: Notification center modal featuring live email notification dispatch with recipient address targeting, simulated SMTP engine, and confirmation logs.
+
+1. Live Email Dispatch Form: Interactive recipient email input preloaded with citizen address alongside an active Send Email dispatch trigger.
+2. Real Time SMTP Status Feedback: Displays prominent alert feedback confirming delivery status and simulated RFC compliant SMTP transmission.
+3. Official Government Email Format: Emits structured email payloads with official sovereignty headers, statutory references, and inheritance action links.
+4. Comprehensive Notification Audit Trail: Automatically synchronizes newly dispatched notifications to the audit logs table and citizen inbox.
+
+
+### 15. Master Figma UI and UX Design Board (VirasatSetu_Figma_Master_UIUX.svg):
+
+1. Single File Design Import: Self contained vector artboard combining all sixteen screens in a four by four progressive journey lane matrix with titles, subtitles, national tricolor banner, and full high resolution visual interface captures.
+2. Complete UX Interaction Connectors: Features vector flow paths and directional arrowheads mapping transitions between buttons, form inputs, modals, administrative review consoles, and email notification engines.
+3. Action and Trigger Badges: Includes explicit callout pills pinpointing critical interactive components including Login button, Google OAuth button, Deceased Registration inputs, Verify and Match trigger, Ask Viru floating launcher, Initiate Claim button, and Send Live Email Alert.
+4. Color Coded Journey Flows: Visually organizes six distinct user paths with dedicated chromatic markers (Saffron for Citizen Onboarding, Navy for Administrative Verification, Indigo for AI Legal Copilot, Emerald for Claim Lifecycle, Crimson for Fraud Anomaly Detection, and Amber for Real Time Email Alerts).
+5. Zero Setup Figma Opening: Dragging this SVG file into an empty Figma canvas instantly lays out the entire sixteen screen platform architecture for presentation and client reviews with zero manual arrangement needed.
