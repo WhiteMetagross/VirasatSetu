@@ -1430,33 +1430,86 @@ async function loadRajeshScenario() {
 }
 
 // GOOGLE OAUTH 2.0 INTEGRATION
-async function handleGoogleSignIn() {
+function handleGoogleSignIn() {
+  closeAuthModal();
+  openGoogleAuthModal();
+}
+
+function openGoogleAuthModal() {
+  const modal = document.getElementById("modal-google-auth");
+  if (modal) {
+    modal.classList.remove("hidden");
+    const emailInput = document.getElementById("google-input-email");
+    if (emailInput) {
+      emailInput.value = "";
+      setTimeout(() => emailInput.focus(), 100);
+    }
+  }
+}
+
+function closeGoogleAuthModal() {
+  const modal = document.getElementById("modal-google-auth");
+  if (modal) modal.classList.add("hidden");
+}
+
+function selectQuickGoogleAccount(email, name) {
+  const emailInput = document.getElementById("google-input-email");
+  const nameInput = document.getElementById("google-input-name");
+  if (emailInput) emailInput.value = email;
+  if (nameInput) nameInput.value = name;
+  submitGoogleAuth();
+}
+
+async function submitGoogleAuth(e) {
+  if (e) e.preventDefault();
+  const emailInput = document.getElementById("google-input-email");
+  const nameInput = document.getElementById("google-input-name");
+  const submitBtn = document.getElementById("google-auth-submit-btn");
+
+  const email = (emailInput ? emailInput.value : "").trim().toLowerCase();
+  const rawName = nameInput ? nameInput.value.trim() : "";
+  const fullName = rawName || email.split("@")[0].replace(/[._]/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+
+  if (!email || !email.includes("@") || !email.includes(".")) {
+    showToast("Please enter a valid Google Gmail address.", "error");
+    if (emailInput) emailInput.focus();
+    return;
+  }
+
   try {
-    showToast("Connecting to Google Identity Services...");
-    // Simulated Google OAuth 2.0 authentication exchange
-    const googleProfile = {
-      email: "citizen.google@gmail.com",
-      full_name: "Google Authenticated Citizen",
-      google_id: "google_oauth_sub_1092837461524"
-    };
+    showToast(`Connecting to Google Identity Services (${email})...`);
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Authenticating with Google...';
+    }
 
     const data = await apiFetch("/api/auth/google/login", {
       method: "POST",
-      body: JSON.stringify(googleProfile)
+      body: JSON.stringify({
+        email: email,
+        full_name: fullName,
+        google_id: "google_oauth_sub_" + btoa(email).replace(/=/g, "").slice(0, 16)
+      })
     });
 
     currentToken = data.access_token;
     currentUser = data.user;
     localStorage.setItem("token", currentToken);
 
+    closeGoogleAuthModal();
     closeAuthModal();
     updateUIForUser();
-    showToast(`Welcome, ${currentUser.full_name}! Signed in via Google.`);
+    showToast(`Welcome, ${currentUser.full_name}! Signed in via Google (${currentUser.email}).`);
     await loadDashboardData();
     switchTab("dashboard");
   } catch (err) {
     console.error("Google Auth error:", err);
     showToast(err.message || "Google Authentication failed", "error");
+  } finally {
+    if (submitBtn) {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = '<span>Next / Authenticate</span>';
+    }
   }
 }
 

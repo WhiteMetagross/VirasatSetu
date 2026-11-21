@@ -36,10 +36,11 @@ def google_login(req: GoogleAuthRequest, db: Session = Depends(get_db)):
     email = (req.email or "").strip().lower()
     full_name = (req.full_name or "").strip() or "Google User"
 
-    if not email:
-        # Default fallback for one-click testing
-        email = f"citizen.{uuid.uuid4().hex[:6]}@gmail.com"
-        full_name = "Google Citizen User"
+    if not email or "@" not in email or "." not in email:
+        raise HTTPException(
+            status_code=400,
+            detail="A valid Google Gmail address is required for authentication."
+        )
 
     user = db.query(User).filter(User.email == email).first()
     if not user:
