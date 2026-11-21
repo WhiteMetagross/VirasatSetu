@@ -51,15 +51,20 @@ The project follows a human interpretable modular layout separating concerns cle
     auth py ................. Password Hashing and JWT Tokens
 /Visuals
   logo jpg .................. Official Brand Identity Emblem Master Asset
-  GroupNumber_14 jpeg ....... Coursework Project Reference Visual
   portal_home png ........... Citizen Portal Landing Interface Screenshot
+  citizen_dashboard png ..... Authenticated Citizen Family Dashboard Screenshot
+  register_deceased png ..... Deceased Person Registration Form Screenshot
   discovered_matches png .... Discovered Assets and Matching Results Screenshot
+  claim_health png .......... AI Claim Health Predictor and Readiness Meter Screenshot
+  claim_tracking png ........ Claim Lifecycle and Progress Steppers Screenshot
   browse_database png ....... Financial Institution Database Browser Screenshot
   admin_console png ......... Central Administrative Oversight Console Screenshot
-  viru_copilot png .......... Viru AI Legal Copilot Knowledge Dialog Screenshot
-  claim_health png .......... AI Claim Health Predictor and Readiness Meter Screenshot
   fraud_anomaly png ......... Administrative AI Fraud and Anomaly Center Screenshot
+  institution_desk png ...... Institutional Claim Processing Desk Screenshot
+  viru_copilot png .......... Viru AI Legal Copilot Knowledge Dialog Screenshot
   google_oauth png .......... Google Identity OAuth Two Point Zero Authentication Screenshot
+  notifications_modal png ... System Notifications and Alerts Modal Screenshot
+  GroupNumber_14 jpeg ....... Coursework Project Reference Visual
 /documentation
   AIMLIntegrations md ......... Artificial Intelligence and Machine Learning Architecture
   Architecture md ............. Deep Technical Architecture

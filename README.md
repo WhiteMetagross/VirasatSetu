@@ -27,9 +27,21 @@ Virasat Setu Platform Flow:
 
 Caption: Virasat Setu citizen portal landing page and four stage discovery workflow overview.
 
+![Authenticated Citizen Family Dashboard](Visuals/citizen_dashboard.png)
+
+Caption: Citizen family dashboard presenting registered records, discovered asset metrics and claim progress.
+
 ![Discovered Unclaimed Financial Assets](Visuals/discovered_matches.png)
 
 Caption: Automated asset discovery interface displaying verified holdings and one hundred point match scores.
+
+![Citizen AI Claim Health and Readiness Meter](Visuals/claim_health.png)
+
+Caption: Formal claim preparation dialog featuring the AI Claim Health Predictor gauge and documentation checklist.
+
+![Viru Virasat AI Legal Copilot Interface](Visuals/viru_copilot.png)
+
+Caption: Viru conversational legal intelligence interface rendering real time statutory guidance and clickable prompts.
 
 ![Browse Financial Institution Database](Visuals/browse_database.png)
 
@@ -38,6 +50,18 @@ Caption: Central repository database browser searching across ninety four instit
 ![Platform Central Oversight Console](Visuals/admin_console.png)
 
 Caption: Administrative oversight console managing civil record verifications, platform metrics and claim workflows.
+
+![Administrative AI Fraud and Anomaly Center](Visuals/fraud_anomaly.png)
+
+Caption: Administrative security center detecting duplicate claims, high value dormancy and relationship anomalies.
+
+![Institutional Claim Processing Desk](Visuals/institution_desk.png)
+
+Caption: Dedicated verification desk for banking and insurance officers with pending claim queues and decision controls.
+
+![Google Identity OAuth Two Point Zero Authentication Dialog](Visuals/google_oauth.png)
+
+Caption: Authentication modal featuring the official Continue with Google identity button and traditional credentials.
 
 
 ## Executive Summary and Scope:
