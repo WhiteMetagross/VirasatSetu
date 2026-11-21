@@ -214,5 +214,8 @@ Caption: Notifications center modal displaying real time system alerts, asset di
 
 ### 14. Master Figma UI and UX Design Board (VirasatSetu_Figma_Master_UIUX.svg):
 
-1. Single File Design Import: Self contained vector artboard combining all fifteen screens in a three column layout with titles, subtitles, national tricolor banner, and full high resolution visual interface captures.
-2. Zero Setup Figma Opening: Dragging this SVG file into an empty Figma canvas instantly lays out the entire platform architecture for presentation and client reviews with zero manual arrangement needed.
+1. Single File Design Import: Self contained vector artboard combining all fifteen screens in a four column progressive journey lane layout with titles, subtitles, national tricolor banner, and full high resolution visual interface captures.
+2. Complete UX Interaction Connectors: Features vector flow paths and directional arrowheads mapping transitions between buttons, form inputs, modals, and administrative review consoles.
+3. Action and Trigger Badges: Includes explicit callout pills pinpointing critical interactive components including Login button, Google OAuth button, Deceased Registration inputs, Verify and Match trigger, Ask Viru floating launcher, and Initiate Claim button.
+4. Color Coded Journey Flows: Visually organizes five distinct user paths with dedicated chromatic markers (Saffron for Citizen Onboarding, Navy for Administrative Verification, Indigo for AI Legal Copilot, Emerald for Claim Lifecycle, and Crimson for Fraud Anomaly Detection).
+5. Zero Setup Figma Opening: Dragging this SVG file into an empty Figma canvas instantly lays out the entire platform architecture for presentation and client reviews with zero manual arrangement needed.
