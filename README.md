@@ -6,8 +6,6 @@ Live Public Portal: https://virasat-setu-eight.vercel.app
 
 Complete Documentation Directory: [documentation/](documentation/)
 
-Master Figma UI and UX Board: [VirasatSetu_Figma_Master_UIUX.svg](Visuals/VirasatSetu_Figma_Master_UIUX.svg)
-
 ![Virasat Setu Official Emblem](Visuals/logo.jpg)
 
 Caption: Virasat Setu official visual identity emblem featuring the sovereign arch, Kalpavriksha seedling and national wealth nodes.
@@ -153,4 +151,3 @@ Detailed operational and technical manuals are organized in the documentation di
 11. [Digital Transformation and Innovation Specification (DTI.md)](documentation/DTI.md): Complete Digital Transformation and Innovation specification and Business Model Canvas.
 12. [Brand Identity and Visual Design Guide (LogoDesign.md)](documentation/LogoDesign.md): Official brand identity, color palette and geometric construction rules.
 13. [Project Planning and Roadmap Specification (DTIProjectPlan.md)](documentation/DTIProjectPlan.md): Project planning specifications and phase by phase milestones.
-14. [Master Figma UI and UX Storyboard Vector (VirasatSetu_Figma_Master_UIUX.svg)](Visuals/VirasatSetu_Figma_Master_UIUX.svg): Complete sixteen screen platform user journey map with input and button connections ready for drag and drop import into Figma.
